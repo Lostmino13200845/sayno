@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Scam Shield – Card Guard",
-  "short_name": "Scam Shield",
+  "name": "SAYNO – Card Guard",
+  "short_name": "SAYNO",
   "version": "1.0.0",
   "description": "Protects new bank customers from phishing: checks every site against 700k+ known threats and blocks fake pages that ask for your card details.",
   "icons": {
@@ -11,7 +11,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Scam Shield",
+    "default_title": "SAYNO",
     "default_icon": {
       "16": "icons/16.png",
       "48": "icons/48.png"

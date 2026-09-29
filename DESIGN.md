@@ -1,6 +1,6 @@
-# Scam Shield · Design handoff (for UI/UX)
+# SAYNO · Design handoff (for UI/UX)
 
-Everything visual in Scam Shield (website, tutorial, web scanner and browser extension) is built from **one design system**. You can restyle the whole product by editing CSS in `design/`, without touching any logic.
+Everything visual in SAYNO (website, tutorial, web scanner and browser extension) is built from **one design system**. You can restyle the whole product by editing CSS in `design/`, without touching any logic.
 
 ## 1. See it live
 Start the server (`start.bat`), then open:
@@ -26,7 +26,7 @@ Start the server (`start.bat`), then open:
 
 **After every CSS change:** run `py tools/sync_design.py`. It copies `design/*.css` into the website (`static/assets/`) and the extension (`extension/ui/`). Never edit those copies; they get overwritten.
 - Website: just refresh the browser.
-- Extension: open `edge://extensions` and press ↻ (reload) on Scam Shield.
+- Extension: open `edge://extensions` and press ↻ (reload) on SAYNO.
 
 ## 3. Screens & states to design
 **Extension popup:** safe site · risky site (medium / high / critical) · "not rated" / server offline · message pasted → result · My bank(s) expanded · toggles on/off.
@@ -34,7 +34,7 @@ Start the server (`start.bat`), then open:
 **Card Guard (in-page):**
 1. **Block screen:** 1 to 4 reasons, primary "Get me out of here", secondary "continue anyway"
 2. **Toast:** gentle reminder when typing a card on a normal shop
-3. **Result panel:** after right-click → "Check with Scam Shield"
+3. **Result panel:** after right-click → "Check with SAYNO"
 
 **On-screen notification** (Windows/macOS system notification, styled by the OS, so we only control the icon, title, text and 2 buttons): not secure (http) · risky / known scam (stays until dismissed) · "don't type your password/card here" · test notification. Plus the **permission card** on the welcome page (before allow / allowed / declined) and the popup switch with its "not allowed" hint.
 

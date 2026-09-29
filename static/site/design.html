@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scam Shield Design System</title>
+<title>SAYNO Design System</title>
 <link rel="icon" href="/assets/shield-48.png">
 <link rel="stylesheet" href="/assets/tokens.css">
 <link rel="stylesheet" href="/assets/components.css">
@@ -38,13 +38,13 @@
 </head>
 <body>
 <header class="nav">
-  <a class="nav-brand" href="/"><img src="/assets/shield-48.png" alt=""> Scam Shield</a>
+  <a class="nav-brand" href="/"><img src="/assets/shield-48.png" alt=""> SAYNO</a>
   <nav class="nav-links"><a href="#colors">Colours</a><a href="#type">Type</a><a href="#components">Components</a><a href="#extension">Extension screens</a><a href="#edit">How to edit</a></nav>
 </header>
 
 <main class="ds">
   <p class="ss-eyebrow">Design system · v1</p>
-  <h1 style="font-size:var(--ss-text-2xl)">Scam Shield Design System</h1>
+  <h1 style="font-size:var(--ss-text-2xl)">SAYNO Design System</h1>
   <p class="ds-note">Every screen of the website, the web scanner and the browser extension is built from the tokens and components on this page. Change a token in <code>design/tokens.css</code>, run <code>py tools/sync_design.py</code>, and it changes everywhere. Use the button bottom-right to check dark mode.</p>
 
   <h2 id="colors">Colours</h2>
@@ -95,7 +95,7 @@
   <h3 style="margin-top:24px">Card Guard block screen</h3>
   <div class="veil-demo"><div class="ov-veil"><div class="ov-box">
     <h1>🛡️ Stop: this page wants your card details</h1>
-    <p>Scam Shield blocked this page on <b>rbc-card-activation.help</b> because:</p>
+    <p>SAYNO blocked this page on <b>rbc-card-activation.help</b> because:</p>
     <ul><li>It asks for your card <b>PIN</b>. No bank or shop ever asks for your PIN on a website.</li><li>It uses <b>bank-style pressure</b> but this is <b>not your bank's website</b>.</li></ul>
     <p class="ov-tip"><b>Your bank will never</b> ask for your full card number, CVV, PIN or one-time code on a page you reached from a link.</p>
     <div class="ov-actions"><button class="ss-btn ss-btn--danger">Get me out of here</button><button class="ss-btn ss-btn--link">I understand the risk, continue</button></div>
@@ -104,7 +104,7 @@
   <h3 style="margin-top:24px">Toast (gentle reminder) &amp; right-click result panel</h3>
   <div class="grid-2">
     <div class="stage toast-demo"><div class="ov-toast" style="right:16px;bottom:16px">🛡️ You're entering a card number on <b>shop.example</b>. Make sure you opened this site yourself.<div style="margin-top:8px"><button class="ss-btn ss-btn--ghost ss-btn--s">Got it</button></div></div></div>
-    <div class="stage toast-demo" style="min-height:280px"><div class="ov-panel" style="top:16px;right:16px;width:320px"><div class="ov-panel-head"><b>🛡️ Scam Shield</b><button class="ov-close">×</button></div>
+    <div class="stage toast-demo" style="min-height:280px"><div class="ov-panel" style="top:16px;right:16px;width:320px"><div class="ov-panel-head"><b>🛡️ SAYNO</b><button class="ov-close">×</button></div>
       <span class="ss-level ss-level--critical">critical · 85</span><ul class="ss-findings"><li class="is-danger">Government / tax-agency impersonation (CRA, IRS, Service Canada)</li><li>Creates urgency / time pressure</li></ul><p class="ss-muted">Do NOT click any link, open attachments, reply, or call numbers in this message.</p></div></div>
   </div>
 
@@ -133,7 +133,7 @@ function swatches() {
 }
 const find = (lvl, items) => `<ul class="ss-findings">${items.map(([c, t]) => `<li class="${c}">${t}</li>`).join("")}</ul>`;
 const popup = (status, site, extra = "") => `<div class="popup-frame"><div class="pp-root">
-  <header class="pp-header"><img src="/assets/shield-48.png" alt=""><b>Scam Shield</b><span class="pp-status">${status}</span></header>
+  <header class="pp-header"><img src="/assets/shield-48.png" alt=""><b>SAYNO</b><span class="pp-status">${status}</span></header>
   <section class="pp-section"><h3 class="ss-eyebrow">This site</h3>${site}</section>
   <section class="pp-section"><h3 class="ss-eyebrow">Check a message</h3><textarea class="ss-textarea pp-textarea" placeholder="Paste a suspicious text, e-mail or link — it's checked instantly"></textarea>${extra}</section>
   <section class="pp-section"><h3 class="ss-eyebrow">Card Guard</h3><div class="pp-toggles">
@@ -145,7 +145,7 @@ $("#popups").innerHTML =
   `<div>${popup("🟢 727,683 threats", `<div class="pp-host">www.rbc.com</div><span class="ss-level ss-level--safe">safe · 0/100</span>${find("", [["is-ok", "No warning signs found."]])}`)}<div class="cap">1 · Safe site</div></div>` +
   `<div>${popup("🟢 727,683 threats", `<div class="pp-host">rbc-card-activation.help</div><span class="ss-level ss-level--high">high · 72/100</span>${find("", [["is-danger", "Mentions 'rbc' but is not an official rbc domain"], ["", "Top-level domain '.help' is heavily abused"]])}`,
     `<div class="pp-reported">🚩 1 dangerous link(s) reported automatically.</div>`)}<div class="cap">2 · Dangerous site + auto-report</div></div>` +
-  `<div>${popup("🔴 server offline", `<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the Scam Shield server is offline.</span>`)}<div class="cap">3 · Offline / not rated</div></div>`;
+  `<div>${popup("🔴 server offline", `<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the SAYNO server is offline.</span>`)}<div class="cap">3 · Offline / not rated</div></div>`;
 swatches();
 $("#theme").onclick = () => {
   const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;

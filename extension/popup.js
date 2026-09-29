@@ -23,7 +23,7 @@ chrome.runtime.sendMessage({ type: "status" }, s => {
 chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
   chrome.runtime.sendMessage({ type: "getVerdict", tabId: tab.id }, v => {
     $("#site").innerHTML = v ? `<div class="pp-host">${esc(new URL(tab.url).host)}</div>${render(v)}`
-      : /^https?:/.test(tab.url || "") ? '<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the Scam Shield server is offline.</span>' : "Not a web page.";
+      : /^https?:/.test(tab.url || "") ? '<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the SAYNO server is offline.</span>' : "Not a web page.";
   });
 });
 

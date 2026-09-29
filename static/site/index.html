@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scam Shield — protection for new bank accounts</title>
-<meta name="description" content="Scam Shield is a free browser extension that blocks fake bank pages before you type your card, checks suspicious messages, and reports scams so they get taken down.">
+<title>SAYNO — protection for new bank accounts</title>
+<meta name="description" content="SAYNO is a free browser extension that blocks fake bank pages before you type your card, checks suspicious messages, and reports scams so they get taken down.">
 <link rel="icon" href="/assets/shield-48.png">
 <link rel="stylesheet" href="/assets/tokens.css">
 <link rel="stylesheet" href="/assets/components.css">
@@ -15,7 +15,7 @@
 <body>
 
 <header class="nav">
-  <a class="nav-brand" href="#top"><img src="/assets/shield-48.png" alt=""> Scam Shield</a>
+  <a class="nav-brand" href="#top"><img src="/assets/shield-48.png" alt=""> SAYNO</a>
   <nav class="nav-links" aria-label="Main">
     <a href="#how">How it works</a>
     <a href="#tutorial">Tutorial</a>
@@ -32,7 +32,7 @@
   <div class="hero-text">
     <p class="ss-eyebrow">For new bank customers · newcomers · international students</p>
     <h1>Your new bank account is a target.<br><span>We stop the scam before you type your card.</span></h1>
-    <p class="hero-lead">Scammers buy lists of new and high-balance accounts, then send fake “activate your card” or “pending e-Transfer” messages. Scam Shield checks every site against global threat lists and blocks fake bank pages the moment they ask for your card.</p>
+    <p class="hero-lead">Scammers buy lists of new and high-balance accounts, then send fake “activate your card” or “pending e-Transfer” messages. SAYNO checks every site against global threat lists and blocks fake bank pages the moment they ask for your card.</p>
     <div class="hero-actions">
       <a class="ss-btn" href="#tutorial">Try the live tutorial</a>
       <a class="ss-btn ss-btn--ghost" href="#install">Install the extension</a>
@@ -99,7 +99,7 @@
         <span class="mock-dots"><i></i><i></i><i></i></span>
         <button class="mock-nav" id="mHome" title="Back to messages" aria-label="Back to messages">←</button>
         <div class="mock-url" id="mUrl">messages.example.com</div>
-        <button class="mock-ext" id="mExt" aria-label="Open Scam Shield">
+        <button class="mock-ext" id="mExt" aria-label="Open SAYNO">
           <img src="/assets/shield-48.png" alt=""><span class="ss-badge" id="mBadge" hidden></span>
         </button>
       </div>
@@ -130,11 +130,11 @@
           <div class="mock-veil" id="mVeil" hidden>
             <div class="ov-box">
               <h1>🛡️ Stop: this page wants your card details</h1>
-              <p>Scam Shield blocked this page on <b>rbc-card-activation.help</b> because:</p>
+              <p>SAYNO blocked this page on <b>rbc-card-activation.help</b> because:</p>
               <ul>
                 <li>It asks for your card <b>PIN</b>. No bank or shop ever asks for your PIN on a website.</li>
                 <li>It uses <b>bank-style pressure</b> (“suspended”, “verify”) but this is <b>not your bank's website</b>.</li>
-                <li>Scam Shield rates this site <b id="veilLevel">MEDIUM</b>.</li>
+                <li>SAYNO rates this site <b id="veilLevel">MEDIUM</b>.</li>
               </ul>
               <p class="ov-tip"><b>Your bank will never</b> ask for your full card number, CVV, PIN or one-time code on a page you reached from a link.</p>
               <div class="ov-actions">
@@ -159,7 +159,7 @@
 
       <!-- extension popup replica (same markup/classes as extension/popup.html) -->
       <div class="mock-popup" id="mPopup" hidden>
-        <header class="pp-header"><img src="/assets/shield-48.png" alt=""><b>Scam Shield</b><span class="pp-status" id="pStatus">🟢 threats</span></header>
+        <header class="pp-header"><img src="/assets/shield-48.png" alt=""><b>SAYNO</b><span class="pp-status" id="pStatus">🟢 threats</span></header>
         <section class="pp-section"><h3 class="ss-eyebrow">This site</h3><div id="pSite"></div></section>
         <section class="pp-section">
           <h3 class="ss-eyebrow">Check a message</h3>
@@ -186,7 +186,7 @@
       <div class="mock-ctx" id="mCtx" hidden>
         <div class="ctx-item ctx-muted">Copy</div>
         <div class="ctx-item ctx-muted">Search the web</div>
-        <button class="ctx-item" id="ctxCheck"><img src="/assets/shield-48.png" alt=""> Check this text with Scam Shield</button>
+        <button class="ctx-item" id="ctxCheck"><img src="/assets/shield-48.png" alt=""> Check this text with SAYNO</button>
       </div>
 
       <!-- right-click result panel replica -->
@@ -215,12 +215,12 @@
     </article>
     <article class="ss-card opt">
       <h3><label class="ss-toggle"><input type="checkbox" checked disabled><span></span></label> Notify me on screen when a page isn't secure</h3>
-      <p><b>What it does:</b> pops up a notification on your screen when a page has <b>no encryption</b> (http), when Scam Shield rates it <b>risky</b>, or when you're about to type a <b>password or card number</b> on an unencrypted page. Buttons let you leave the page in one click.</p>
+      <p><b>What it does:</b> pops up a notification on your screen when a page has <b>no encryption</b> (http), when SAYNO rates it <b>risky</b>, or when you're about to type a <b>password or card number</b> on an unencrypted page. Buttons let you leave the page in one click.</p>
       <p class="opt-meta"><span>Asks your permission first (on install, or when you switch it on)</span><span>At most one alert per site every 30 min</span></p>
     </article>
     <article class="ss-card opt">
       <h3>🏦 My bank(s)</h3>
-      <p><b>What it does:</b> tells Scam Shield which bank websites are really yours. Only those, plus big payment pages like Stripe or PayPal, are trusted with your card. Look-alikes such as <code>rbc-secure-login.xyz</code> are not.</p>
+      <p><b>What it does:</b> tells SAYNO which bank websites are really yours. Only those, plus big payment pages like Stripe or PayPal, are trusted with your card. Look-alikes such as <code>rbc-secure-login.xyz</code> are not.</p>
       <p class="opt-meta"><span>Default: all major Canadian banks trusted</span><span>Tip: tick only your own bank</span></p>
     </article>
     <article class="ss-card opt">
@@ -235,7 +235,7 @@
     </article>
     <article class="ss-card opt">
       <h3>🚩 Automatic reporting</h3>
-      <p><b>What it does:</b> when a link is clearly dangerous, Scam Shield sends it (only the link, never your personal data) to Netcraft's takedown network, so browsers and antivirus products block it for everyone.</p>
+      <p><b>What it does:</b> when a link is clearly dangerous, SAYNO sends it (only the link, never your personal data) to Netcraft's takedown network, so browsers and antivirus products block it for everyone.</p>
       <p class="opt-meta"><span>Default: <b>on</b></span><span>Never reported: your card data, your messages, local addresses</span></p>
     </article>
   </div>
@@ -246,9 +246,9 @@
   <p class="ss-eyebrow">Install</p>
   <h2>Up and running in 3 steps</h2>
   <ol class="install">
-    <li class="ss-card"><span class="install-n">1</span><div><h3>Start Scam Shield</h3><p>Double-click <code>start.bat</code> in the Scam Shield folder. Keep that window open.</p></div></li>
+    <li class="ss-card"><span class="install-n">1</span><div><h3>Start SAYNO</h3><p>Double-click <code>start.bat</code> in the SAYNO folder. Keep that window open.</p></div></li>
     <li class="ss-card"><span class="install-n">2</span><div><h3>Add the extension</h3><p>Open <code>edge://extensions</code> or <code>chrome://extensions</code>, turn on <b>Developer mode</b>, click <b>Load unpacked</b> and choose the <code>extension</code> folder.</p></div></li>
-    <li class="ss-card"><span class="install-n">3</span><div><h3>Pin the shield &amp; pick your bank</h3><p>Click the puzzle icon → pin <b>Scam Shield</b>. Open it and tick your bank under <b>My bank(s)</b>.</p></div></li>
+    <li class="ss-card"><span class="install-n">3</span><div><h3>Pin the shield &amp; pick your bank</h3><p>Click the puzzle icon → pin <b>SAYNO</b>. Open it and tick your bank under <b>My bank(s)</b>.</p></div></li>
   </ol>
   <p class="section-lead">No extension? Use the <a href="/app">web scanner</a> to check any message, and the password breach check.</p>
 </section>
@@ -269,7 +269,7 @@
 </main>
 
 <footer class="footer">
-  <span><img src="/assets/shield-48.png" alt=""> Scam Shield · SFU Hackathon project</span>
+  <span><img src="/assets/shield-48.png" alt=""> SAYNO · SFU Hackathon project</span>
   <span><a href="/app">Web scanner</a> · <a href="/design">Design system</a></span>
 </footer>
 

@@ -1,7 +1,7 @@
-# Scam Shield · SFU Hackathon Prep
+# SAYNO · SFU Hackathon Prep
 
 ## 1. One-line pitch
-> **Scam Shield is a browser extension that stops new bank customers from handing their card details to scammers.** It checks every site against 700,000+ live threats and blocks fake bank pages before the victim types their card. Every scam it catches is reported automatically, so it gets taken down for everyone.
+> **SAYNO is a browser extension that stops new bank customers from handing their card details to scammers.** It checks every site against 700,000+ live threats and blocks fake bank pages before the victim types their card. Every scam it catches is reported automatically, so it gets taken down for everyone.
 
 ## 2. The problem (your first 30 seconds)
 - **Who gets targeted:** people with **new accounts** (new customers, international students, newcomers to Canada) and **high-balance accounts**. Their details leak from data breaches and get sold as lists. They don't yet know what their bank's real messages look like, and they're expecting messages ("activate your card", "set up e-Transfer").
@@ -21,7 +21,7 @@
 ## 4. Live demo script (3 minutes)
 Set up beforehand: the server is running (`start.bat`), the extension is loaded, and the three demo tabs are open.
 
-1. **(0:00) Inbox:** open `/demo/inbox.html`. "This is what a new RBC customer receives in week one." Select the fake RBC SMS, right-click, and choose **Check with Scam Shield**. It rates **HIGH** and explains why (urgency, account-lock threat, new-card activation, fake RBC domain).
+1. **(0:00) Inbox:** open `/demo/inbox.html`. "This is what a new RBC customer receives in week one." Select the fake RBC SMS, right-click, and choose **Check with SAYNO**. It rates **HIGH** and explains why (urgency, account-lock threat, new-card activation, fake RBC domain).
 2. **(0:40) The mom message:** check "Hi sweetie, dinner on Sunday". It scores **0 / safe**. Point out that false alarms matter as much as detections.
 3. **(1:00) The trap:** open `/demo/fake-bank.html`. **Card Guard blocks the page:** "It asks for your PIN… bank-style pressure… not your bank's website." This is the wow moment, so pause here.
 4. **(1:40) No false alarm:** open `/demo/shop.html`, a normal checkout, and type test card 4242 4242 4242 4242. No block, only a gentle reminder. "We protect without breaking shopping."
@@ -38,7 +38,7 @@ Set up beforehand: the server is running (`start.bat`), the extension is loaded,
 5. **Multilingual warnings (≈1 h with LLM help).** Vancouver newcomers: Mandarin, Punjabi, Farsi, Hindi, Korean, Tagalog, Spanish. The warning screen matters most in the user's first language.
 6. **ML text classifier (≈3 h).** Train a small model (TF-IDF + logistic regression) on the public *UCI SMS Spam Collection* dataset plus your collected reports. Blend it with the rules and show both scores.
 7. **Mobile / SMS (roadmap slide, not build).** Most of these scams arrive by SMS. An Android app with an SMS filter (or iOS Message Filter extension) using the same back end is the natural next product.
-8. **Bank partnership (business slide).** Banks could flag "new account" or "high balance" customers for the stronger protection mode and publish official domain lists. Scam Shield becomes a white-label product that banks give their customers.
+8. **Bank partnership (business slide).** Banks could flag "new account" or "high balance" customers for the stronger protection mode and publish official domain lists. SAYNO becomes a white-label product that banks give their customers.
 
 ## 6. Judge Q&A (practice these out loud)
 | Question | Answer |
@@ -72,7 +72,7 @@ flowchart LR
     BG["Site check + badge"]
     PU["Popup / right-click scan"]
   end
-  subgraph Server["Scam Shield server"]
+  subgraph Server["SAYNO server"]
     EN["Detection engine<br/>rules + link forensics"]
     TI["Threat library<br/>730k threats, 5-min updates"]
     DB[("Report DB<br/>SQLite")]

@@ -7,7 +7,7 @@ function showState(granted, denied = false) {
   $("#testBtn").hidden = !granted;
   $("#permMsg").innerHTML = granted
     ? "✅ <b>Notifications are on.</b> You'll be warned on screen about insecure or risky pages."
-    : denied ? "Notifications stay off. You can switch them on later in the Scam Shield popup." : "";
+    : denied ? "Notifications stay off. You can switch them on later in the SAYNO popup." : "";
   $("#permCard").classList.toggle("perm", !granted);
 }
 

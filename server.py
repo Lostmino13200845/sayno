@@ -1,4 +1,4 @@
-"""Scam Shield - local web app.  Run:  py server.py   then open http://127.0.0.1:8765"""
+"""SAYNO - local web app.  Run:  py server.py   then open http://127.0.0.1:8765"""
 import hmac
 import json
 import os
@@ -110,7 +110,7 @@ class Handler(BaseHTTPRequestHandler):
                                     "reporter_email_set": bool(CFG.get("reporter_email"))})
         if u.path == "/api/admin/export":
             data = json.dumps(STORE.list(q.get("status"), q.get("kind"), 100_000), indent=2).encode()
-            name = f"scam-shield-{time.strftime('%Y%m%d-%H%M')}.json"
+            name = f"sayno-{time.strftime('%Y%m%d-%H%M')}.json"
             return self._send(200, data, extra={"Content-Disposition": f'attachment; filename="{name}"'})
         self._send(404, {"error": "not found"})
 
@@ -174,12 +174,12 @@ def on_cycle(changed):
 
 
 if __name__ == "__main__":
-    print("Scam Shield starting - loading threat database...", flush=True)
+    print("SAYNO starting - loading threat database...", flush=True)
     INTEL.start(on_cycle=on_cycle)
     threading.Thread(target=reporter_loop, name="auto-reporter", daemon=True).start()
     url = f"http://127.0.0.1:{PORT}"
     srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"Scam Shield running at {url}  (updates every {INTEL.interval // 60} min, Ctrl+C to stop)")
+    print(f"SAYNO running at {url}  (updates every {INTEL.interval // 60} min, Ctrl+C to stop)")
     print(f"Admin (keep private): {url}/admin?token={CFG['admin_token']}", flush=True)
     if not CFG.get("reporter_email"):
         print("NOTE: auto-reporting is waiting for 'reporter_email' in config.json (required by Netcraft).",

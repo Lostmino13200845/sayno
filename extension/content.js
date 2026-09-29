@@ -1,4 +1,4 @@
-// Scam Shield – Card Guard (content script)
+// SAYNO – Card Guard (content script)
 // Detects pages that ask for card details and decides, locally, whether that is dangerous.
 // Card numbers typed by the user NEVER leave the page: only a yes/no signal is used.
 (() => {
@@ -69,7 +69,7 @@
     if (f.pin) reasons.push("It asks for your card <b>PIN</b>. No bank or shop ever asks for your PIN on a website.");
     if (f.sin) reasons.push("It asks for your <b>Social Insurance Number</b> together with card details.");
     if (posesAsBank && pressure) reasons.push("It uses <b>bank-style pressure</b> (\"suspended\", \"verify your card\", \"pending e-Transfer\") but this is <b>not your bank's website</b>.");
-    if (serverRisk) reasons.push(`Scam Shield rates this site <b>${verdict.level.toUpperCase()}</b> (${verdict.score}/100).`);
+    if (serverRisk) reasons.push(`SAYNO rates this site <b>${verdict.level.toUpperCase()}</b> (${verdict.score}/100).`);
     const local = ["127.0.0.1", "localhost"].includes(host);
     if (location.protocol === "http:" && !local) reasons.push("The connection is <b>not encrypted</b> (http://). Card details could be stolen in transit.");
     if (f.number && f.cvv && f.expiry && posesAsBank && !pressure && settings.newcomerMode)
@@ -95,7 +95,7 @@
     return (cssText = parts.join("\n").replace(/:root/g, ":host"));
   }
   function mount() {
-    const hostEl = document.createElement("scam-shield-ui");
+    const hostEl = document.createElement("sayno-ui");
     hostEl.style.cssText = "all:initial;position:fixed;inset:0;z-index:2147483647;pointer-events:none";
     const root = hostEl.attachShadow({ mode: "closed" });
     const style = document.createElement("style");
@@ -116,7 +116,7 @@
     document.activeElement?.blur?.();
     ui().innerHTML = `<div class="ov-veil" role="alertdialog" aria-labelledby="ov-title"><div class="ov-box">
       <h1 id="ov-title">🛡️ Stop: this page wants your card details</h1>
-      <p>Scam Shield blocked this page on <b>${esc(host)}</b> because:</p>
+      <p>SAYNO blocked this page on <b>${esc(host)}</b> because:</p>
       <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
       <p class="ov-tip"><b>Your bank will never</b> ask for your full card number, CVV, PIN or one-time code by message or on a page you reached from a link. If you're unsure, call the number on the back of your card.</p>
       <div class="ov-actions"><button class="ss-btn ss-btn--danger" id="leave">Get me out of here</button>
@@ -140,7 +140,7 @@
         || '<li class="is-ok">No warning signs found.</li>'}</ul>
       <p class="ss-muted">${esc(result.advice[0] || "")}</p>
       ${result.reported ? `<p><b>🚩 ${result.reported} dangerous link(s) reported automatically.</b></p>` : ""}`;
-    ui().innerHTML = `<div class="ov-panel" role="dialog" aria-label="Scam Shield result"><div class="ov-panel-head"><b>🛡️ Scam Shield</b>
+    ui().innerHTML = `<div class="ov-panel" role="dialog" aria-label="SAYNO result"><div class="ov-panel-head"><b>🛡️ SAYNO</b>
       <button class="ov-close" id="x" aria-label="Close">×</button></div>${body}</div>`;
     ui().querySelector("#x").onclick = () => { ui().innerHTML = ""; };
   }

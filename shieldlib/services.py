@@ -52,7 +52,7 @@ class OnlineChecker:
 
     def _safe_browsing(self, key, url_results):
         body = {
-            "client": {"clientId": "scam-shield", "clientVersion": "1.0"},
+            "client": {"clientId": "sayno", "clientVersion": "1.0"},
             "threatInfo": {
                 "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE",
                                 "POTENTIALLY_HARMFUL_APPLICATION"],
@@ -114,7 +114,7 @@ BATCH = 25
 
 
 def _netcraft(email, urls):
-    body = {"email": email, "reason": "Phishing / scam link detected by Scam Shield",
+    body = {"email": email, "reason": "Phishing / scam link detected by SAYNO",
             "urls": [{"url": u} for u in urls]}
     status, raw = _http("POST", NETCRAFT_URL, body, timeout=30)
     ok = 200 <= status < 300

@@ -1,4 +1,4 @@
-"""Scam Shield core library.
+"""SAYNO core library.
 
     intel    - private, self-updating global threat database (hidden storage)
     engine   - message / link / e-mail analysis and danger scoring

@@ -5,7 +5,7 @@ import sys
 
 LIB_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(LIB_DIR, ".data")
-USER_AGENT = "ScamShield/2.0 (+personal scam scanner)"
+USER_AGENT = "SAYNO/2.0 (+personal scam scanner)"
 
 os.makedirs(DATA_DIR, exist_ok=True)
 if sys.platform == "win32":

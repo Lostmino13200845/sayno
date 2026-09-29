@@ -1,4 +1,4 @@
-// Scam Shield website: live threat count + the interactive tutorial ("practice browser").
+// SAYNO website: live threat count + the interactive tutorial ("practice browser").
 // Every step: instructions on the left, a pulsing ring on the thing to click on the right.
 (() => {
   const $ = s => document.querySelector(s);
@@ -107,7 +107,7 @@
       S.ctx = false; S.panel = true; draw();
       $("#mPanel").innerHTML = '<p class="ss-muted">Checking…</p>';
       const r = await scan(RBC_TEXT);
-      $("#mPanel").innerHTML = `<div class="ov-panel-head"><b>🛡️ Scam Shield</b><button class="ov-close" id="panelX" aria-label="Close">×</button></div>
+      $("#mPanel").innerHTML = `<div class="ov-panel-head"><b>🛡️ SAYNO</b><button class="ov-close" id="panelX" aria-label="Close">×</button></div>
         ${renderResult(r)}<p class="ss-muted">${esc(r.advice[0] || "")}</p>`;
       $("#panelX").onclick = () => { S.panel = false; draw(); };
       S.checkedText = true; refresh();
@@ -144,7 +144,7 @@
   // ================= tutorial steps =================
   const STEPS = [
     { title: "Find the shield",
-      text: "<p>After you install Scam Shield, a blue <b>shield</b> sits in your browser's toolbar, top right.</p><span class='do'>👉 Click the shield to open it.</span>",
+      text: "<p>After you install SAYNO, a blue <b>shield</b> sits in your browser's toolbar, top right.</p><span class='do'>👉 Click the shield to open it.</span>",
       target: () => "#mExt", label: "Click the shield",
       setup() { Object.assign(S, { popup: false, ctx: false, panel: false }); if (S.view !== "inbox") return go("inbox"); draw(); },
       done: () => S.popup, doIt: () => A.togglePopup() },
@@ -171,7 +171,7 @@
       target: () => "#pNewcomer", label: "Both on by default",
       setup() { S.popup = true; draw(); } },
     { title: "Right-click to check any text",
-      text: "<p>You can also check text <b>on any website</b>, such as webmail or chat, without opening the popup.</p><span class='do'>👉 Close the popup, then right-click (or click) the RBC message and choose <b>Check this text with Scam Shield</b>.</span>",
+      text: "<p>You can also check text <b>on any website</b>, such as webmail or chat, without opening the popup.</p><span class='do'>👉 Close the popup, then right-click (or click) the RBC message and choose <b>Check this text with SAYNO</b>.</span>",
       target: () => S.popup ? "#mExt" : S.ctx ? "#ctxCheck" : "#msgRbc",
       label: () => S.popup ? "Close the popup" : S.ctx ? "Choose this" : "Right-click this message",
       setup() { S.checkedText = false; if (S.view !== "inbox") return go("inbox"); S.panel = false; draw(); },
@@ -201,7 +201,7 @@
       target: () => "#mExt", label: "Watch the badge",
       setup() { Object.assign(S, { popup: false, toast: false }); draw(); } },
     { title: "You're ready 🎉",
-      text: "<p>That's everything: <b>site checks</b>, <b>Card Guard</b>, <b>message checks</b> and <b>automatic reporting</b>.</p><p>Remember: your bank will <b>never</b> ask for your PIN, CVV or a one-time code.</p><p><a class='ss-btn' href='#install'>Install Scam Shield</a> <a class='ss-btn ss-btn--ghost' href='/app'>Open the web scanner</a></p>",
+      text: "<p>That's everything: <b>site checks</b>, <b>Card Guard</b>, <b>message checks</b> and <b>automatic reporting</b>.</p><p>Remember: your bank will <b>never</b> ask for your PIN, CVV or a one-time code.</p><p><a class='ss-btn' href='#install'>Install SAYNO</a> <a class='ss-btn ss-btn--ghost' href='/app'>Open the web scanner</a></p>",
       target: () => null, setup() { S.popup = false; draw(); } },
   ];
 

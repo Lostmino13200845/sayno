@@ -1,4 +1,4 @@
-# 🛡️ Scam Shield
+# 🛡️ SAYNO
 
 A scam, phishing and malicious-link scanner with a private, self-updating threat database and a server-side report database.
 
@@ -41,11 +41,11 @@ Protection for **new bank customers and high-balance accounts**, the people scam
 
 | Feature | How |
 |---|---|
-| **Site check** | Every page's address is checked against the Scam Shield server; the verdict shows on the toolbar badge (`!`, `!!`, `✖`) |
+| **Site check** | Every page's address is checked against the SAYNO server; the verdict shows on the toolbar badge (`!`, `!!`, `✖`) |
 | **Card Guard** | Detects card number / CVV / expiry / **PIN** / SIN fields and Luhn-valid card numbers being typed. It blocks the page when it asks for a PIN, uses bank-style pressure off a real bank domain, is rated risky, or isn't encrypted. Card data **never leaves the page**. |
 | **My bank** | Users pick their bank(s). Official Canadian bank domains and big payment processors are trusted, and look-alikes are not. |
 | **New-account mode** | Extra warnings while an account is new or holds a large balance |
-| **Check a message** | Paste into the popup, or select text / right-click a link → "Check with Scam Shield" |
+| **Check a message** | Paste into the popup, or select text / right-click a link → "Check with SAYNO" |
 | **On-screen warnings** | Optional `notifications` permission, requested on the welcome page (or via the popup switch) after a click. System notifications cover: page not encrypted (http), rated medium+ or known scam, and focusing a password/card/PIN/SIN field on an http page. At most one per site and reason every 30 min, with *Leave this page* / *Keep browsing* buttons. |
 | **Auto-reporting** | Blocked pages are sent to the back end (URL + reason only) and qualify for automatic Netcraft reporting. Local / private addresses are never reported. |
 

@@ -1,5 +1,5 @@
-// Scam Shield background worker: checks every site the user opens against the
-// Scam Shield server (threat database + heuristics) and shows the verdict on the toolbar badge.
+// SAYNO background worker: checks every site the user opens against the
+// SAYNO server (threat database + heuristics) and shows the verdict on the toolbar badge.
 const API = "http://127.0.0.1:8765";
 const cache = new Map();          // host+path -> {result, at}
 const TTL = 10 * 60 * 1000;
@@ -33,8 +33,8 @@ function setBadge(tabId, level, score) {
   const [text, color] = BADGE[level] || BADGE.safe;
   chrome.action.setBadgeText({ tabId, text });
   chrome.action.setBadgeBackgroundColor({ tabId, color });
-  chrome.action.setTitle({ tabId, title: level === "offline" ? "Scam Shield: server offline"
-    : `Scam Shield: ${level} (${score}/100)` });
+  chrome.action.setTitle({ tabId, title: level === "offline" ? "SAYNO: server offline"
+    : `SAYNO: ${level} (${score}/100)` });
 }
 
 // Intranet / local development addresses are not rated (they can't be on public blocklists).
@@ -130,8 +130,8 @@ chrome.tabs.onRemoved.addListener(tabId => tabVerdicts.delete(tabId));
 
 // ---- right-click: scan selected text / a link
 chrome.runtime.onInstalled.addListener(details => {
-  chrome.contextMenus.create({ id: "ss-text", title: "Check this text with Scam Shield", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "ss-link", title: "Check this link with Scam Shield", contexts: ["link"] });
+  chrome.contextMenus.create({ id: "ss-text", title: "Check this text with SAYNO", contexts: ["selection"] });
+  chrome.contextMenus.create({ id: "ss-link", title: "Check this link with SAYNO", contexts: ["link"] });
   if (details.reason === "install") chrome.tabs.create({ url: chrome.runtime.getURL("welcome.html") });
 });
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -140,7 +140,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const result = await scan(text);
     chrome.tabs.sendMessage(tab.id, { type: "scanResult", result, text });
   } catch {
-    chrome.tabs.sendMessage(tab.id, { type: "scanResult", error: "Scam Shield server is not running." });
+    chrome.tabs.sendMessage(tab.id, { type: "scanResult", error: "SAYNO server is not running." });
   }
 });
 
@@ -160,7 +160,7 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       if (!ok || !chrome.notifications) return reply(false);
       attachNotificationListeners();
       chrome.notifications.create("ss-test-" + Date.now(), {
-        type: "basic", iconUrl: "icons/128.png", title: "🛡️ Scam Shield is watching",
+        type: "basic", iconUrl: "icons/128.png", title: "🛡️ SAYNO is watching",
         message: "This is how a warning looks. You'll see one when a page isn't secure or looks like a scam.",
         priority: 1,
       }, () => reply(!chrome.runtime.lastError));

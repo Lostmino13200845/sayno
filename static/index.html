@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scam Shield</title>
+<title>SAYNO</title>
 <style>
 :root{
   --bg:#f6f7f9;--card:#fff;--ink:#16181d;--muted:#5d6470;--line:#e2e5ea;--accent:#2457d6;
@@ -62,7 +62,7 @@ td,th{text-align:left;padding:6px 8px;border-top:1px solid var(--line)}
 <body>
 <div class="wrap">
 <header>
-  <div><a href="/" style="color:inherit;text-decoration:none"><h1>🛡️ Scam Shield</h1></a><div class="sub" id="protStatus">Connecting to threat database…</div></div>
+  <div><a href="/" style="color:inherit;text-decoration:none"><h1>🛡️ SAYNO</h1></a><div class="sub" id="protStatus">Connecting to threat database…</div></div>
   <nav>
     <button data-tab="scan" class="on">Scan</button>
     <button data-tab="guide">Protect yourself</button>
@@ -224,7 +224,7 @@ async function loadStatus(){
     $('#protStatus').innerHTML = !p.threats
       ? '⏳ Downloading the global threat database (first start, ~1 min)…'
       : `${live ? '🟢' : '🟠'} Protected · <b>${p.threats.toLocaleString()}</b> known threats · checked ${ago(p.last_check)} · auto-updates every ${Math.round(p.interval_sec/60)} min`;
-  } catch { $('#protStatus').textContent = '🔴 Scam Shield server is not running'; }
+  } catch { $('#protStatus').textContent = '🔴 SAYNO server is not running'; }
 }
 setInterval(loadStatus, 30000);
 

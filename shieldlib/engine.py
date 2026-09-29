@@ -210,7 +210,7 @@ def _history(store, kind, value, add):
     if not row or row["status"] == "dismissed":
         return
     if row["status"] == "confirmed":
-        add(95, "Confirmed scam in the Scam Shield report database", "danger")
+        add(95, "Confirmed scam in the SAYNO report database", "danger")
     elif row["times_seen"] >= 2:
         add(0, f"Flagged as suspicious {row['times_seen']} times before", "info")
 
