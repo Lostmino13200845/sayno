@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="ui/tokens.css">
+<link rel="stylesheet" href="ui/components.css">
+<link rel="stylesheet" href="ui/popup.css">
+</head>
+<body class="pp-root">
+<header class="pp-header">
+  <img src="icons/48.png" alt="">
+  <b>Scam Shield</b>
+  <span class="pp-status" id="srv">…</span>
+</header>
+
+<section class="pp-section">
+  <h3 class="ss-eyebrow">This site</h3>
+  <div id="site" class="ss-muted">Checking…</div>
+</section>
+
+<section class="pp-section">
+  <h3 class="ss-eyebrow">Check a message</h3>
+  <textarea id="txt" class="ss-textarea pp-textarea" placeholder="Paste a suspicious text, e-mail or link — it's checked instantly"></textarea>
+  <div id="out"></div>
+</section>
+
+<section class="pp-section">
+  <h3 class="ss-eyebrow">Card Guard</h3>
+  <div class="pp-toggles">
+    <label class="ss-toggle"><input type="checkbox" id="enabled"><span></span> Block fake pages that ask for my card</label>
+    <label class="ss-toggle"><input type="checkbox" id="newcomerMode"><span></span> New-account mode (extra warnings)</label>
+    <label class="ss-toggle"><input type="checkbox" id="notifyInsecure"><span></span> Notify me on screen when a page isn't secure</label>
+    <div class="ss-muted" id="notifyHint" hidden></div>
+  </div>
+  <details class="pp-banks"><summary>My bank(s) — only these are trusted with my card</summary><div class="pp-bank-list" id="banks"></div></details>
+</section>
+
+<section class="pp-section pp-tip">
+  <b>Remember:</b> your bank will never ask for your PIN, CVV or a one-time code by text, e-mail or phone.
+</section>
+<script src="banks.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

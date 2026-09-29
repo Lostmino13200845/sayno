@@ -1,0 +1,26 @@
+/* GENERATED COPY - edit design/overlay.css and run py tools/sync_design.py */
+/* Source: design/overlay.css — run py tools/sync_design.py after editing. */
+/* In-page UI injected by Card Guard (rendered inside a closed shadow root, so pages can't restyle it).
+   Three components: .ov-veil (full block screen), .ov-toast (gentle reminder), .ov-panel (right-click scan result). */
+* { box-sizing: border-box; font-family: var(--ss-font); }
+
+/* ---- block screen ---- */
+.ov-veil { position: fixed; inset: 0; display: grid; place-items: center; padding: var(--ss-space-4); background: var(--ss-veil); pointer-events: auto; animation: ov-fade var(--ss-duration) var(--ss-ease); }
+.ov-box { width: 100%; max-width: 560px; background: var(--ss-surface); color: var(--ss-ink); border-radius: var(--ss-radius-xl); border-top: 8px solid var(--ss-critical); padding: var(--ss-space-6); box-shadow: var(--ss-shadow-3); animation: ov-rise 260ms var(--ss-ease); }
+.ov-box h1 { margin: 0 0 var(--ss-space-2); font-size: var(--ss-text-xl); line-height: 1.25; color: var(--ss-critical); }
+.ov-box p, .ov-box li { font-size: var(--ss-text-m); line-height: var(--ss-leading); }
+.ov-box ul { padding-left: 20px; }
+.ov-tip { background: var(--ss-medium-soft); border-radius: var(--ss-radius-m); padding: var(--ss-space-3); font-size: var(--ss-text-s) !important; }
+.ov-actions { display: flex; flex-wrap: wrap; gap: var(--ss-space-3); margin-top: var(--ss-space-5); align-items: center; }
+
+/* ---- toast ---- */
+.ov-toast { position: fixed; right: var(--ss-space-4); bottom: var(--ss-space-4); max-width: 380px; background: var(--ss-surface); color: var(--ss-ink); border: 1px solid var(--ss-line); border-left: 6px solid var(--ss-medium); border-radius: var(--ss-radius-l); padding: var(--ss-space-4); box-shadow: var(--ss-shadow-2); pointer-events: auto; font-size: var(--ss-text-s); line-height: var(--ss-leading); animation: ov-rise 260ms var(--ss-ease); }
+
+/* ---- scan result panel ---- */
+.ov-panel { position: fixed; right: var(--ss-space-4); top: var(--ss-space-4); width: 360px; max-width: calc(100vw - 32px); background: var(--ss-surface); color: var(--ss-ink); border: 1px solid var(--ss-line); border-radius: var(--ss-radius-l); padding: var(--ss-space-4); box-shadow: var(--ss-shadow-2); pointer-events: auto; font-size: var(--ss-text-s); line-height: var(--ss-leading); animation: ov-rise 260ms var(--ss-ease); }
+.ov-panel-head { display: flex; align-items: center; gap: var(--ss-space-2); margin-bottom: var(--ss-space-2); }
+.ov-close { margin-left: auto; background: none; border: 0; font-size: 20px; line-height: 1; color: var(--ss-ink-muted); cursor: pointer; }
+
+@keyframes ov-fade { from { opacity: 0; } }
+@keyframes ov-rise { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .ov-veil, .ov-box, .ov-toast, .ov-panel { animation: none; } }

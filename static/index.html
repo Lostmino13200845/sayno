@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scam Shield</title>
+<style>
+:root{
+  --bg:#f6f7f9;--card:#fff;--ink:#16181d;--muted:#5d6470;--line:#e2e5ea;--accent:#2457d6;
+  --safe:#1a8f4c;--low:#6b9e1f;--medium:#c98a00;--high:#d9541e;--critical:#c11b2e;
+  --chip:#eef1f6;color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#111317;--card:#1a1d23;--ink:#e8eaee;--muted:#9aa1ad;--line:#2b2f37;--accent:#7aa2ff;
+  --safe:#3fcf7e;--low:#a3d14a;--medium:#f0b429;--high:#ff7a45;--critical:#ff5468;--chip:#252a33;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+header h1{font-size:22px;margin:0}
+header .sub{color:var(--muted);font-size:13px}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav button{background:none;border:1px solid transparent;color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer;font:inherit}
+nav button.on{background:var(--card);border-color:var(--line);color:var(--ink);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+h2{font-size:16px;margin:0 0 10px}
+h3{font-size:14px;margin:16px 0 6px}
+textarea,input[type=text],input[type=email],input[type=password]{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit}
+textarea{min-height:170px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 18px;font:inherit;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.muted{color:var(--muted);font-size:13px}
+.verdict{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.gauge{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;position:relative}
+.gauge::after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--card)}
+.gauge span{position:relative;z-index:1;font-size:30px;font-weight:700}
+.lvl{display:inline-block;padding:3px 10px;border-radius:99px;color:#fff;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.lvl.safe{background:var(--safe)}.lvl.low{background:var(--low)}.lvl.medium{background:var(--medium)}.lvl.high{background:var(--high)}.lvl.critical{background:var(--critical)}
+ul.f{list-style:none;padding:0;margin:6px 0}
+ul.f li{padding:6px 0 6px 22px;border-top:1px solid var(--line);position:relative;font-size:14px}
+ul.f li::before{content:"";position:absolute;left:4px;top:13px;width:9px;height:9px;border-radius:50%;background:var(--medium)}
+ul.f li.danger::before{background:var(--critical)}ul.f li.info::before{background:var(--muted)}
+ul.f li .w{float:right;color:var(--muted);font-size:12px}
+.item{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px}
+.item .top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.item code{word-break:break-all;font-size:13px}
+.tips li{margin:4px 0}
+.checklist label{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);cursor:pointer}
+.checklist input{margin-top:4px;width:17px;height:17px;flex:none}
+.checklist b{display:block}
+.progress{height:8px;background:var(--chip);border-radius:99px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;background:var(--safe);width:0;transition:width .3s}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{text-align:left;padding:6px 8px;border-top:1px solid var(--line)}
+.ok{color:var(--safe)}.bad{color:var(--critical)}
+.pill{background:var(--chip);border-radius:6px;padding:1px 7px;font-size:12px}
+@media (max-width:600px){.verdict{grid-template-columns:1fr;justify-items:start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><a href="/" style="color:inherit;text-decoration:none"><h1>🛡️ Scam Shield</h1></a><div class="sub" id="protStatus">Connecting to threat database…</div></div>
+  <nav>
+    <button data-tab="scan" class="on">Scan</button>
+    <button data-tab="guide">Protect yourself</button>
+    <button data-tab="pw">Password check</button>
+  </nav>
+</header>
+
+<!-- ============ SCAN ============ -->
+<section id="tab-scan">
+  <div class="card">
+    <h2>Paste a suspicious message, e-mail, link or address</h2>
+    <textarea id="input" placeholder="e.g. URGENT: Your PayPal account has been suspended. Verify your identity within 24 hours: http://paypal-secure-login.xyz/verify"></textarea>
+    <div class="row">
+      <button class="btn" id="scanBtn">Scan</button>
+      <button class="btn ghost" id="clearBtn">Clear</button>
+      <label class="muted"><input type="checkbox" id="online" checked> Use online reputation APIs (if configured)</label>
+    </div>
+  </div>
+
+  <div id="result" hidden>
+    <div class="card verdict">
+      <div class="gauge" id="gauge"><span id="score">0</span></div>
+      <div>
+        <div><span class="lvl" id="level">safe</span> <span class="muted" id="summary"></span></div>
+        <ul class="tips" id="advice"></ul>
+      </div>
+    </div>
+    <div class="card" id="textCard"><h2>Message content</h2><ul class="f" id="textFindings"></ul></div>
+    <div class="card" id="urlCard"><h2>Links</h2><div id="urls"></div></div>
+    <div class="card" id="emailCard"><h2>E-mail addresses</h2><div id="emails"></div></div>
+
+    <div class="card" id="reportCard" hidden>
+      <h2>🚩 Reported automatically</h2>
+      <p id="reportMsg"></p>
+      <details><summary class="muted">Report it to the authorities too</summary><ul id="manualLinks"></ul></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GUIDE ============ -->
+<section id="tab-guide" hidden>
+  <div class="card">
+    <h2>Data-breach prevention checklist</h2>
+    <p class="muted">Tick items as you complete them — your progress is saved in this browser.</p>
+    <div class="progress"><div id="prog"></div></div>
+    <div class="muted" id="progTxt"></div>
+    <div class="checklist" id="checklist"></div>
+  </div>
+  <div class="card">
+    <h2>🚨 If you were hit (clicked, typed a password, paid, or gave a code)</h2>
+    <ol>
+      <li><b>Money involved?</b> Call your bank/card company <u>immediately</u> using the number on the back of your card. Ask them to block the card and dispute the payment.</li>
+      <li><b>Disconnect</b> the affected device from the internet if you installed anything or gave remote access. Uninstall AnyDesk/TeamViewer etc.</li>
+      <li><b>From a different, clean device</b>: change the password of the affected account, then every account that used the same password.</li>
+      <li><b>Sign out all sessions</b> and remove unknown devices (Google, Microsoft, Apple, Facebook all have "sign out everywhere").</li>
+      <li><b>Turn on 2-step verification</b> and check recovery e-mail / phone number weren't changed. Check e-mail forwarding rules.</li>
+      <li><b>Scan the device</b> — Windows Security → Virus &amp; threat protection → Scan options → <i>Microsoft Defender Offline scan</i>.</li>
+      <li><b>Identity data leaked</b> (ID, SSN, date of birth)? Freeze your credit with the credit bureaus and set up fraud alerts.</li>
+      <li><b>Keep evidence</b> (screenshots, the message, transaction IDs) and <b>report</b> to police / your national fraud agency (links appear under a suspicious scan result).</li>
+      <li><b>Watch</b> bank statements and your accounts closely for the next months. Beware of "recovery" scammers who promise to get your money back for a fee.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ PASSWORD ============ -->
+<section id="tab-pw" hidden>
+  <div class="card">
+    <h2>Has my password appeared in a data breach?</h2>
+    <p class="muted">Uses Have I Been Pwned's k-anonymity API: your password is hashed (SHA-1) <b>in this browser</b> and only the first 5 characters of the hash leave your computer. The password itself is never sent anywhere.</p>
+    <div class="row"><input type="password" id="pw" placeholder="Password to check" style="max-width:340px" autocomplete="off"><button class="btn" id="pwBtn">Check</button></div>
+    <p id="pwOut"></p>
+    <p class="muted">To check whether your <b>e-mail address</b> was in a breach, visit <b>haveibeenpwned.com</b> directly.</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LVLCOLOR = {safe:'--safe',low:'--low',medium:'--medium',high:'--high',critical:'--critical'};
+let last = null;
+
+async function api(path, body){
+  const r = await fetch(path, body === undefined ? {} : {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || r.status);
+  return j;
+}
+
+// ---------- tabs
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('section').forEach(s => s.hidden = s.id !== 'tab-' + b.dataset.tab);
+});
+
+// ---------- scan
+function findings(list){
+  if (!list.length) return '<li class="info">No warning signs found</li>';
+  return list.map(f => `<li class="${f.severity}">${esc(f.message)}${f.evidence ? ` <span class="pill">“${esc(f.evidence)}”</span>` : ''}${f.weight ? `<span class="w">+${f.weight}</span>` : ''}</li>`).join('');
+}
+function item(label, r){
+  return `<div class="item"><div class="top"><span class="lvl ${r.level}">${r.level} · ${r.score}</span><code>${esc(label)}</code></div><ul class="f">${findings(r.findings)}</ul></div>`;
+}
+$('#scanBtn').onclick = async () => {
+  const text = $('#input').value.trim();
+  if (!text) return;
+  $('#scanBtn').disabled = true; $('#scanBtn').textContent = 'Scanning…';
+  try {
+    const r = last = await api('/api/scan', {text, online: $('#online').checked});
+    $('#result').hidden = false;
+    const col = getComputedStyle(document.documentElement).getPropertyValue(LVLCOLOR[r.level]);
+    $('#gauge').style.background = `conic-gradient(${col} ${r.score*3.6}deg, var(--chip) 0)`;
+    $('#score').textContent = r.score;
+    $('#level').textContent = r.level; $('#level').className = 'lvl ' + r.level;
+    $('#summary').textContent = `danger score out of 100 · ${r.urls.length} link(s), ${r.emails.length} address(es) checked`;
+    $('#advice').innerHTML = r.advice.map(a => `<li>${esc(a)}</li>`).join('');
+    $('#textFindings').innerHTML = findings(r.text.findings);
+    $('#urlCard').hidden = !r.urls.length;
+    $('#urls').innerHTML = r.urls.map(u => item(u.url, u)).join('');
+    $('#emailCard').hidden = !r.emails.length;
+    $('#emails').innerHTML = r.emails.map(e => item(e.email, e)).join('');
+    $('#reportCard').hidden = !r.manual;
+    $('#reportMsg').innerHTML = r.reported
+      ? `<b>${r.reported} dangerous link(s)</b> from this message are being reported to the global anti-phishing network so they can be blocked and taken down. Nothing else to do.`
+      : 'This message was recorded as suspicious to help protect other users.';
+    $('#manualLinks').innerHTML = (r.manual || []).map(m => `<li><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.name)}</a></li>`).join('');
+    $('#result').scrollIntoView({behavior:'smooth'});
+  } catch (e) { $('#summary').textContent = 'Scan failed: ' + e.message; $('#result').hidden = false; }
+  $('#scanBtn').disabled = false; $('#scanBtn').textContent = 'Scan';
+};
+$('#clearBtn').onclick = () => { $('#input').value = ''; $('#result').hidden = true; };
+// Scan automatically as soon as something is pasted.
+$('#input').addEventListener('paste', () => setTimeout(() => $('#scanBtn').click(), 50));
+
+// ---------- password check (hash stays in browser; only 5-char prefix is sent)
+$('#pwBtn').onclick = async () => {
+  const pw = $('#pw').value; if (!pw) return;
+  const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(pw));
+  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
+  try {
+    const {range} = await api('/api/pwned-range', {prefix: hex.slice(0,5)});
+    const line = range.split('\n').find(l => l.startsWith(hex.slice(5)));
+    const n = line ? parseInt(line.split(':')[1]) : 0;
+    $('#pwOut').innerHTML = n
+      ? `<b class="bad">⚠ This password appeared ${n.toLocaleString()} times in data breaches. Stop using it everywhere and change it now.</b>`
+      : `<b class="ok">✔ Not found in known breaches.</b> <span class="muted">Still: make it long, unique per site, and stored in a password manager.</span>`;
+  } catch (e) { $('#pwOut').textContent = 'Check failed: ' + e.message; }
+  $('#pw').value = '';
+};
+
+// ---------- protection status (aggregate only - the threat list itself stays on the server)
+const ago = t => { if (!t) return 'never'; const s = Math.round(Date.now()/1000 - t);
+  return s < 60 ? 'just now' : s < 3600 ? `${Math.round(s/60)} min ago` : `${Math.round(s/3600)} h ago`; };
+async function loadStatus(){
+  try {
+    const s = await api('/api/status'), p = s.protection;
+    const live = p.last_check && (Date.now()/1000 - p.last_check) < p.interval_sec * 3;
+    $('#protStatus').innerHTML = !p.threats
+      ? '⏳ Downloading the global threat database (first start, ~1 min)…'
+      : `${live ? '🟢' : '🟠'} Protected · <b>${p.threats.toLocaleString()}</b> known threats · checked ${ago(p.last_check)} · auto-updates every ${Math.round(p.interval_sec/60)} min`;
+  } catch { $('#protStatus').textContent = '🔴 Scam Shield server is not running'; }
+}
+setInterval(loadStatus, 30000);
+
+
+// ---------- prevention checklist
+const GUIDE = [
+ ['Passwords & accounts', [
+  ['Use a password manager', 'Bitwarden, 1Password, KeePassXC or your browser\'s manager. Let it generate every password.'],
+  ['One unique password per site', 'When one site is breached, reused passwords let attackers into all your other accounts ("credential stuffing").'],
+  ['Turn on 2-step verification everywhere', 'Prefer an authenticator app, passkey or security key over SMS codes. Start with e-mail, bank and social media.'],
+  ['Switch to passkeys where offered', 'Google, Microsoft, Apple, Amazon, PayPal support them — passkeys cannot be phished.'],
+  ['Secure your e-mail account first', 'Your inbox resets all other passwords. Strong password + 2FA + check recovery phone/e-mail and forwarding rules.'],
+  ['Check your e-mail on haveibeenpwned.com', 'Change passwords for any breached service and subscribe to breach notifications.'],
+ ]],
+ ['Messages, links & calls', [
+  ['Never share one-time codes', 'No bank, company or "support agent" will ever ask for a code sent to you. Anyone who asks is a scammer.'],
+  ['Go to the official site yourself', 'Don\'t use links or phone numbers in unexpected messages — type the address or use the official app.'],
+  ['Check the real link before clicking', 'Hover (desktop) or long-press (phone). Look at the domain just before the first single "/".'],
+  ['Don\'t open unexpected attachments', 'Especially .zip, .html, .iso, .exe, Office files asking to "enable content", and QR codes in e-mails.'],
+  ['Be suspicious of urgency and secrecy', 'Pressure to act "now", threats, prizes or "don\'t tell anyone" are the core scam tactics.'],
+  ['Verify money requests by calling back', 'For family emergencies, invoices with new bank details, or a "boss" asking for gift cards — call a known number.'],
+ ]],
+ ['Devices', [
+  ['Turn on automatic updates', 'Windows Update, browser, phone OS and apps. Most breaches exploit already-patched holes.'],
+  ['Keep antivirus on', 'Microsoft Defender is built in — make sure real-time protection and "SmartScreen" are enabled.'],
+  ['Encrypt your devices', 'Windows: BitLocker / Device Encryption. Phones: set a PIN (encryption is automatic).'],
+  ['Lock screens & strong device PIN', 'Auto-lock after a short time; 6+ digit PIN or biometrics.'],
+  ['Install apps only from official stores', 'Remove apps and browser extensions you don\'t use; review app permissions.'],
+  ['Never give remote access to strangers', 'Uninstall AnyDesk/TeamViewer if you didn\'t install them for a trusted purpose.'],
+ ]],
+ ['Network', [
+  ['Change your router\'s admin password', 'And update its firmware. Use WPA2/WPA3 Wi-Fi encryption with a strong Wi-Fi password.'],
+  ['Avoid banking on public Wi-Fi', 'Use mobile data or a reputable VPN on public networks.'],
+ ]],
+ ['Money & identity', [
+  ['Enable bank & card transaction alerts', 'You\'ll notice fraud within minutes instead of weeks.'],
+  ['Add a SIM-swap PIN with your mobile carrier', 'Stops criminals from moving your number to their SIM and receiving your codes.'],
+  ['Consider a credit freeze', 'Free in many countries; prevents new credit being opened in your name.'],
+  ['Share less personal data', 'Limit birthdate, address, phone and ID photos online; use e-mail aliases for sign-ups.'],
+ ]],
+ ['Backups', [
+  ['Back up important files (3-2-1 rule)', '3 copies, 2 different media, 1 offline/off-site — protects against ransomware and theft.'],
+  ['Test restoring a backup', 'A backup you\'ve never restored is a hope, not a backup.'],
+ ]],
+];
+function renderGuide(){
+  let done = {}; try { done = JSON.parse(localStorage.getItem('ss-guide') || '{}'); } catch {}
+  let html = '', total = 0;
+  GUIDE.forEach(([sec, items]) => {
+    html += `<h3>${esc(sec)}</h3>`;
+    items.forEach(([t, d]) => { total++; const id = sec + '|' + t;
+      html += `<label><input type="checkbox" data-id="${esc(id)}" ${done[id] ? 'checked' : ''}><span><b>${esc(t)}</b><span class="muted">${esc(d)}</span></span></label>`; });
+  });
+  $('#checklist').innerHTML = html;
+  const update = () => {
+    const boxes = [...document.querySelectorAll('#checklist input')];
+    const n = boxes.filter(b => b.checked).length;
+    $('#prog').style.width = (100 * n / total) + '%';
+    $('#progTxt').textContent = `${n} of ${total} done`;
+  };
+  document.querySelectorAll('#checklist input').forEach(b => b.onchange = () => {
+    done[b.dataset.id] = b.checked; try { localStorage.setItem('ss-guide', JSON.stringify(done)); } catch {}
+    update();
+  });
+  update();
+}
+renderGuide();
+loadStatus().catch(() => {});
+</script>
+</body>
+</html>

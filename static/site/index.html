@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scam Shield — protection for new bank accounts</title>
+<meta name="description" content="Scam Shield is a free browser extension that blocks fake bank pages before you type your card, checks suspicious messages, and reports scams so they get taken down.">
+<link rel="icon" href="/assets/shield-48.png">
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/components.css">
+<link rel="stylesheet" href="/assets/popup.css">
+<link rel="stylesheet" href="/assets/overlay.css">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav-brand" href="#top"><img src="/assets/shield-48.png" alt=""> Scam Shield</a>
+  <nav class="nav-links" aria-label="Main">
+    <a href="#how">How it works</a>
+    <a href="#tutorial">Tutorial</a>
+    <a href="#options">Options</a>
+    <a href="#install">Install</a>
+    <a href="/app">Web scanner</a>
+  </nav>
+  <a class="ss-btn ss-btn--s nav-cta" href="#install">Get it free</a>
+</header>
+
+<main id="top">
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="ss-eyebrow">For new bank customers · newcomers · international students</p>
+    <h1>Your new bank account is a target.<br><span>We stop the scam before you type your card.</span></h1>
+    <p class="hero-lead">Scammers buy lists of new and high-balance accounts, then send fake “activate your card” or “pending e-Transfer” messages. Scam Shield checks every site against global threat lists and blocks fake bank pages the moment they ask for your card.</p>
+    <div class="hero-actions">
+      <a class="ss-btn" href="#tutorial">Try the live tutorial</a>
+      <a class="ss-btn ss-btn--ghost" href="#install">Install the extension</a>
+    </div>
+    <dl class="hero-stats">
+      <div><dt id="statThreats">700,000+</dt><dd>known scam &amp; malware sites</dd></div>
+      <div><dt>5 min</dt><dd>between threat-list updates</dd></div>
+      <div><dt>0</dt><dd>card numbers ever leave your device</dd></div>
+    </dl>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="phone">
+      <div class="phone-msg">RBC: Your new debit card has been temporarily locked. Activate within 24 hours at rbc-card-activation.help</div>
+      <div class="phone-verdict"><span class="ss-level ss-level--high">high · 72</span> Fake bank message</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="band" id="how">
+  <p class="ss-eyebrow">How it works</p>
+  <h2>Three layers between you and a scammer</h2>
+  <div class="grid-3">
+    <article class="ss-card feature">
+      <div class="feature-icon">🔎</div>
+      <h3>Checks every site</h3>
+      <p>Every page you open is compared with 700,000+ known scam sites from global security teams, plus 50+ look-alike tricks like <code>rbc-card-activation.help</code>. The shield on your toolbar changes colour.</p>
+    </article>
+    <article class="ss-card feature">
+      <div class="feature-icon">💳</div>
+      <h3>Card Guard</h3>
+      <p>If a page asks for your card <b>PIN</b>, or pretends to be your bank while asking for card details, Card Guard blocks it before you type. Your card number is never sent anywhere.</p>
+    </article>
+    <article class="ss-card feature">
+      <div class="feature-icon">🚩</div>
+      <h3>Reports it for everyone</h3>
+      <p>Dangerous links are reported automatically to the security network that browsers and antivirus products use, so the scam gets blocked and taken down for other people too.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TUTORIAL ================= -->
+<section class="band band--tint" id="tutorial">
+  <p class="ss-eyebrow">Live tutorial · 2 minutes</p>
+  <h2>Learn it by doing — click where the ring pulses</h2>
+  <p class="section-lead">This is a practice browser. Nothing here is real, but the scam checks are live, using the same engine as the extension.</p>
+
+  <div class="tut">
+    <aside class="tut-guide ss-card" aria-live="polite">
+      <div class="tut-progress"><div id="tProg"></div></div>
+      <p class="ss-eyebrow" id="tCount">Step 1 of 11</p>
+      <h3 id="tTitle">Find the shield</h3>
+      <div id="tText" class="tut-text"></div>
+      <div class="tut-actions">
+        <button class="ss-btn ss-btn--ghost ss-btn--s" id="tBack">Back</button>
+        <button class="ss-btn ss-btn--ghost ss-btn--s" id="tDoIt">Do it for me</button>
+        <button class="ss-btn ss-btn--s" id="tNext">Next</button>
+      </div>
+      <ol class="tut-steps" id="tSteps"></ol>
+    </aside>
+
+    <div class="mock" id="mock">
+      <div class="mock-bar">
+        <span class="mock-dots"><i></i><i></i><i></i></span>
+        <button class="mock-nav" id="mHome" title="Back to messages" aria-label="Back to messages">←</button>
+        <div class="mock-url" id="mUrl">messages.example.com</div>
+        <button class="mock-ext" id="mExt" aria-label="Open Scam Shield">
+          <img src="/assets/shield-48.png" alt=""><span class="ss-badge" id="mBadge" hidden></span>
+        </button>
+      </div>
+
+      <div class="mock-page" id="mPage">
+        <!-- inbox view -->
+        <div class="view" data-view="inbox">
+          <p class="mock-hint">Messages · first week after opening a new account</p>
+          <div class="msg" id="msgRbc" tabindex="0">
+            <div class="msg-from">+1 (604) 555-0199 · SMS</div>
+            RBC: Your new debit card is not yet activated and has been temporarily locked. Activate your card within 24 hours at
+            <button class="msg-link" id="rbcLink">https://rbc-card-activation.help/secure</button> to avoid suspension.
+          </div>
+          <div class="msg"><div class="msg-from">Mom · SMS</div>Hi sweetie, dinner on Sunday at 6? Dad is making lasagna 🙂</div>
+          <div class="msg"><div class="msg-from">Cascade Books · e-mail</div>Your cart is waiting! <button class="msg-link msg-link--ok" id="goShop">cascadebooks.example/checkout</button></div>
+        </div>
+
+        <!-- fake bank view -->
+        <div class="view" data-view="bank" hidden>
+          <div class="fb-top">🏔 RBC Royal Bank</div>
+          <div class="fb-form">
+            <div class="fb-alert"><b>Security alert:</b> your new debit card is <b>suspended</b>. Verify within 24 hours.</div>
+            <label>Card number<input disabled placeholder="1234 5678 9012 3456"></label>
+            <div class="fb-row"><label>Expiry<input disabled placeholder="MM/YY"></label><label>CVV<input disabled placeholder="123"></label></div>
+            <label>Card PIN<input disabled placeholder="••••"></label>
+          </div>
+          <!-- Card Guard block screen (same design as the extension: .ov-*) -->
+          <div class="mock-veil" id="mVeil" hidden>
+            <div class="ov-box">
+              <h1>🛡️ Stop: this page wants your card details</h1>
+              <p>Scam Shield blocked this page on <b>rbc-card-activation.help</b> because:</p>
+              <ul>
+                <li>It asks for your card <b>PIN</b>. No bank or shop ever asks for your PIN on a website.</li>
+                <li>It uses <b>bank-style pressure</b> (“suspended”, “verify”) but this is <b>not your bank's website</b>.</li>
+                <li>Scam Shield rates this site <b id="veilLevel">MEDIUM</b>.</li>
+              </ul>
+              <p class="ov-tip"><b>Your bank will never</b> ask for your full card number, CVV, PIN or one-time code on a page you reached from a link.</p>
+              <div class="ov-actions">
+                <button class="ss-btn ss-btn--danger" id="ovLeave">Get me out of here</button>
+                <button class="ss-btn ss-btn--link" id="ovStay">I understand the risk, continue</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- normal shop view -->
+        <div class="view" data-view="shop" hidden>
+          <div class="shop-top">📚 Cascade Books</div>
+          <div class="shop-form">
+            <p><b>Order total: $34.98</b></p>
+            <label>Card number<input id="shopCard" readonly placeholder="Click to type a test card"></label>
+            <div class="fb-row"><label>Expiry<input readonly placeholder="MM/YY"></label><label>CVC<input readonly placeholder="CVC"></label></div>
+          </div>
+          <div class="ov-toast mock-toast" id="mToast" hidden>🛡️ You're entering a card number on <b>cascadebooks.example</b>. Make sure you opened this site yourself, not from a message link.</div>
+        </div>
+      </div>
+
+      <!-- extension popup replica (same markup/classes as extension/popup.html) -->
+      <div class="mock-popup" id="mPopup" hidden>
+        <header class="pp-header"><img src="/assets/shield-48.png" alt=""><b>Scam Shield</b><span class="pp-status" id="pStatus">🟢 threats</span></header>
+        <section class="pp-section"><h3 class="ss-eyebrow">This site</h3><div id="pSite"></div></section>
+        <section class="pp-section">
+          <h3 class="ss-eyebrow">Check a message</h3>
+          <textarea class="ss-textarea pp-textarea" id="pTxt" placeholder="Paste a suspicious text, e-mail or link" readonly></textarea>
+          <div id="pOut"></div>
+        </section>
+        <section class="pp-section">
+          <h3 class="ss-eyebrow">Card Guard</h3>
+          <div class="pp-toggles">
+            <label class="ss-toggle" id="pGuard"><input type="checkbox" checked><span></span> Block fake pages that ask for my card</label>
+            <label class="ss-toggle" id="pNewcomer"><input type="checkbox" checked><span></span> New-account mode (extra warnings)</label>
+          </div>
+          <details class="pp-banks" id="pBanks"><summary id="pBanksSum">My bank(s) — only these are trusted with my card</summary>
+            <div class="pp-bank-list">
+              <label id="pBankRbc"><input type="checkbox"> RBC Royal Bank</label><label><input type="checkbox"> TD Canada Trust</label>
+              <label><input type="checkbox"> BMO</label><label><input type="checkbox"> Scotiabank</label>
+              <label><input type="checkbox"> CIBC</label><label><input type="checkbox"> Vancity</label>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <!-- right-click menu replica -->
+      <div class="mock-ctx" id="mCtx" hidden>
+        <div class="ctx-item ctx-muted">Copy</div>
+        <div class="ctx-item ctx-muted">Search the web</div>
+        <button class="ctx-item" id="ctxCheck"><img src="/assets/shield-48.png" alt=""> Check this text with Scam Shield</button>
+      </div>
+
+      <!-- right-click result panel replica -->
+      <div class="ov-panel mock-panel" id="mPanel" hidden></div>
+
+      <!-- "click here" guide -->
+      <div class="hotspot" id="hot" hidden><span class="hotspot-label" id="hotLabel">Click here</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OPTIONS ================= -->
+<section class="band" id="options">
+  <p class="ss-eyebrow">Every option explained</p>
+  <h2>What each setting does</h2>
+  <div class="grid-2 options">
+    <article class="ss-card opt">
+      <h3><label class="ss-toggle"><input type="checkbox" checked disabled><span></span></label> Block fake pages that ask for my card</h3>
+      <p><b>What it does:</b> Card Guard. It watches for card number, CVV, expiry, PIN and SIN fields, and for card numbers being typed. It blocks the page if it asks for a PIN, pretends to be a bank on a non-bank site, is rated risky, or isn't encrypted.</p>
+      <p class="opt-meta"><span>Default: <b>on</b></span><span>Turn off: only if a trusted site is wrongly blocked (tell us!)</span></p>
+    </article>
+    <article class="ss-card opt">
+      <h3><label class="ss-toggle"><input type="checkbox" checked disabled><span></span></label> New-account mode</h3>
+      <p><b>What it does:</b> adds gentle reminders whenever you type a card anywhere, and stricter checks on pages that talk about banking. Made for your first months with a new account, or when you hold a large balance.</p>
+      <p class="opt-meta"><span>Default: <b>on</b></span><span>Turn off: once you know your bank's real messages well</span></p>
+    </article>
+    <article class="ss-card opt">
+      <h3><label class="ss-toggle"><input type="checkbox" checked disabled><span></span></label> Notify me on screen when a page isn't secure</h3>
+      <p><b>What it does:</b> pops up a notification on your screen when a page has <b>no encryption</b> (http), when Scam Shield rates it <b>risky</b>, or when you're about to type a <b>password or card number</b> on an unencrypted page. Buttons let you leave the page in one click.</p>
+      <p class="opt-meta"><span>Asks your permission first (on install, or when you switch it on)</span><span>At most one alert per site every 30 min</span></p>
+    </article>
+    <article class="ss-card opt">
+      <h3>🏦 My bank(s)</h3>
+      <p><b>What it does:</b> tells Scam Shield which bank websites are really yours. Only those, plus big payment pages like Stripe or PayPal, are trusted with your card. Look-alikes such as <code>rbc-secure-login.xyz</code> are not.</p>
+      <p class="opt-meta"><span>Default: all major Canadian banks trusted</span><span>Tip: tick only your own bank</span></p>
+    </article>
+    <article class="ss-card opt">
+      <h3>📋 Check a message</h3>
+      <p><b>What it does:</b> paste any text, e-mail or link into the popup to get a danger score from 0 to 100 and the reasons behind it. Pasting checks it instantly, with no button needed.</p>
+      <p class="opt-meta"><span>Where: toolbar shield → popup</span><span>Also: right-click selected text or a link</span></p>
+    </article>
+    <article class="ss-card opt">
+      <h3>🟢 Toolbar badge</h3>
+      <p><b>What it does:</b> the shield shows how risky the current site is. No badge means nothing was found; <span class="ss-badge ss-badge--medium">!</span> means be careful; <span class="ss-badge ss-badge--high">!!</span> means high risk; <span class="ss-badge ss-badge--critical">✖</span> means a known scam; <span class="ss-badge">off</span> means the server can't be reached.</p>
+      <p class="opt-meta"><span>Always on</span></p>
+    </article>
+    <article class="ss-card opt">
+      <h3>🚩 Automatic reporting</h3>
+      <p><b>What it does:</b> when a link is clearly dangerous, Scam Shield sends it (only the link, never your personal data) to Netcraft's takedown network, so browsers and antivirus products block it for everyone.</p>
+      <p class="opt-meta"><span>Default: <b>on</b></span><span>Never reported: your card data, your messages, local addresses</span></p>
+    </article>
+  </div>
+</section>
+
+<!-- ================= INSTALL ================= -->
+<section class="band band--tint" id="install">
+  <p class="ss-eyebrow">Install</p>
+  <h2>Up and running in 3 steps</h2>
+  <ol class="install">
+    <li class="ss-card"><span class="install-n">1</span><div><h3>Start Scam Shield</h3><p>Double-click <code>start.bat</code> in the Scam Shield folder. Keep that window open.</p></div></li>
+    <li class="ss-card"><span class="install-n">2</span><div><h3>Add the extension</h3><p>Open <code>edge://extensions</code> or <code>chrome://extensions</code>, turn on <b>Developer mode</b>, click <b>Load unpacked</b> and choose the <code>extension</code> folder.</p></div></li>
+    <li class="ss-card"><span class="install-n">3</span><div><h3>Pin the shield &amp; pick your bank</h3><p>Click the puzzle icon → pin <b>Scam Shield</b>. Open it and tick your bank under <b>My bank(s)</b>.</p></div></li>
+  </ol>
+  <p class="section-lead">No extension? Use the <a href="/app">web scanner</a> to check any message, and the password breach check.</p>
+</section>
+
+<!-- ================= TIPS ================= -->
+<section class="band" id="tips">
+  <p class="ss-eyebrow">Stay safe</p>
+  <h2>Your bank will never…</h2>
+  <div class="grid-3 tips">
+    <div class="tip">ask for your <b>PIN, CVV or one-time code</b> by text, e-mail or phone</div>
+    <div class="tip">send a link asking you to <b>“activate”</b> or <b>“unlock”</b> your card</div>
+    <div class="tip">ask you to <b>deposit an e-Transfer</b> through a link and your card details</div>
+    <div class="tip">pressure you to act <b>within hours</b> or lose your account</div>
+    <div class="tip">ask you to move money to a <b>“safe account”</b></div>
+    <div class="tip">be offended if you hang up and <b>call the number on your card</b></div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <span><img src="/assets/shield-48.png" alt=""> Scam Shield · SFU Hackathon project</span>
+  <span><a href="/app">Web scanner</a> · <a href="/design">Design system</a></span>
+</footer>
+
+<script src="/assets/tutorial.js"></script>
+</body>
+</html>

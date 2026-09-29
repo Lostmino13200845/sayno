@@ -1,0 +1,78 @@
+/* GENERATED COPY - edit design/components.css and run py tools/sync_design.py */
+/* =====================================================================
+   Scam Shield shared components. Built only from tokens.css variables.
+   Used by: website, scanner app, extension popup, design gallery.
+   Edit here, then run:  py tools/sync_design.py
+   ===================================================================== */
+
+/* ---- the hidden attribute must always win over component display rules ---- */
+[hidden] { display: none !important; }
+
+/* ---- buttons ---- */
+.ss-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--ss-space-2);
+  font: var(--ss-weight-bold) var(--ss-text-m)/1 var(--ss-font);
+  padding: 11px 18px; border-radius: var(--ss-radius-m); border: 1px solid transparent;
+  background: var(--ss-brand-600); color: var(--ss-on-brand); cursor: pointer; text-decoration: none;
+  transition: background var(--ss-duration) var(--ss-ease), transform var(--ss-duration) var(--ss-ease);
+}
+.ss-btn:hover { background: var(--ss-brand-700); }
+.ss-btn:active { transform: translateY(1px); }
+.ss-btn:focus-visible { outline: none; box-shadow: var(--ss-focus-ring); }
+.ss-btn:disabled { opacity: .5; cursor: default; }
+.ss-btn--ghost { background: transparent; color: var(--ss-ink); border-color: var(--ss-line); }
+.ss-btn--ghost:hover { background: var(--ss-surface-2); }
+.ss-btn--danger { background: var(--ss-critical); color: #fff; }
+.ss-btn--danger:hover { background: var(--ss-critical); filter: brightness(.92); }
+.ss-btn--link { background: none; color: var(--ss-ink-muted); padding: 11px 4px; text-decoration: underline; font-weight: var(--ss-weight-regular); }
+.ss-btn--link:hover { background: none; color: var(--ss-ink); }
+.ss-btn--s { padding: 7px 12px; font-size: var(--ss-text-s); }
+
+/* ---- risk level chip ---- */
+.ss-level {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; padding: 3px 10px; border-radius: var(--ss-radius-pill);
+  font: var(--ss-weight-bold) var(--ss-text-xs)/1.4 var(--ss-font); text-transform: uppercase; letter-spacing: .04em;
+  color: #fff; background: var(--ss-offline);
+}
+.ss-level--safe { background: var(--ss-safe); }
+.ss-level--low { background: var(--ss-low); }
+.ss-level--medium { background: var(--ss-medium); }
+.ss-level--high { background: var(--ss-high); }
+.ss-level--critical { background: var(--ss-critical); }
+
+/* ---- card ---- */
+.ss-card { background: var(--ss-surface); border: 1px solid var(--ss-line); border-radius: var(--ss-radius-l); padding: var(--ss-space-5); box-shadow: var(--ss-shadow-1); }
+
+/* ---- form controls ---- */
+.ss-input, .ss-textarea {
+  width: 100%; box-sizing: border-box; font: var(--ss-text-m)/1.45 var(--ss-font); color: var(--ss-ink);
+  background: var(--ss-surface-2); border: 1px solid var(--ss-line); border-radius: var(--ss-radius-m); padding: 10px 12px;
+}
+.ss-textarea { resize: vertical; min-height: 80px; }
+.ss-input:focus, .ss-textarea:focus { outline: none; border-color: var(--ss-brand-500); box-shadow: var(--ss-focus-ring); }
+
+/* ---- toggle switch:  <label class="ss-toggle"><input type="checkbox"><span></span> Text</label> ---- */
+.ss-toggle { display: flex; align-items: center; gap: var(--ss-space-3); cursor: pointer; font: var(--ss-text-s)/1.4 var(--ss-font); color: var(--ss-ink); }
+.ss-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.ss-toggle > span { flex: none; width: 36px; height: 20px; border-radius: var(--ss-radius-pill); background: var(--ss-line); position: relative; transition: background var(--ss-duration) var(--ss-ease); }
+.ss-toggle > span::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: var(--ss-shadow-1); transition: transform var(--ss-duration) var(--ss-ease); }
+.ss-toggle input:checked + span { background: var(--ss-brand-600); }
+.ss-toggle input:checked + span::after { transform: translateX(16px); }
+.ss-toggle input:focus-visible + span { box-shadow: var(--ss-focus-ring); }
+
+/* ---- findings list ---- */
+.ss-findings { list-style: none; margin: var(--ss-space-2) 0; padding: 0; }
+.ss-findings li { position: relative; padding: 5px 0 5px 18px; font: var(--ss-text-s)/1.45 var(--ss-font); color: var(--ss-ink); border-top: 1px solid var(--ss-line); }
+.ss-findings li:first-child { border-top: 0; }
+.ss-findings li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 8px; height: 8px; border-radius: 50%; background: var(--ss-medium); }
+.ss-findings li.is-danger::before { background: var(--ss-critical); }
+.ss-findings li.is-ok::before { background: var(--ss-safe); }
+
+/* ---- toolbar badge (mirrors the browser's extension badge) ---- */
+.ss-badge { display: inline-grid; place-items: center; min-width: 18px; height: 16px; padding: 0 4px; border-radius: 4px; font: 700 10px/1 var(--ss-font); color: #fff; background: var(--ss-offline); }
+.ss-badge--safe { background: var(--ss-safe); } .ss-badge--medium { background: var(--ss-medium); }
+.ss-badge--high { background: var(--ss-high); } .ss-badge--critical { background: var(--ss-critical); }
+
+/* ---- utility ---- */
+.ss-muted { color: var(--ss-ink-muted); }
+.ss-eyebrow { font: var(--ss-weight-bold) var(--ss-text-xs)/1.4 var(--ss-font); text-transform: uppercase; letter-spacing: .08em; color: var(--ss-ink-muted); }

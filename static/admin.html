@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Scam Shield · Back office</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#16181d;--muted:#5d6470;--line:#e2e5ea;--accent:#2457d6;--chip:#eef1f6;
+  --safe:#1a8f4c;--low:#6b9e1f;--medium:#c98a00;--high:#d9541e;--critical:#c11b2e;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#111317;--card:#1a1d23;--ink:#e8eaee;--muted:#9aa1ad;--line:#2b2f37;--accent:#7aa2ff;--chip:#252a33;
+  --safe:#3fcf7e;--low:#a3d14a;--medium:#f0b429;--high:#ff7a45;--critical:#ff5468;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:15px;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn,select{background:none;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer;text-decoration:none}
+.muted{color:var(--muted)}.ok{color:var(--safe)}.bad{color:var(--critical)}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;min-width:140px}
+.stat b{display:block;font-size:22px}
+.lvl{display:inline-block;padding:2px 8px;border-radius:99px;color:#fff;font-weight:700;font-size:12px}
+.lvl.safe{background:var(--safe)}.lvl.low{background:var(--low)}.lvl.medium{background:var(--medium)}.lvl.high{background:var(--high)}.lvl.critical{background:var(--critical)}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:7px 8px;border-top:1px solid var(--line);vertical-align:top}
+.pill{background:var(--chip);border-radius:6px;padding:1px 7px;font-size:12px}
+code{word-break:break-all}
+.warn{border-left:4px solid var(--medium)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🛡️ Scam Shield · Back office</h1>
+  <div class="muted">Private page — suspicious items collected from user scans and the automatic reporting log.</div>
+  <div id="warn"></div>
+  <div class="stats" id="stats"></div>
+
+  <div class="card">
+    <h2>Collected items</h2>
+    <div class="row">
+      <select id="fStatus"><option value="">All statuses</option><option value="auto">Auto-logged</option><option value="confirmed">Confirmed</option><option value="dismissed">Dismissed</option></select>
+      <select id="fKind"><option value="">All types</option><option value="url">Links</option><option value="email">E-mail addresses</option><option value="text">Messages</option></select>
+      <a class="btn" id="exportBtn" style="margin-left:auto">Export JSON</a>
+    </div>
+    <div class="scroll"><table id="items"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Automatic reporting log</h2>
+    <div class="scroll"><table id="history"></table></div>
+  </div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TOKEN = new URLSearchParams(location.search).get('token') || '';
+const ago = t => { const s = Math.round(Date.now()/1000 - t);
+  return s < 60 ? 'just now' : s < 3600 ? `${Math.round(s/60)} min ago` : s < 86400 ? `${Math.round(s/3600)} h ago` : `${Math.round(s/86400)} d ago`; };
+async function api(path, body){
+  const r = await fetch(path, {method: body ? 'POST' : 'GET', headers: {'X-Admin-Token': TOKEN, 'Content-Type': 'application/json'},
+                              body: body ? JSON.stringify(body) : undefined});
+  if (!r.ok) throw new Error((await r.json()).error || r.status);
+  return r.json();
+}
+async function load(){
+  const qs = new URLSearchParams({status: $('#fStatus').value, kind: $('#fKind').value});
+  $('#exportBtn').href = '/api/admin/export?' + qs + '&token=' + encodeURIComponent(TOKEN);
+  const d = await api('/api/admin/items?' + qs);
+  const c = d.counts, sent = d.history.filter(h => h.ok).length, failed = d.history.filter(h => !h.ok).length;
+  $('#stats').innerHTML = [['Auto-logged', c.auto||0], ['Confirmed', c.confirmed||0], ['Dismissed', c.dismissed||0],
+    ['Reports sent', sent], ['Report failures', failed]].map(([k,v]) => `<div class="stat"><span class="muted">${k}</span><b>${v}</b></div>`).join('');
+  $('#warn').innerHTML = d.reporter_email_set ? '' :
+    '<div class="card warn"><b>Automatic reporting is paused.</b> Netcraft requires a reporter e-mail: set <code>reporter_email</code> in config.json and restart the server. Links are queued until then.</div>';
+  $('#items').innerHTML = d.items.length
+    ? '<tr><th>Risk</th><th>Item</th><th>Seen</th><th>Last seen</th><th>Status</th><th>Reported to</th><th></th></tr>' + d.items.map(r => `<tr>
+        <td><span class="lvl ${r.level}">${r.max_score}</span></td>
+        <td><span class="pill">${r.kind}</span> <code>${esc(r.kind === 'text' ? r.display.slice(0, 200) + (r.display.length > 200 ? '…' : '') : r.display)}</code>
+            <div class="muted">${esc(r.reasons.slice(0,4).join(' · '))}</div></td>
+        <td>${r.times_seen}×</td><td class="muted">${ago(r.last_seen)}</td><td>${r.status}</td>
+        <td>${r.reported_to.length ? `<span class="ok">${esc(r.reported_to.join(', '))}</span>` : '<span class="muted">—</span>'}</td>
+        <td style="white-space:nowrap">${r.status !== 'confirmed' ? `<button class="btn" data-id="${r.id}" data-s="confirmed">Confirm</button>` : ''}
+          ${r.status !== 'dismissed' ? `<button class="btn" data-id="${r.id}" data-s="dismissed">Dismiss</button>` : ''}</td></tr>`).join('')
+    : '<tr><td class="muted">Nothing collected yet.</td></tr>';
+  document.querySelectorAll('#items button').forEach(b => b.onclick = async () => {
+    await api('/api/admin/status', {id: +b.dataset.id, status: b.dataset.s}); load();
+  });
+  $('#history').innerHTML = d.history.length
+    ? '<tr><th>When</th><th>Service</th><th>Link</th><th>Result</th></tr>' + d.history.map(h => `<tr>
+        <td class="muted">${ago(h.sent_at)}</td><td>${esc(h.service)}</td><td><code>${esc(h.display)}</code></td>
+        <td class="${h.ok ? 'ok' : 'bad'}">${h.ok ? '✔' : '✖'} ${esc(h.detail)}</td></tr>`).join('')
+    : '<tr><td class="muted">No reports sent yet.</td></tr>';
+}
+$('#fStatus').onchange = $('#fKind').onchange = load;
+load().catch(e => document.body.innerHTML = `<p style="padding:24px">${esc(e.message)}</p>`);
+setInterval(() => load().catch(() => {}), 30000);
+</script>
+</body>
+</html>

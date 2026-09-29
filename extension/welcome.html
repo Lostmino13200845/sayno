@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Welcome to Scam Shield</title>
+<link rel="stylesheet" href="ui/tokens.css">
+<link rel="stylesheet" href="ui/components.css">
+<style>
+body{margin:0;background:var(--ss-bg);color:var(--ss-ink);font:16px/var(--ss-leading) var(--ss-font)}
+.wrap{max-width:720px;margin:0 auto;padding:var(--ss-space-7) var(--ss-space-4)}
+.ss-card{margin-top:var(--ss-space-4)} .perm{border:2px solid var(--ss-brand-600)} .perm-actions{display:flex;gap:10px;flex-wrap:wrap} h1{margin:0} h2{font-size:var(--ss-text-l);margin:0 0 var(--ss-space-2)} li{margin:6px 0}
+</style>
+</head>
+<body><div class="wrap">
+<h1>🛡️ You're protected</h1>
+<p class="ss-muted">Scam Shield checks every site you open against 700,000+ known scam and malware sites, updated every 5 minutes, and blocks fake pages that try to steal your card.</p>
+<div class="ss-card perm" id="permCard">
+  <h2>First: allow on-screen warnings</h2>
+  <p>Scam Shield can pop up a notification on your screen when a page <b>isn't secure</b> (no encryption), looks like a <b>scam</b>, or when you're about to type a password or card number where you shouldn't.</p>
+  <p class="ss-muted">Your browser will ask you to confirm. You can turn this off any time in the Scam Shield popup.</p>
+  <p class="perm-actions"><button class="ss-btn" id="allowBtn">Allow notifications</button>
+  <button class="ss-btn ss-btn--ghost" id="testBtn" hidden>Send a test warning</button></p>
+  <p id="permMsg" role="status"></p>
+</div>
+<div class="ss-card">
+  <h2>1. Tell us your bank</h2>
+  <p>Click the Scam Shield icon in your toolbar → <b>My bank(s)</b>. Only your bank's real website will be trusted with your card; look-alikes get blocked.</p>
+</div>
+<div class="ss-card">
+  <h2>2. New account? You're a target — here's why</h2>
+  <p>Scammers buy lists of <b>new customers and high-balance accounts</b> from data leaks. Expect fake "activate your new card", "verify your account" or "pending e-Transfer" messages in your first months.</p>
+  <ul>
+    <li>Your bank will <b>never</b> ask for your PIN, CVV, full card number, or a one-time code by text, e-mail or phone.</li>
+    <li>Never click links in messages about your account — open your bank's app or type its address.</li>
+    <li>Turn on transaction alerts and 2-step verification in your banking app today.</li>
+    <li>If someone calls "from your bank", hang up and call the number on the back of your card.</li>
+  </ul>
+</div>
+<div class="ss-card">
+  <h2>3. Check anything suspicious</h2>
+  <p>Paste a message into the Scam Shield popup, or select text / right-click a link → <b>Check with Scam Shield</b>. Dangerous links are reported automatically so they get taken down for everyone.</p>
+</div>
+<p style="margin-top:24px"><a class="ss-btn" href="http://127.0.0.1:8765/#tutorial" target="_blank">Take the 2-minute interactive tutorial →</a></p>
+</div>
+<script src="welcome.js"></script>
+</body>
+</html>

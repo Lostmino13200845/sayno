@@ -1,0 +1,16 @@
+{
+  "port": 8765,
+  "update_interval_sec": 300,
+  "auto_log": true,
+  "auto_log_threshold": 35,
+  "store_message_text": true,
+  "auto_report": true,
+  "auto_report_threshold": 60,
+  "reporter_email": "",
+  "check_emails_stopforumspam": false,
+  "api_keys": {
+    "google_safe_browsing": "",
+    "virustotal": "",
+    "urlhaus": ""
+  }
+}

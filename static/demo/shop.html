@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascade Books – Checkout</title>
+<style>
+body{margin:0;font:15px/1.5 Georgia,serif;background:#faf7f2;color:#2b2420}
+.demo{background:#ffe08a;color:#3a2a00;text-align:center;padding:6px;font:12px Arial,sans-serif}
+.top{padding:16px;font-size:22px;border-bottom:1px solid #e5ddd0}
+.wrap{max-width:460px;margin:30px auto;background:#fff;border:1px solid #e5ddd0;border-radius:8px;padding:24px}
+label{display:block;margin-top:12px;font:bold 13px Arial,sans-serif}
+input{width:100%;padding:9px;border:1px solid #cfc6b8;border-radius:4px;font-size:15px;box-sizing:border-box}
+.row{display:flex;gap:10px}.row>div{flex:1}
+button{margin-top:18px;width:100%;padding:11px;background:#2b2420;color:#fff;border:0;border-radius:4px;font-size:16px}
+</style>
+</head>
+<body>
+<div class="demo">SCAM SHIELD DEMO PAGE — a normal online shop checkout (should NOT be blocked). Try test card 4242 4242 4242 4242.</div>
+<div class="top">📚 Cascade Books</div>
+<div class="wrap">
+  <p><b>Order total: $34.98</b> — "The Pragmatic Programmer", paperback</p>
+  <form onsubmit="return false">
+    <label for="cc">Card number</label><input id="cc" autocomplete="cc-number" placeholder="Card number">
+    <div class="row">
+      <div><label for="e">Expiry</label><input id="e" autocomplete="cc-exp" placeholder="MM/YY"></div>
+      <div><label for="c">CVC</label><input id="c" autocomplete="cc-csc" placeholder="CVC"></div>
+    </div>
+    <button>Pay $34.98</button>
+  </form>
+</div>
+</body>
+</html>

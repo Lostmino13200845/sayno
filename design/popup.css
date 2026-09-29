@@ -1,0 +1,24 @@
+/* Source: design/popup.css — run py tools/sync_design.py after editing. */
+/* Extension popup (the panel that opens from the toolbar shield). Uses tokens.css + components.css. */
+* { box-sizing: border-box; }
+.pp-root { margin: 0; width: 360px; background: var(--ss-surface); color: var(--ss-ink); font: var(--ss-text-s)/var(--ss-leading) var(--ss-font); }
+
+.pp-header { display: flex; align-items: center; gap: var(--ss-space-2); padding: var(--ss-space-3) var(--ss-space-4); border-bottom: 1px solid var(--ss-line); }
+.pp-header img { width: 24px; height: 24px; }
+.pp-header b { font-size: var(--ss-text-m); }
+.pp-status { margin-left: auto; font-size: var(--ss-text-xs); color: var(--ss-ink-muted); }
+
+.pp-section { padding: var(--ss-space-3) var(--ss-space-4); border-bottom: 1px solid var(--ss-line); }
+.pp-section:last-child { border-bottom: 0; }
+.pp-section h3 { margin: 0 0 var(--ss-space-2); }
+.pp-host { font-size: var(--ss-text-xs); color: var(--ss-ink-muted); margin-bottom: var(--ss-space-1); }
+
+.pp-textarea { height: 70px; min-height: 70px; font-size: var(--ss-text-s); }
+.pp-toggles { display: grid; gap: var(--ss-space-2); }
+
+.pp-banks summary { cursor: pointer; margin-top: var(--ss-space-2); color: var(--ss-ink-muted); font-size: var(--ss-text-s); }
+.pp-bank-list { display: grid; grid-template-columns: 1fr 1fr; gap: 2px var(--ss-space-2); max-height: 128px; overflow: auto; margin-top: var(--ss-space-2); }
+.pp-bank-list label { display: flex; gap: 6px; align-items: center; font-size: var(--ss-text-s); }
+
+.pp-reported { margin-top: var(--ss-space-2); font-weight: var(--ss-weight-bold); }
+.pp-tip { background: var(--ss-brand-50); color: var(--ss-ink); font-size: var(--ss-text-xs); }

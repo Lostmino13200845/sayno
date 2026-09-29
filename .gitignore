@@ -1,0 +1,16 @@
+# Secrets & local settings (admin token, API keys, reporter e-mail) - use config.example.json as template
+config.json
+
+# Private runtime data: threat-feed cache and the report database
+shieldlib/.data/
+reports/
+
+# Python
+__pycache__/
+*.pyc
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

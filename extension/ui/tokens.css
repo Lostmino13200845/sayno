@@ -1,0 +1,101 @@
+/* GENERATED COPY - edit design/tokens.css and run py tools/sync_design.py */
+/* =====================================================================
+   Scam Shield design tokens — THE single source of truth for visual style.
+   Edit here, then run:  py tools/sync_design.py
+   (copies this file + components.css to the website and the extension)
+   ===================================================================== */
+:root {
+  /* ---- brand ---- */
+  --ss-brand-50:  #eef3ff;
+  --ss-brand-100: #d9e4ff;
+  --ss-brand-500: #3a6cf0;
+  --ss-brand-600: #2457d6;   /* primary: buttons, links, shield icon */
+  --ss-brand-700: #1b44ad;
+  --ss-on-brand:  #ffffff;
+
+  /* ---- neutrals / surfaces ---- */
+  --ss-bg:         #f6f7f9;  /* page background */
+  --ss-surface:    #ffffff;  /* cards, popup */
+  --ss-surface-2:  #eef1f6;  /* chips, wells, input fill */
+  --ss-ink:        #16181d;  /* primary text */
+  --ss-ink-muted:  #5d6470;  /* secondary text */
+  --ss-line:       #e2e5ea;  /* borders, dividers */
+
+  /* ---- risk scale (used by badge, chips, gauge, overlay) ---- */
+  --ss-safe:      #1a8f4c;  --ss-safe-soft:     #e3f5ea;
+  --ss-low:       #6b9e1f;  --ss-low-soft:      #eef6df;
+  --ss-medium:    #c98a00;  --ss-medium-soft:   #fff4d6;
+  --ss-high:      #d9541e;  --ss-high-soft:     #ffe9df;
+  --ss-critical:  #c11b2e;  --ss-critical-soft: #fde6e9;
+  --ss-offline:   #777d87;
+
+  /* ---- typography ---- */
+  --ss-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ss-font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  --ss-text-xs: 12px;
+  --ss-text-s:  13px;
+  --ss-text-m:  15px;
+  --ss-text-l:  18px;
+  --ss-text-xl: 24px;
+  --ss-text-2xl: 34px;
+  --ss-text-3xl: clamp(34px, 5vw, 52px);
+  --ss-weight-regular: 400;
+  --ss-weight-bold: 650;
+  --ss-leading: 1.5;
+
+  /* ---- shape & space ---- */
+  --ss-radius-s: 6px;
+  --ss-radius-m: 10px;
+  --ss-radius-l: 14px;
+  --ss-radius-xl: 22px;
+  --ss-radius-pill: 999px;
+  --ss-space-1: 4px;
+  --ss-space-2: 8px;
+  --ss-space-3: 12px;
+  --ss-space-4: 16px;
+  --ss-space-5: 24px;
+  --ss-space-6: 32px;
+  --ss-space-7: 48px;
+  --ss-space-8: 72px;
+
+  /* ---- elevation ---- */
+  --ss-shadow-1: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+  --ss-shadow-2: 0 6px 18px rgba(16, 24, 40, .12);
+  --ss-shadow-3: 0 20px 60px rgba(16, 24, 40, .28);
+  --ss-focus-ring: 0 0 0 3px rgba(36, 87, 214, .35);
+
+  /* ---- motion ---- */
+  --ss-ease: cubic-bezier(.2, .7, .2, 1);
+  --ss-duration: 180ms;
+
+  /* ---- overlay (Card Guard block screen) ---- */
+  --ss-veil: rgba(40, 0, 6, .82);
+
+  color-scheme: light;
+}
+
+/* ---- dark theme: redefine tokens only ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ss-brand-50: #16213d; --ss-brand-100: #1d2c52; --ss-brand-500: #6d93ff; --ss-brand-600: #7aa2ff; --ss-brand-700: #a3bfff;
+    --ss-on-brand: #0d1220;
+    --ss-bg: #111317; --ss-surface: #1a1d23; --ss-surface-2: #252a33;
+    --ss-ink: #e8eaee; --ss-ink-muted: #9aa1ad; --ss-line: #2b2f37;
+    --ss-safe: #3fcf7e; --ss-safe-soft: #12301f; --ss-low: #a3d14a; --ss-low-soft: #243114;
+    --ss-medium: #f0b429; --ss-medium-soft: #372a0a; --ss-high: #ff7a45; --ss-high-soft: #3a1d10;
+    --ss-critical: #ff5468; --ss-critical-soft: #3d141b;
+    --ss-shadow-1: 0 1px 2px rgba(0,0,0,.4); --ss-shadow-2: 0 6px 18px rgba(0,0,0,.45); --ss-shadow-3: 0 20px 60px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ss-brand-50: #16213d; --ss-brand-100: #1d2c52; --ss-brand-500: #6d93ff; --ss-brand-600: #7aa2ff; --ss-brand-700: #a3bfff;
+  --ss-on-brand: #0d1220;
+  --ss-bg: #111317; --ss-surface: #1a1d23; --ss-surface-2: #252a33;
+  --ss-ink: #e8eaee; --ss-ink-muted: #9aa1ad; --ss-line: #2b2f37;
+  --ss-safe: #3fcf7e; --ss-safe-soft: #12301f; --ss-low: #a3d14a; --ss-low-soft: #243114;
+  --ss-medium: #f0b429; --ss-medium-soft: #372a0a; --ss-high: #ff7a45; --ss-high-soft: #3a1d10;
+  --ss-critical: #ff5468; --ss-critical-soft: #3d141b;
+  --ss-shadow-1: 0 1px 2px rgba(0,0,0,.4); --ss-shadow-2: 0 6px 18px rgba(0,0,0,.45); --ss-shadow-3: 0 20px 60px rgba(0,0,0,.6);
+  color-scheme: dark;
+}

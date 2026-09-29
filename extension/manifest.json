@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Scam Shield – Card Guard",
+  "short_name": "Scam Shield",
+  "version": "1.0.0",
+  "description": "Protects new bank customers from phishing: checks every site against 700k+ known threats and blocks fake pages that ask for your card details.",
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Scam Shield",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8765/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "banks.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "ui/tokens.css",
+        "ui/components.css",
+        "ui/overlay.css"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "use_dynamic_url": true
+    }
+  ],
+  "optional_permissions": [
+    "notifications"
+  ]
+}

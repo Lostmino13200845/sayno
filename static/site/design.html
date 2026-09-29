@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scam Shield Design System</title>
+<link rel="icon" href="/assets/shield-48.png">
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/components.css">
+<link rel="stylesheet" href="/assets/popup.css">
+<link rel="stylesheet" href="/assets/overlay.css">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  /* gallery-only layout */
+  .ds { padding: var(--ss-space-6) max(var(--ss-space-4), calc((100vw - 1120px) / 2)); }
+  .ds h2 { font-size: var(--ss-text-xl); margin: var(--ss-space-7) 0 var(--ss-space-2); }
+  .ds-note { color: var(--ss-ink-muted); max-width: 720px; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--ss-space-3); }
+  .sw { border: 1px solid var(--ss-line); border-radius: var(--ss-radius-m); overflow: hidden; background: var(--ss-surface); font-size: var(--ss-text-xs); }
+  .sw i { display: block; height: 56px; }
+  .sw div { padding: 6px 8px; } .sw code { font-size: 11px; background: none; padding: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: var(--ss-space-3); align-items: center; }
+  .stage { position: relative; background: var(--ss-bg); border: 1px dashed var(--ss-line); border-radius: var(--ss-radius-l); padding: var(--ss-space-5); overflow: auto; }
+  .popups { display: flex; gap: var(--ss-space-5); flex-wrap: wrap; align-items: flex-start; }
+  .popup-frame { border: 1px solid var(--ss-line); border-radius: var(--ss-radius-m); box-shadow: var(--ss-shadow-2); overflow: hidden; }
+  .popup-frame .pp-root { width: 340px; }
+  .cap { font-size: var(--ss-text-xs); color: var(--ss-ink-muted); margin-top: var(--ss-space-2); }
+  .veil-demo { position: relative; min-height: 460px; border-radius: var(--ss-radius-l); overflow: hidden; background: #eef2f7; }
+  .veil-demo .ov-veil { position: absolute; }
+  .toast-demo { position: relative; min-height: 140px; }
+  .toast-demo .ov-toast, .toast-demo .ov-panel { position: absolute; }
+  .type-scale div { margin: 6px 0; }
+  .theme-switch { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 60; }
+  table.tok { border-collapse: collapse; width: 100%; font-size: var(--ss-text-s); }
+  table.tok td { border-top: 1px solid var(--ss-line); padding: 6px 8px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <a class="nav-brand" href="/"><img src="/assets/shield-48.png" alt=""> Scam Shield</a>
+  <nav class="nav-links"><a href="#colors">Colours</a><a href="#type">Type</a><a href="#components">Components</a><a href="#extension">Extension screens</a><a href="#edit">How to edit</a></nav>
+</header>
+
+<main class="ds">
+  <p class="ss-eyebrow">Design system · v1</p>
+  <h1 style="font-size:var(--ss-text-2xl)">Scam Shield Design System</h1>
+  <p class="ds-note">Every screen of the website, the web scanner and the browser extension is built from the tokens and components on this page. Change a token in <code>design/tokens.css</code>, run <code>py tools/sync_design.py</code>, and it changes everywhere. Use the button bottom-right to check dark mode.</p>
+
+  <h2 id="colors">Colours</h2>
+  <p class="ds-note">Brand, surfaces and the <b>risk scale</b>. The risk scale is the core of the product: it must stay readable for colour-blind users, which is why every level also carries a word or symbol (SAFE, !, !!, ✖).</p>
+  <div class="swatches" id="sw"></div>
+
+  <h2 id="type">Typography &amp; spacing</h2>
+  <div class="type-scale">
+    <div style="font-size:var(--ss-text-3xl);font-weight:var(--ss-weight-bold)">3xl · Hero headline</div>
+    <div style="font-size:var(--ss-text-2xl);font-weight:var(--ss-weight-bold)">2xl · Section title</div>
+    <div style="font-size:var(--ss-text-xl);font-weight:var(--ss-weight-bold)">xl · Card Guard headline</div>
+    <div style="font-size:var(--ss-text-l)">l · Lead paragraph</div>
+    <div style="font-size:var(--ss-text-m)">m · Body text (website)</div>
+    <div style="font-size:var(--ss-text-s)">s · Body text (extension popup)</div>
+    <div style="font-size:var(--ss-text-xs)">xs · Captions, badges</div>
+  </div>
+  <div class="scroll"><table class="tok" id="spaceTable"></table></div>
+
+  <h2 id="components">Components</h2>
+  <h3>Buttons</h3>
+  <div class="row"><button class="ss-btn">Primary</button><button class="ss-btn ss-btn--ghost">Ghost</button><button class="ss-btn ss-btn--danger">Danger</button><button class="ss-btn ss-btn--link">Link button</button><button class="ss-btn ss-btn--s">Small</button><button class="ss-btn" disabled>Disabled</button></div>
+  <h3 style="margin-top:24px">Risk level chips &amp; toolbar badges</h3>
+  <div class="row">
+    <span class="ss-level ss-level--safe">safe · 0</span><span class="ss-level ss-level--low">low · 20</span><span class="ss-level ss-level--medium">medium · 42</span><span class="ss-level ss-level--high">high · 72</span><span class="ss-level ss-level--critical">critical · 100</span><span class="ss-level">not rated</span>
+    <span style="width:24px"></span>
+    <span class="ss-badge ss-badge--medium">!</span><span class="ss-badge ss-badge--high">!!</span><span class="ss-badge ss-badge--critical">✖</span><span class="ss-badge">off</span>
+  </div>
+  <h3 style="margin-top:24px">Form controls</h3>
+  <div class="grid-2">
+    <div><textarea class="ss-textarea" placeholder="Paste a suspicious text…"></textarea></div>
+    <div style="display:grid;gap:10px">
+      <label class="ss-toggle"><input type="checkbox" checked><span></span> Toggle on</label>
+      <label class="ss-toggle"><input type="checkbox"><span></span> Toggle off</label>
+      <input class="ss-input" placeholder="Text input">
+    </div>
+  </div>
+  <h3 style="margin-top:24px">Findings list &amp; card</h3>
+  <div class="ss-card" style="max-width:420px">
+    <span class="ss-level ss-level--high">high · 72</span>
+    <ul class="ss-findings"><li class="is-danger">Mentions 'rbc' but is not an official rbc domain</li><li>Creates urgency / time pressure</li><li class="is-ok">No warning signs found (safe state)</li></ul>
+  </div>
+
+  <h2 id="extension">Extension screens — every state</h2>
+  <p class="ds-note">These use the exact classes of <code>extension/popup.html</code> and the Card Guard overlay. Design each state; don't forget offline and "not rated".</p>
+  <h3>Popup (toolbar)</h3>
+  <div class="stage"><div class="popups" id="popups"></div></div>
+
+  <h3 style="margin-top:24px">Card Guard block screen</h3>
+  <div class="veil-demo"><div class="ov-veil"><div class="ov-box">
+    <h1>🛡️ Stop: this page wants your card details</h1>
+    <p>Scam Shield blocked this page on <b>rbc-card-activation.help</b> because:</p>
+    <ul><li>It asks for your card <b>PIN</b>. No bank or shop ever asks for your PIN on a website.</li><li>It uses <b>bank-style pressure</b> but this is <b>not your bank's website</b>.</li></ul>
+    <p class="ov-tip"><b>Your bank will never</b> ask for your full card number, CVV, PIN or one-time code on a page you reached from a link.</p>
+    <div class="ov-actions"><button class="ss-btn ss-btn--danger">Get me out of here</button><button class="ss-btn ss-btn--link">I understand the risk, continue</button></div>
+  </div></div></div>
+
+  <h3 style="margin-top:24px">Toast (gentle reminder) &amp; right-click result panel</h3>
+  <div class="grid-2">
+    <div class="stage toast-demo"><div class="ov-toast" style="right:16px;bottom:16px">🛡️ You're entering a card number on <b>shop.example</b>. Make sure you opened this site yourself.<div style="margin-top:8px"><button class="ss-btn ss-btn--ghost ss-btn--s">Got it</button></div></div></div>
+    <div class="stage toast-demo" style="min-height:280px"><div class="ov-panel" style="top:16px;right:16px;width:320px"><div class="ov-panel-head"><b>🛡️ Scam Shield</b><button class="ov-close">×</button></div>
+      <span class="ss-level ss-level--critical">critical · 85</span><ul class="ss-findings"><li class="is-danger">Government / tax-agency impersonation (CRA, IRS, Service Canada)</li><li>Creates urgency / time pressure</li></ul><p class="ss-muted">Do NOT click any link, open attachments, reply, or call numbers in this message.</p></div></div>
+  </div>
+
+  <h2 id="edit">How to edit (for designers)</h2>
+  <div class="scroll"><table class="tok">
+    <tr><td><b>Colours, fonts, spacing, radius, shadows</b></td><td><code>design/tokens.css</code></td></tr>
+    <tr><td><b>Buttons, chips, badges, toggles, inputs, cards</b></td><td><code>design/components.css</code></td></tr>
+    <tr><td><b>Extension popup layout</b></td><td><code>design/popup.css</code> + markup in <code>extension/popup.html</code></td></tr>
+    <tr><td><b>Card Guard block screen, toast, result panel</b></td><td><code>design/overlay.css</code> + markup in <code>extension/content.js</code> (search <code>ov-</code>)</td></tr>
+    <tr><td><b>Website &amp; tutorial layout</b></td><td><code>design/site.css</code> + <code>static/site/index.html</code></td></tr>
+    <tr><td><b>Apply changes</b></td><td>run <code>py tools/sync_design.py</code>, refresh the website; for the extension press ↻ on <code>edge://extensions</code></td></tr>
+  </table></div>
+</main>
+
+<button class="ss-btn ss-btn--ghost ss-btn--s theme-switch" id="theme">Toggle dark / light</button>
+
+<script>
+const $ = s => document.querySelector(s);
+const TOKENS = ["--ss-brand-600","--ss-brand-700","--ss-brand-100","--ss-brand-50","--ss-bg","--ss-surface","--ss-surface-2","--ss-ink","--ss-ink-muted","--ss-line",
+  "--ss-safe","--ss-safe-soft","--ss-low","--ss-medium","--ss-medium-soft","--ss-high","--ss-high-soft","--ss-critical","--ss-critical-soft","--ss-offline"];
+function swatches() {
+  const cs = getComputedStyle(document.documentElement);
+  $("#sw").innerHTML = TOKENS.map(t => `<div class="sw"><i style="background:var(${t})"></i><div><code>${t}</code><br>${cs.getPropertyValue(t).trim()}</div></div>`).join("");
+  $("#spaceTable").innerHTML = ["1","2","3","4","5","6","7","8"].map(n => `<tr><td><code>--ss-space-${n}</code></td><td>${cs.getPropertyValue("--ss-space-" + n)}</td><td><div style="height:10px;width:var(--ss-space-${n});background:var(--ss-brand-600);border-radius:3px"></div></td></tr>`).join("")
+    + ["s","m","l","xl"].map(n => `<tr><td><code>--ss-radius-${n}</code></td><td>${cs.getPropertyValue("--ss-radius-" + n)}</td><td><div style="height:28px;width:60px;border:2px solid var(--ss-brand-600);border-radius:var(--ss-radius-${n})"></div></td></tr>`).join("");
+}
+const find = (lvl, items) => `<ul class="ss-findings">${items.map(([c, t]) => `<li class="${c}">${t}</li>`).join("")}</ul>`;
+const popup = (status, site, extra = "") => `<div class="popup-frame"><div class="pp-root">
+  <header class="pp-header"><img src="/assets/shield-48.png" alt=""><b>Scam Shield</b><span class="pp-status">${status}</span></header>
+  <section class="pp-section"><h3 class="ss-eyebrow">This site</h3>${site}</section>
+  <section class="pp-section"><h3 class="ss-eyebrow">Check a message</h3><textarea class="ss-textarea pp-textarea" placeholder="Paste a suspicious text, e-mail or link — it's checked instantly"></textarea>${extra}</section>
+  <section class="pp-section"><h3 class="ss-eyebrow">Card Guard</h3><div class="pp-toggles">
+    <label class="ss-toggle"><input type="checkbox" checked><span></span> Block fake pages that ask for my card</label>
+    <label class="ss-toggle"><input type="checkbox" checked><span></span> New-account mode (extra warnings)</label></div>
+    <details class="pp-banks"><summary>My bank(s) — only these are trusted with my card</summary></details></section>
+  <section class="pp-section pp-tip"><b>Remember:</b> your bank will never ask for your PIN, CVV or a one-time code.</section></div></div>`;
+$("#popups").innerHTML =
+  `<div>${popup("🟢 727,683 threats", `<div class="pp-host">www.rbc.com</div><span class="ss-level ss-level--safe">safe · 0/100</span>${find("", [["is-ok", "No warning signs found."]])}`)}<div class="cap">1 · Safe site</div></div>` +
+  `<div>${popup("🟢 727,683 threats", `<div class="pp-host">rbc-card-activation.help</div><span class="ss-level ss-level--high">high · 72/100</span>${find("", [["is-danger", "Mentions 'rbc' but is not an official rbc domain"], ["", "Top-level domain '.help' is heavily abused"]])}`,
+    `<div class="pp-reported">🚩 1 dangerous link(s) reported automatically.</div>`)}<div class="cap">2 · Dangerous site + auto-report</div></div>` +
+  `<div>${popup("🔴 server offline", `<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the Scam Shield server is offline.</span>`)}<div class="cap">3 · Offline / not rated</div></div>`;
+swatches();
+$("#theme").onclick = () => {
+  const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme = dark ? "light" : "dark"; swatches();
+};
+</script>
+</body>
+</html>
