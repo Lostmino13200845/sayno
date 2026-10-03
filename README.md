@@ -71,7 +71,15 @@ Demo pages (fictional bank): `/demo/fake-bank.html` (blocked), `/demo/shop.html`
 All visual styling comes from `design/*.css`; run `py tools/sync_design.py` after editing. See **DESIGN.md**.
 
 ## Run
-Double-click `start.bat` (Windows) or run `./start.sh`; or run `py server/app.py` directly. Python 3.10+ only, no installs. Then open http://127.0.0.1:8765 (website); the scanner is at `/app`.
+Python 3.10 or newer is the only requirement (standard library only, nothing to install). Then open http://127.0.0.1:8765 (website); the scanner is at `/app`.
+
+| OS | Start |
+|---|---|
+| Windows | Double-click `start.bat` |
+| macOS / Linux | `./start.sh` (if needed: `chmod +x start.sh`) |
+| Any | `python server/app.py` (use `py` or `python3` as your system names it) |
+
+On first start `config.json` is created from `config.example.json` and an admin token is generated. Add `--no-browser` to stop it opening a browser tab. The extension is loaded separately: `chrome://extensions` → Developer mode → Load unpacked → pick the `extension/` folder.
 
 ## config.json
 | Key | Default | Meaning |

@@ -1,4 +1,7 @@
-"""SAYNO - local web app.  Run:  py server.py   then open http://127.0.0.1:8765"""
+"""SAYNO - local web app.  Run start.bat (Windows) or ./start.sh (macOS/Linux), then open http://127.0.0.1:8765"""
+import sys
+if sys.version_info < (3, 10):
+    sys.exit("SAYNO needs Python 3.10 or newer: https://www.python.org/downloads/")
 import hmac
 import json
 import os
@@ -25,6 +28,10 @@ if not CFG.get("admin_token"):  # generated once, protects the back-office pages
     CFG["admin_token"] = secrets.token_urlsafe(24)
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         json.dump(CFG, f, indent=2)
+    try:
+        os.chmod(CONFIG_PATH, 0o600)  # holds the admin token: owner-only on macOS/Linux
+    except OSError:
+        pass
 
 INTEL = ThreatIntel(interval_sec=int(CFG.get("update_interval_sec", 300)))
 STORE = ReportStore()
