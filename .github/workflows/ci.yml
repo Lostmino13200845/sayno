@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Unit tests (scoring engine and block-list lookups, offline)
+        run: python -m unittest discover -s tests -v
+
+      - name: Smoke test (starts the real server, checks pages and the scan API)
+        run: python tests/smoke.py
+
+      - name: Launcher scripts parse (macOS and Linux)
+        if: runner.os != 'Windows'
+        run: |
+          sh -n start.sh
+          test -x start.sh || (echo "start.sh is not executable" && exit 1)
+
+      - name: Extension JavaScript parses
+        run: |
+          node --version
+          for f in extension/*.js; do node --check "$f"; done
+        shell: bash
+
+      - name: Extension manifest is valid JSON
+        run: python -c "import json; m = json.load(open('extension/manifest.json', encoding='utf-8')); assert m['manifest_version'] == 3; print(m['name'], m['version'])"

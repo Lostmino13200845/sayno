@@ -20,11 +20,24 @@ chrome.runtime.sendMessage({ type: "status" }, s => {
 });
 
 // current site verdict
+// A safe page says so in words: a bare "SAFE 0/100" reads like a contradiction above a scam result.
+function renderSite(v) {
+  if (v.level !== "safe" && v.level !== "low") return render(v);
+  return '<span class="ss-level ss-level--safe">This page looks safe</span><p class="ss-muted">No warning signs found on this page.</p>';
+}
 chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
   chrome.runtime.sendMessage({ type: "getVerdict", tabId: tab.id }, v => {
-    $("#site").innerHTML = v ? `<div class="pp-host">${esc(new URL(tab.url).host)}</div>${render(v)}`
+    $("#site").innerHTML = v ? `<div class="pp-host">${esc(new URL(tab.url).host)}</div>${renderSite(v)}`
       : /^https?:/.test(tab.url || "") ? '<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the SAYNO server is offline.</span>' : "Not a web page.";
   });
+});
+
+// server port (the extension talks to http://127.0.0.1:<port>)
+chrome.storage.local.get({ apiPort: 8765 }, ({ apiPort }) => { $("#apiPort").value = apiPort; });
+$("#apiPort").addEventListener("change", e => {
+  const n = Math.round(Number(e.target.value));
+  if (!(n >= 1 && n <= 65535)) { e.target.value = 8765; return chrome.storage.local.set({ apiPort: 8765 }); }
+  chrome.storage.local.set({ apiPort: n }, () => location.reload());
 });
 
 // paste-to-scan

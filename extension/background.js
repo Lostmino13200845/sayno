@@ -1,6 +1,10 @@
 // SAYNO background worker: checks every site the user opens against the
 // SAYNO server (threat database + heuristics) and shows the verdict on the toolbar badge.
-const API = "http://127.0.0.1:8765";
+// The server port comes from the popup's "Advanced" setting (default 8765, same as config.json).
+async function api(path) {
+  const { apiPort = 8765 } = await chrome.storage.local.get("apiPort");
+  return `http://127.0.0.1:${apiPort}${path}`;
+}
 const cache = new Map();          // host+path -> {result, at}
 const TTL = 10 * 60 * 1000;
 const tabVerdicts = new Map();    // tabId -> result (also mirrored in chrome.storage.session)
@@ -21,7 +25,7 @@ const BADGE = {
 };
 
 async function scan(text, online = true) {
-  const r = await fetch(API + "/api/scan", {
+  const r = await fetch(await api("/api/scan"), {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, online }),
   });
@@ -171,7 +175,7 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
     scan(msg.text).then(r => reply({ result: r }), e => reply({ error: e.message }));
     return true;
   } else if (msg.type === "status") {
-    fetch(API + "/api/status").then(r => r.json()).then(reply, () => reply(null));
+    api("/api/status").then(u => fetch(u)).then(r => r.json()).then(reply, () => reply(null));
     return true;
   } else if (msg.type === "testNotification") {
     chrome.permissions.contains({ permissions: ["notifications"] }).then(ok => {

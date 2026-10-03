@@ -171,9 +171,14 @@
     if (typeof v === "string" && /\d/.test(v) && luhn(v)) evaluate(true);
   }, true);
 
+  // Re-check only when new form fields appear (a card form injected after load). Busy pages that
+  // change constantly without adding inputs cost nothing, and a burst is checked at most once per 1.5 s.
+  const hasInput = n => n.nodeType === 1 && (n.matches?.("input, select, form") || n.querySelector?.("input, select"));
   let timer = null;
-  new MutationObserver(() => { clearTimeout(timer); timer = setTimeout(() => evaluate(), 600); })
-    .observe(document.documentElement, { childList: true, subtree: true });
+  new MutationObserver(muts => {
+    if (shown === "block" || timer || !muts.some(m => [...m.addedNodes].some(hasInput))) return;
+    timer = setTimeout(() => { timer = null; evaluate(); }, 1500);
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
   chrome.storage.local.get(settings, s => {
     settings = s;

@@ -107,3 +107,13 @@ On first start `config.json` is created from `config.example.json` and an admin 
 
 ## Limits
 New scam sites often appear hours before any blocklist lists them; the heuristics cover that gap. A "safe" result means "no known red flags", not a guarantee. Hiding the `.data` folder keeps the lists out of the UI and API, but anyone with access to this computer's files can still read them.
+
+## Tests
+```
+python -m unittest discover -s tests -v   # scoring engine + block-list lookups (offline, instant)
+python tests/smoke.py                     # starts the real server, checks pages + scan API, stops it
+```
+GitHub Actions (`.github/workflows/ci.yml`) runs both on Ubuntu, macOS and Windows with Python 3.10 and 3.13 on every push.
+
+## Changing the server port
+Set `port` in `config.json`, then in the extension popup open **Advanced: SAYNO server port** and enter the same number.
