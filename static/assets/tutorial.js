@@ -38,7 +38,7 @@
   // ---- live threat count
   fetch("/api/status").then(r => r.json()).then(s => {
     const n = s.protection?.threats;
-    if (n) { $("#statThreats").textContent = n.toLocaleString(); $("#pStatus").textContent = `🟢 ${n.toLocaleString()} threats`; }
+    if (n) { $("#statThreats") && ($("#statThreats").textContent = n.toLocaleString()); $("#pStatus").textContent = `🟢 ${n.toLocaleString()} threats`; }
   }).catch(() => { $("#pStatus").textContent = "🟢 700k+ threats"; });
 
   // ================= practice browser state =================
@@ -143,66 +143,37 @@
 
   // ================= tutorial steps =================
   const STEPS = [
-    { title: "Find the shield",
-      text: "<p>After you install SAYNO, a blue <b>shield</b> sits in your browser's toolbar, top right.</p><span class='do'>👉 Click the shield to open it.</span>",
+    { title: "Open SAYNO",
+      text: "<p>SAYNO lives in your toolbar as a <b>shield</b>.</p><span class='do'>👉 Click the shield.</span>",
       target: () => "#mExt", label: "Click the shield",
       setup() { Object.assign(S, { popup: false, ctx: false, panel: false }); if (S.view !== "inbox") return go("inbox"); draw(); },
       done: () => S.popup, doIt: () => A.togglePopup() },
-    { title: "What the popup shows",
-      text: "<p>The top line shows the protection is live: the <b>number of known scam sites</b> it checks against, updated every 5 minutes.</p><p><b>This site</b> rates the page you're on. Your messages page is <b>safe</b>.</p>",
-      target: () => "#pSite", label: "Rating of this page",
-      setup() { S.popup = true; draw(); } },
-    { title: "Check a suspicious message",
-      text: "<p>Got a strange text or e-mail? <b>Copy it and paste it</b> into this box. It's checked the moment you paste, with no button to press.</p><span class='do'>👉 Click the box to paste the fake RBC text.</span>",
-      target: () => "#pTxt", label: "Click to paste",
+    { title: "Message check",
+      text: "<p>Paste any text or link. You get a <b>danger score</b> and the reasons.</p><span class='do'>👉 Click the box to paste the fake RBC text.</span>",
+      target: () => S.scanned ? "#pOut" : "#pTxt", label: () => S.scanned ? "Score and reasons" : "Click to paste",
       setup() { S.popup = true; draw(); },
       done: () => !!S.scanned, doIt: () => A.paste() },
-    { title: "Read the result",
-      text: "<p>Every message gets a <b>danger score from 0 to 100</b> and a level: <span class='ss-level ss-level--safe'>safe</span> <span class='ss-level ss-level--medium'>medium</span> <span class='ss-level ss-level--high'>high</span> <span class='ss-level ss-level--critical'>critical</span></p><p>Below it, in plain words, <b>why</b>: pressure, a fake RBC address, a “new card” trick.</p>",
-      target: () => "#pOut", label: "Score and reasons",
-      async setup() { S.popup = true; if (!S.scanned) await A.paste(); draw(); } },
-    { title: "Tell it your bank",
-      text: "<p>Open <b>My bank(s)</b> and tick the bank you really use. Only your bank's real website is then trusted with your card; look-alikes are not.</p><span class='do'>👉 Let's say you bank with RBC: tick it.</span>",
-      target: () => $("#pBanks").open ? "#pBankRbc" : "#pBanksSum", label: () => $("#pBanks").open ? "Tick RBC" : "Open My bank(s)",
-      setup() { S.popup = true; draw(); },
-      done: () => S.bankRbc, doIt: () => { A.openBanks(); if (!S.bankRbc) A.tickRbc(); } },
-    { title: "Your two switches",
-      text: "<p><b>Block fake pages that ask for my card:</b> that's Card Guard. Keep it on.</p><p><b>New-account mode:</b> extra reminders for your first months with a new account, or when you hold a large balance.</p>",
-      target: () => "#pNewcomer", label: "Both on by default",
-      setup() { S.popup = true; draw(); } },
-    { title: "Right-click to check any text",
-      text: "<p>You can also check text <b>on any website</b>, such as webmail or chat, without opening the popup.</p><span class='do'>👉 Close the popup, then right-click (or click) the RBC message and choose <b>Check this text with SAYNO</b>.</span>",
+    { title: "Right-click check",
+      text: "<p>Check text on <b>any website</b> without opening SAYNO.</p><span class='do'>👉 Right-click the RBC message, then <b>Check this text with SAYNO</b>.</span>",
       target: () => S.popup ? "#mExt" : S.ctx ? "#ctxCheck" : "#msgRbc",
       label: () => S.popup ? "Close the popup" : S.ctx ? "Choose this" : "Right-click this message",
       setup() { S.checkedText = false; if (S.view !== "inbox") return go("inbox"); S.panel = false; draw(); },
       done: () => S.checkedText, doIt: () => { S.popup = false; A.checkText(); } },
-    { title: "What if you tap the link?",
-      text: "<p>Lots of people tap the link before thinking. That's fine: this is where <b>Card Guard</b> steps in.</p><span class='do'>👉 Click the link in the RBC message.</span>",
-      target: () => "#rbcLink", label: "Click the link",
-      setup() { Object.assign(S, { popup: false, ctx: false, panel: false }); if (S.view !== "inbox") return go("inbox"); draw(); },
-      done: () => S.view === "bank" && S.veil, doIt: () => A.clickLink() },
-    { title: "Card Guard blocks the fake page",
-      text: "<p>The page pretends to be RBC and asks for your <b>card number, CVV and PIN</b>. Card Guard blocks it <b>before you type anything</b> and explains why. The shield in the toolbar turned orange too.</p><p><b>Get me out of here</b> takes you back. <b>Continue</b> exists only for rare mistakes.</p><span class='do'>👉 Click “Get me out of here”.</span>",
-      target: () => S.veil ? "#ovLeave" : null, label: "Leave safely",
-      async setup() { S.left = false; if (S.view !== "bank") await go("bank"); },
-      done: () => S.left, doIt: () => A.leave() },
-    { title: "Normal shopping still works",
-      text: "<p>Card Guard doesn't get in the way of real shops. Typing your card on a normal checkout only shows a <b>small reminder</b> in new-account mode.</p><span class='do'>👉 Open the Cascade Books link, then click the card field.</span>",
+    { title: "Card Guard",
+      text: "<p>Tap the link in the RBC message. <b>Card Guard</b> blocks the fake bank page before you type anything.</p><span class='do'>👉 Click the link, then <b>Get me out of here</b>.</span>",
+      target: () => S.view === "bank" ? (S.veil ? "#ovLeave" : null) : "#rbcLink",
+      label: () => S.view === "bank" ? "Leave safely" : "Click the link",
+      setup() { S.left = false; Object.assign(S, { popup: false, ctx: false, panel: false }); if (S.view !== "inbox") return go("inbox"); draw(); },
+      done: () => S.left, doIt: async () => { if (S.view !== "bank") await go("bank"); A.leave(); } },
+    { title: "Safe shopping",
+      text: "<p>Real shops still work. You only get a <b>small reminder</b>.</p><span class='do'>👉 Open the Cascade Books link, then click the card field.</span>",
       target: () => S.view === "shop" ? (S.toast ? null : "#shopCard") : "#goShop",
       label: () => S.view === "shop" ? "Click to type a test card" : "Open the shop",
       setup() { S.toast = false; if (S.view === "bank") return go("inbox"); draw(); },
       done: () => S.toast, doIt: async () => { if (S.view !== "shop") await go("shop"); A.typeCard(); } },
-    { title: "The shield's colours",
-      text: "<p>The toolbar shield always tells you how risky the current site is. Click a colour to preview it:</p><p class='badges'>" +
-        "<button class='ss-btn ss-btn--ghost ss-btn--s' data-b='safe'>No badge · nothing found</button> " +
-        "<button class='ss-btn ss-btn--ghost ss-btn--s' data-b='medium'><span class='ss-badge ss-badge--medium'>!</span> be careful</button> " +
-        "<button class='ss-btn ss-btn--ghost ss-btn--s' data-b='high'><span class='ss-badge ss-badge--high'>!!</span> high risk</button> " +
-        "<button class='ss-btn ss-btn--ghost ss-btn--s' data-b='critical'><span class='ss-badge ss-badge--critical'>✖</span> known scam</button></p>",
-      target: () => "#mExt", label: "Watch the badge",
-      setup() { Object.assign(S, { popup: false, toast: false }); draw(); } },
-    { title: "You're ready 🎉",
-      text: "<p>That's everything: <b>site checks</b>, <b>Card Guard</b>, <b>message checks</b> and <b>automatic reporting</b>.</p><p>Remember: your bank will <b>never</b> ask for your PIN, CVV or a one-time code.</p><p><a class='ss-btn' href='#install'>Install SAYNO</a> <a class='ss-btn ss-btn--ghost' href='/app'>Open the web scanner</a></p>",
-      target: () => null, setup() { S.popup = false; draw(); } },
+    { title: "You're protected",
+      text: "<p>That's it: <b>Card Guard</b>, <b>site check</b>, <b>message check</b> and <b>auto-report</b> all work on their own.</p><p><a class='ss-btn' href='#add'>Add to browser</a></p>",
+      target: () => null, setup() { S.popup = false; if (S.view !== "inbox") return go("inbox"); draw(); } },
   ];
 
   let cur = 0;

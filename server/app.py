@@ -15,7 +15,7 @@ from urllib.parse import parse_qs, urlsplit
 from shieldlib import (OnlineChecker, ReportStore, ThreatIntel, analyze, auto_report, is_reportable,
                        manual_links, pwned_range, record_scan)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # project root (server/ is one level down)
 CONFIG_PATH = os.path.join(BASE_DIR, "config.json")
 if not os.path.exists(CONFIG_PATH):
     shutil.copy(os.path.join(BASE_DIR, "config.example.json"), CONFIG_PATH)

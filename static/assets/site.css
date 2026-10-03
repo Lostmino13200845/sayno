@@ -90,8 +90,8 @@ img { max-width: 100%; }
 .tut-steps li.is-current::before { background: var(--ss-brand-600); color: var(--ss-on-brand); }
 
 /* /tutorial: tutorial only (presenting / embedding) */
-.tut-only main > section:not(#tutorial), .tut-only .footer { display: none; }
-.tut-only #tutorial { padding-top: var(--ss-space-5); min-height: 100vh; box-sizing: border-box; }
+.tut-only main > section:not(#try), .tut-only .footer, .tut-only .site-footer { display: none; }
+.tut-only #try { padding-top: var(--ss-space-5); min-height: 100vh; box-sizing: border-box; }
 
 /* ---- practice browser ---- */
 .mock { position: relative; background: var(--ss-surface); border: 1px solid var(--ss-line); border-radius: var(--ss-radius-l); box-shadow: var(--ss-shadow-2); overflow: hidden; min-height: 560px; }
@@ -155,3 +155,44 @@ img { max-width: 100%; }
 .hotspot.is-above .hotspot-label::before { top: auto; bottom: -5px; border-bottom: 0; border-top: 5px solid var(--ss-brand-600); }
 @keyframes hot-pulse { 0%, 100% { box-shadow: 0 0 0 3px var(--ss-brand-600), 0 0 0 0 rgba(36,87,214,.45); } 50% { box-shadow: 0 0 0 3px var(--ss-brand-600), 0 0 0 10px rgba(36,87,214,0); } }
 @media (prefers-reduced-motion: reduce) { .hotspot { animation: none; transition: none; } }
+
+/* ---------- v3: simpler homepage ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* search icon + panel */
+.nav-search { display: grid; place-items: center; width: 44px; height: 44px; margin-left: var(--ss-space-2); border: 1px solid var(--ss-line); border-radius: var(--ss-radius-m); background: var(--ss-surface); color: var(--ss-ink); cursor: pointer; }
+.nav-search:hover { background: var(--ss-surface-2); }
+.nav-search:focus-visible { outline: none; box-shadow: var(--ss-focus-ring); }
+.nav-search[aria-expanded="true"] { background: var(--ss-surface-2); }
+@media (max-width: 760px) { .nav-search { margin-left: auto; } .nav-cta { margin-left: 0; } }
+.search-panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 69px); z-index: 49; display: flex; gap: var(--ss-space-3);
+  padding: var(--ss-space-3) max(var(--ss-space-4), calc((100vw - 1120px) / 2)); background: var(--ss-surface); border-bottom: 1px solid var(--ss-line); box-shadow: var(--ss-shadow-1); }
+.search-panel .ss-input { flex: 1; min-width: 0; }
+
+/* hero: one short line under the buttons instead of a stats row */
+.hero-note { margin: 0; color: var(--ss-ink-muted); font-size: var(--ss-text-s); }
+.hero-note b { color: var(--ss-ink); }
+
+/* features: title + one line, nothing else */
+.features .feature h3 { font-size: var(--ss-text-l); font-weight: 800; margin: 0; }
+.features .feature p { margin-top: var(--ss-space-1); }
+
+/* "your bank will never" in one row of four */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: var(--ss-space-4); }
+
+/* footer */
+.site-footer { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--ss-space-6) var(--ss-space-5);
+  padding: var(--ss-space-7) max(var(--ss-space-4), calc((100vw - 1120px) / 2)) calc(var(--ss-space-5) + env(safe-area-inset-bottom, 0px));
+  background: var(--ss-surface); border-top: 1px solid var(--ss-line); }
+.footer-brand p { margin: var(--ss-space-2) 0 0; color: var(--ss-ink-muted); max-width: 280px; }
+.footer-col { display: flex; flex-direction: column; gap: var(--ss-space-2); }
+.footer-col h3 { font-size: var(--ss-text-s); text-transform: uppercase; letter-spacing: .06em; color: var(--ss-ink-muted); margin: 0 0 var(--ss-space-1); }
+.footer-col a { color: var(--ss-ink); text-decoration: none; }
+.footer-col a:hover { text-decoration: underline; }
+.footer-legal { grid-column: 1 / -1; margin: 0; padding-top: var(--ss-space-4); border-top: 1px solid var(--ss-line); color: var(--ss-ink-muted); font-size: var(--ss-text-s); }
+@media (max-width: 640px) { .site-footer { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+.grid-3.features { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .grid-3.features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .grid-3.features { grid-template-columns: minmax(0, 1fr); } }
+/* step list = the main features: bold, full-contrast */
+.tut-steps li { font-weight: 700; color: var(--ss-ink); }

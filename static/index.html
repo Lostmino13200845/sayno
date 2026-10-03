@@ -293,6 +293,15 @@ function renderGuide(){
 }
 renderGuide();
 loadStatus().catch(() => {});
+
+// Links from the website: /app#q=<text> checks that text right away; /app#guide or #pw opens that tab.
+(function fromHash() {
+  const h = location.hash.slice(1);
+  const q = new URLSearchParams(h).get('q');
+  if (q) { $('#input').value = q; $('#scanBtn').click(); history.replaceState(null, '', '/app'); return; }
+  const tab = document.querySelector(`nav button[data-tab="${h}"]`);
+  if (tab) tab.click();
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,2 @@
+# SAYNO runs on the Python standard library only (Python 3.10 or newer).
+# Nothing to install; this file exists so a fresh machine knows that.

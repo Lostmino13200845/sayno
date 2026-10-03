@@ -32,7 +32,7 @@ Set up beforehand: the server is running (`start.bat`), the extension is loaded,
 
 ## 5. Suggestions: what to add before or at the hackathon (ranked by impact vs. effort)
 1. **Domain-age check (≈1 h, big impact).** Most phishing domains are under 30 days old. Look up the registration date over RDAP (`https://rdap.org/domain/<domain>`) and add +25 risk when a domain is under 30 days old. Judges love a signal they can understand.
-2. **Cloud back end (≈3 h).** Today the extension talks to `127.0.0.1`. Deploy `server.py` (it's plain Python) to Render, Fly.io or a small VM so anyone can install the extension. Add an API key per install.
+2. **Cloud back end (≈3 h).** Today the extension talks to `127.0.0.1`. Deploy `server/app.py` (it's plain Python) to Render, Fly.io or a small VM so anyone can install the extension. Add an API key per install.
 3. **Privacy-preserving URL lookups (talking point, ≈3 h).** For the cloud version, send only a **hash prefix** of the address, the way Google Safe Browsing and our password check do. Then the server never learns which sites users visit. This answers the privacy question before the judges ask it.
 4. **Bank look-alike early warning (≈2 h).** Watch Certificate Transparency logs (a live feed of every new HTTPS certificate) for new domains containing `rbc`, `td`, `scotia`, `interac`, etc. That catches phishing sites *before* the first victim.
 5. **Multilingual warnings (≈1 h with LLM help).** Vancouver newcomers: Mandarin, Punjabi, Farsi, Hindi, Korean, Tagalog, Spanish. The warning screen matters most in the user's first language.
@@ -88,7 +88,7 @@ flowchart LR
 
 ## 9. Day-of checklist
 - [ ] Set `reporter_email` in `config.json` (the team's project e-mail) so auto-reporting is live.
-- [ ] Clear the demo data: back office → dismiss, or delete `shieldlib/.data/reports.db`.
+- [ ] Clear the demo data: back office → dismiss, or delete `server/shieldlib/.data/reports.db`.
 - [ ] Start the server 5 minutes early so the threat database is fresh. Check that the header shows "🟢 Protected".
 - [ ] Browser zoom at 125%, notifications off, bookmarks bar hidden, demo tabs pre-opened.
 - [ ] Backup demo video on a USB stick and in the cloud.

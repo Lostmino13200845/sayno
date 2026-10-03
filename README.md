@@ -5,21 +5,28 @@ A scam, phishing and malicious-link scanner with a private, self-updating threat
 ## Architecture
 
 ```
-server.py                 web server + API (127.0.0.1 only)
-static/index.html         user interface
-shieldlib/                core library
-  intel.py                private global threat database (auto-updates every 5 min)
-  engine.py               analysis + 0-100 danger score
-  reports.py              server-side database of suspicious / confirmed scams
-  services.py             optional reputation APIs + external abuse reporting
-  .data/   (hidden)       compressed feed cache, meta.json, reports.db
+sayno/
+├── server/
+│   ├── app.py            web server + API (127.0.0.1 only)
+│   └── shieldlib/        core library
+│       ├── intel.py      private global threat database (auto-updates every 5 min)
+│       ├── engine.py     analysis + 0-100 danger score
+│       ├── reports.py    server-side database of suspicious / confirmed scams
+│       ├── services.py   optional reputation APIs + external abuse reporting
+│       └── .data/        (hidden, gitignored) feed cache, meta.json, reports.db
+├── extension/            Chrome / Edge extension (Manifest V3)
+├── static/               website, web scanner, demo pages, assets
+├── design/ · tools/      design-system sources and sync_design.py
+├── config.example.json   copied to config.json on first start
+├── requirements.txt      (standard library only, nothing to install)
+└── start.bat / start.sh  one-command start
 ```
 
 ### Threat database (`shieldlib.intel`)
 Pulls about 730,000 known threats from 7 public sources: abuse.ch URLhaus and ThreatFox (malware); OpenPhish, Phishing Army, CERT Polska and Phishing.Database (phishing/fraud); and disposable e-mail domains.
 
 - It checks every source every **5 minutes** (`update_interval_sec`). It uses ETag / If-Modified-Since, so an unchanged feed costs one tiny 304 response, and only changed feeds are downloaded and swapped in live.
-- Feeds are stored gzip-compressed in the hidden `shieldlib/.data/` folder.
+- Feeds are stored gzip-compressed in the hidden `server/shieldlib/.data/` folder.
 - **The lists are never exposed.** The API and UI only show verdicts ("known phishing threat") and aggregate counts. Source names and entries are not served.
 
 ### Report database (`shieldlib.reports`, SQLite) - back end only
@@ -56,7 +63,7 @@ Demo pages (fictional bank): `/demo/fake-bank.html` (blocked), `/demo/shop.html`
 ## Website, tutorial & design system
 | URL | |
 |---|---|
-| `/` | Landing page with a 12-step **interactive tutorial** (practice browser, pulsing "click here" rings, live scans that are never stored or reported) |
+| `/` | Landing page with a 6-step **"Try now" demo** (one step per main feature, pulsing "click here" rings, live scans that are never stored or reported) |
 | `/tutorial` · `/tutorial#tutorial-9` | Tutorial only, full-screen or jump to a step (for presenting) |
 | `/app` | Web scanner (paste-and-scan, password breach check, safety checklist) |
 | `/design` | Living style guide: tokens, components, every extension screen and state |
@@ -64,7 +71,7 @@ Demo pages (fictional bank): `/demo/fake-bank.html` (blocked), `/demo/shop.html`
 All visual styling comes from `design/*.css`; run `py tools/sync_design.py` after editing. See **DESIGN.md**.
 
 ## Run
-Double-click `start.bat` (or run `py server.py`) and open http://127.0.0.1:8765 (website); the scanner is at `/app`.
+Double-click `start.bat` (Windows) or run `./start.sh`; or run `py server/app.py` directly. Python 3.10+ only, no installs. Then open http://127.0.0.1:8765 (website); the scanner is at `/app`.
 
 ## config.json
 | Key | Default | Meaning |

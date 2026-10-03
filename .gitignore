@@ -2,7 +2,7 @@
 config.json
 
 # Private runtime data: threat-feed cache and the report database
-shieldlib/.data/
+server/shieldlib/.data/
 reports/
 
 # Python
