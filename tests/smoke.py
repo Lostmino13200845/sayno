@@ -20,9 +20,9 @@ def free_port():
         return s.getsockname()[1]
 
 
-def request(base, path, body=None, raw=None):
+def request(base, path, body=None, raw=None, headers=None):
     data = raw if raw is not None else (json.dumps(body).encode() if body is not None else None)
-    req = urllib.request.Request(base + path, data=data, headers={"Content-Type": "application/json"})
+    req = urllib.request.Request(base + path, data=data, headers={"Content-Type": "application/json", **(headers or {})})
     try:
         with urllib.request.urlopen(req, timeout=15) as r:
             return r.status, r.read()
@@ -69,7 +69,18 @@ def main():
                      "/assets/site.css", "/assets/tokens.css"):
             code, _ = request(base, path)
             check(f"GET {path}", code == 200, f"-> {code}")
-        check("admin hidden without token", request(base, "/admin")[0] == 404)
+        with open(os.path.join(work, "config.json"), encoding="utf-8") as f:
+            token = json.load(f)["admin_token"]
+        check("admin page is only a login box (no data)", request(base, "/admin")[0] == 200
+              and b"Admin token" in request(base, "/admin")[1])
+        check("admin API refused without token", request(base, "/api/admin/items")[0] == 404)
+        check("token in the URL is NOT accepted", request(base, "/api/admin/items?token=" + token)[0] == 404
+              and request(base, "/api/admin/export?token=" + token)[0] == 404)
+        check("wrong token header refused", request(base, "/api/admin/items", headers={"X-Admin-Token": "nope"})[0] == 404)
+        check("non-ASCII token header does not crash", request(base, "/api/admin/items",
+                                                              headers={"X-Admin-Token": "café"})[0] == 404)
+        code, body = request(base, "/api/admin/items", headers={"X-Admin-Token": token})
+        check("admin API works with the header token", code == 200 and "items" in json.loads(body))
         check("path traversal refused", request(base, "/assets/../server/app.py")[0] in (403, 404))
 
         code, body = request(base, "/api/scan", {"text": "RBC: Your debit card has been temporarily locked. Verify your card "

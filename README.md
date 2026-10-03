@@ -31,7 +31,7 @@ Pulls about 730,000 known threats from 7 public sources: abuse.ch URLhaus and Th
 
 ### Report database (`shieldlib.reports`, SQLite) - back end only
 - **Auto-logged:** every link, address or message that scores >= `auto_log_threshold` (35) is recorded automatically when a user scans it.
-- **Not visible to users.** It is only shown on the private back office at `/admin?token=<admin_token>`. The token is generated on first start, saved in config.json and printed in the console; without it, the admin URLs return 404.
+- **Not visible to users.** It is only shown on the private back office at `/admin`. That page asks for the admin token (generated on first start, saved in config.json and printed in the console), keeps it only for the browser tab, and sends it in the `X-Admin-Token` header. The token is never put in a URL (URLs end up in browser history, logs and screenshots), and the admin API returns 404 without it.
 - In the back office you can **confirm** an item (it is then blocked in every future scan and reported) or **dismiss** a false alarm. You can also view the reporting log and **export JSON**.
 
 ### Automatic external reporting (back-end job)
@@ -100,10 +100,10 @@ On first start `config.json` is created from `config.example.json` and an admin 
 |---|---|---|
 | GET | `/api/status` | Protection stats (aggregate only) |
 | POST | `/api/scan` `{text, online}` | Scan, auto-log and queue reporting |
-| GET | `/admin?token=` | Back-office page |
+| GET | `/admin` | Back-office page (login box; no data without the token) |
 | GET | `/api/admin/items?status=&kind=` | Items + counts + reporting log (header `X-Admin-Token`) |
 | POST | `/api/admin/status` `{id, status}` | Confirm / dismiss (header `X-Admin-Token`) |
-| GET | `/api/admin/export?token=` | JSON export |
+| GET | `/api/admin/export?status=&kind=` | JSON export (header `X-Admin-Token`) |
 
 ## Limits
 New scam sites often appear hours before any blocklist lists them; the heuristics cover that gap. A "safe" result means "no known red flags", not a guarantee. Hiding the `.data` folder keeps the lists out of the UI and API, but anyone with access to this computer's files can still read them.

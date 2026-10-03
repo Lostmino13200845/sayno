@@ -82,9 +82,11 @@ class Handler(BaseHTTPRequestHandler):
                 and (origin is None or origin.split("//", 1)[-1] in ok_hosts
                      or origin.startswith(("chrome-extension://", "moz-extension://", "extension://"))))
 
-    def _admin(self, q):
-        token = self.headers.get("X-Admin-Token") or q.get("token", "")
-        return hmac.compare_digest(token, CFG["admin_token"])
+    def _admin(self):
+        # The token travels only in the X-Admin-Token header, never in a URL (URLs end up in browser
+        # history, logs and screenshots). compare_digest on bytes also copes with non-ASCII input.
+        token = (self.headers.get("X-Admin-Token") or "").encode("utf-8", "replace")
+        return hmac.compare_digest(token, CFG["admin_token"].encode())
 
     def do_GET(self):
         if not self._same_origin():
@@ -111,11 +113,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, f.read(), "text/html; charset=utf-8")
 
         # ---- back office (admin token required; unknown paths look like 404s)
-        if u.path.startswith(("/admin", "/api/admin/")) and not self._admin(q):
-            return self._send(404, {"error": "not found"})
-        if u.path == "/admin":
+        if u.path == "/admin":  # the page only holds a login box; all data needs the header token
             with open(os.path.join(STATIC, "admin.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
+        if u.path.startswith("/api/admin/") and not self._admin():
+            return self._send(404, {"error": "not found"})
         if u.path == "/api/admin/items":
             return self._send(200, {"items": STORE.list(q.get("status"), q.get("kind"), q.get("limit", 200)),
                                     "counts": STORE.counts(),
@@ -156,7 +158,7 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"error": "prefix must be 5 hex chars"})
                 return self._send(200, {"range": pwned_range(prefix)})
             if self.path == "/api/admin/status":
-                if not self._admin({}):
+                if not self._admin():
                     return self._send(404, {"error": "not found"})
                 if body.get("status") not in ("auto", "confirmed", "dismissed"):
                     return self._send(400, {"error": "bad status"})
@@ -200,7 +202,8 @@ if __name__ == "__main__":
     url = f"http://127.0.0.1:{PORT}"
     srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     print(f"SAYNO running at {url}  (updates every {INTEL.interval // 60} min, Ctrl+C to stop)")
-    print(f"Admin (keep private): {url}/admin?token={CFG['admin_token']}", flush=True)
+    print(f"Admin page: {url}/admin", flush=True)
+    print(f"Admin token (keep private, paste it into the login box): {CFG['admin_token']}", flush=True)
     if not CFG.get("reporter_email"):
         print("NOTE: auto-reporting is waiting for 'reporter_email' in config.json (required by Netcraft).",
               flush=True)

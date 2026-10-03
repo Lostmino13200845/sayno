@@ -31,7 +31,20 @@ code{word-break:break-all}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="login" hidden>
+  <h1>🛡️ SAYNO · Back office</h1>
+  <div class="card">
+    <form id="loginForm">
+      <h2><label for="tok">Admin token</label></h2>
+      <p class="muted">Paste the token printed in the SAYNO server window (also saved as <code>admin_token</code> in config.json).
+        It is kept only for this browser tab and is never put in the address bar.</p>
+      <div class="row"><input id="tok" type="password" autocomplete="off" style="min-width:280px;flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit">
+        <button class="btn" type="submit">Open back office</button></div>
+      <p id="loginErr" class="bad" role="alert"></p>
+    </form>
+  </div>
+</div>
+<div class="wrap" id="app" hidden>
   <h1>🛡️ SAYNO · Back office</h1>
   <div class="muted">Private page — suspicious items collected from user scans and the automatic reporting log.</div>
   <div id="warn"></div>
@@ -42,7 +55,8 @@ code{word-break:break-all}
     <div class="row">
       <select id="fStatus"><option value="">All statuses</option><option value="auto">Auto-logged</option><option value="confirmed">Confirmed</option><option value="dismissed">Dismissed</option></select>
       <select id="fKind"><option value="">All types</option><option value="url">Links</option><option value="email">E-mail addresses</option><option value="text">Messages</option></select>
-      <a class="btn" id="exportBtn" style="margin-left:auto">Export JSON</a>
+      <button class="btn" id="exportBtn" style="margin-left:auto">Export JSON</button>
+      <button class="btn" id="logoutBtn">Lock</button>
     </div>
     <div class="scroll"><table id="items"></table></div>
   </div>
@@ -55,18 +69,24 @@ code{word-break:break-all}
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const TOKEN = new URLSearchParams(location.search).get('token') || '';
+// The token lives only in sessionStorage (this tab). It is never read from or written to the URL.
+let TOKEN = '';
+try { TOKEN = sessionStorage.getItem('sayno_admin') || ''; } catch {}
+if (location.search.includes('token=')) history.replaceState(null, '', location.pathname);  // old links: scrub it
 const ago = t => { const s = Math.round(Date.now()/1000 - t);
   return s < 60 ? 'just now' : s < 3600 ? `${Math.round(s/60)} min ago` : s < 86400 ? `${Math.round(s/3600)} h ago` : `${Math.round(s/86400)} d ago`; };
 async function api(path, body){
+  const r = await raw(path, body);
+  return r.json();
+}
+async function raw(path, body){
   const r = await fetch(path, {method: body ? 'POST' : 'GET', headers: {'X-Admin-Token': TOKEN, 'Content-Type': 'application/json'},
                               body: body ? JSON.stringify(body) : undefined});
-  if (!r.ok) throw new Error((await r.json()).error || r.status);
-  return r.json();
+  if (!r.ok) { const e = new Error(r.status === 404 ? 'Wrong or missing token' : 'Server error ' + r.status); e.status = r.status; throw e; }
+  return r;
 }
 async function load(){
   const qs = new URLSearchParams({status: $('#fStatus').value, kind: $('#fKind').value});
-  $('#exportBtn').href = '/api/admin/export?' + qs + '&token=' + encodeURIComponent(TOKEN);
   const d = await api('/api/admin/items?' + qs);
   const c = d.counts, sent = d.history.filter(h => h.ok).length, failed = d.history.filter(h => !h.ok).length;
   $('#stats').innerHTML = [['Auto-logged', c.auto||0], ['Confirmed', c.confirmed||0], ['Dismissed', c.dismissed||0],
@@ -93,8 +113,34 @@ async function load(){
     : '<tr><td class="muted">No reports sent yet.</td></tr>';
 }
 $('#fStatus').onchange = $('#fKind').onchange = load;
-load().catch(e => document.body.innerHTML = `<p style="padding:24px">${esc(e.message)}</p>`);
-setInterval(() => load().catch(() => {}), 30000);
+
+// Export: fetched with the header (no token in a link), then saved from memory.
+$('#exportBtn').onclick = async () => {
+  const qs = new URLSearchParams({status: $('#fStatus').value, kind: $('#fKind').value});
+  try {
+    const blob = await (await raw('/api/admin/export?' + qs)).blob();
+    const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: 'sayno-export.json'});
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  } catch (e) { alert(e.message); }
+};
+
+function showLogin(msg){
+  TOKEN = ''; try { sessionStorage.removeItem('sayno_admin'); } catch {}
+  $('#app').hidden = true; $('#login').hidden = false; $('#loginErr').textContent = msg || ''; $('#tok').value = ''; $('#tok').focus();
+}
+async function start(){
+  try { await load(); $('#login').hidden = true; $('#app').hidden = false; }
+  catch (e) { showLogin(e.status === 404 ? (TOKEN ? 'That token is not correct.' : '') : e.message); }
+}
+$('#loginForm').onsubmit = e => {
+  e.preventDefault();
+  TOKEN = $('#tok').value.trim();
+  try { sessionStorage.setItem('sayno_admin', TOKEN); } catch {}
+  start();
+};
+$('#logoutBtn').onclick = () => showLogin('');
+setInterval(() => { if (!$('#app').hidden) load().catch(e => { if (e.status === 404) showLogin('Session ended. Enter the token again.'); }); }, 30000);
+if (TOKEN) start(); else showLogin('');
 </script>
 </body>
 </html>

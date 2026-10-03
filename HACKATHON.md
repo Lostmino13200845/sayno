@@ -25,7 +25,7 @@ Set up beforehand: the server is running (`start.bat`), the extension is loaded,
 2. **(0:40) The mom message:** check "Hi sweetie, dinner on Sunday". It scores **0 / safe**. Point out that false alarms matter as much as detections.
 3. **(1:00) The trap:** open `/demo/fake-bank.html`. **Card Guard blocks the page:** "It asks for your PIN… bank-style pressure… not your bank's website." This is the wow moment, so pause here.
 4. **(1:40) No false alarm:** open `/demo/shop.html`, a normal checkout, and type test card 4242 4242 4242 4242. No block, only a gentle reminder. "We protect without breaking shopping."
-5. **(2:10) Community effect:** open `/admin?token=…` to show the collected items and the automatic reporting log. "Every user who meets a scam protects every other user."
+5. **(2:10) Community effect:** open `/admin`, paste the admin token and show the collected items and the automatic reporting log. "Every user who meets a scam protects every other user."
 6. **(2:40) Close:** "700k threats, updated every 5 minutes. Card data never leaves the device. Built for the people scammers target first."
 
 **Backup plan:** record a screen video of this demo the night before. Venue Wi-Fi fails. The threat database runs from its local cache, so the demo also works offline.
