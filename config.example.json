@@ -3,7 +3,7 @@
   "update_interval_sec": 300,
   "auto_log": true,
   "auto_log_threshold": 35,
-  "store_message_text": true,
+  "store_message_text": false,
   "auto_report": true,
   "auto_report_threshold": 60,
   "reporter_email": "",

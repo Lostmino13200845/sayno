@@ -3,17 +3,27 @@
 const API = "http://127.0.0.1:8765";
 const cache = new Map();          // host+path -> {result, at}
 const TTL = 10 * 60 * 1000;
-const tabVerdicts = new Map();    // tabId -> result
+const tabVerdicts = new Map();    // tabId -> result (also mirrored in chrome.storage.session)
+const saveVerdict = (tabId, result) => {
+  if (result) tabVerdicts.set(tabId, result); else tabVerdicts.delete(tabId);
+  const key = "v" + tabId;
+  (result ? chrome.storage.session.set({ [key]: result }) : chrome.storage.session.remove(key)).catch(() => {});
+};
+async function loadVerdict(tabId) {
+  if (tabVerdicts.has(tabId)) return tabVerdicts.get(tabId);
+  const o = await chrome.storage.session.get("v" + tabId).catch(() => ({}));
+  return o["v" + tabId] || null;
+}
 
 const BADGE = {
   safe: ["", "#1a8f4c"], low: ["", "#6b9e1f"], medium: ["!", "#c98a00"],
   high: ["!!", "#d9541e"], critical: ["✖", "#c11b2e"], offline: ["off", "#777"],
 };
 
-async function scan(text) {
+async function scan(text, online = true) {
   const r = await fetch(API + "/api/scan", {
     method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, online: true }),
+    body: JSON.stringify({ text, online }),
   });
   if (!r.ok) throw new Error("HTTP " + r.status);
   return r.json();
@@ -24,7 +34,9 @@ async function checkUrl(url) {
   const key = u.host + u.pathname;
   const hit = cache.get(key);
   if (hit && Date.now() - hit.at < TTL) return hit.result;
-  const result = await scan(url);
+  // Privacy: send only scheme + host + path. Query strings and #fragments often hold tokens
+  // (password resets, sign-in codes), and browsing checks never go to third-party lookups.
+  const result = await scan(u.origin + u.pathname, false);
   cache.set(key, { result, at: Date.now() });
   return result;
 }
@@ -43,18 +55,18 @@ const PRIVATE_HOST = /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|192\.168\
 async function assess(tabId, url) {
   if (!/^https?:/.test(url)) return;
   if (PRIVATE_HOST.test(new URL(url).hostname)) {
-    tabVerdicts.delete(tabId);
+    saveVerdict(tabId, null);
     chrome.action.setBadgeText({ tabId, text: "" });
     return;
   }
   let result = null;
   try {
     result = await checkUrl(url);
-    tabVerdicts.set(tabId, result);
+    saveVerdict(tabId, result);
     setBadge(tabId, result.level, result.score);
     chrome.tabs.sendMessage(tabId, { type: "verdict", result }).catch(() => {});
   } catch {
-    tabVerdicts.delete(tabId);
+    saveVerdict(tabId, null);
     setBadge(tabId, "offline", 0);
   }
   checkSecurity(tabId, url, result);  // the https check works even when the server is offline
@@ -123,10 +135,16 @@ function attachNotificationListeners() {
 }
 attachNotificationListeners();
 
+// Check on page load AND on in-page navigation (single-page apps change the URL without a reload).
+const lastAssessed = new Map();   // tabId -> "url@time", so one navigation is not checked twice
 chrome.tabs.onUpdated.addListener((tabId, info, tab) => {
-  if (info.status === "loading" && tab.url) assess(tabId, tab.url);
+  if (!tab.url || !(info.status === "loading" || info.url)) return;
+  const prev = lastAssessed.get(tabId);
+  if (prev && prev.url === tab.url && Date.now() - prev.at < 3000) return;
+  lastAssessed.set(tabId, { url: tab.url, at: Date.now() });
+  assess(tabId, tab.url);
 });
-chrome.tabs.onRemoved.addListener(tabId => tabVerdicts.delete(tabId));
+chrome.tabs.onRemoved.addListener(tabId => { saveVerdict(tabId, null); lastAssessed.delete(tabId); });
 
 // ---- right-click: scan selected text / a link
 chrome.runtime.onInstalled.addListener(details => {
@@ -147,8 +165,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 // ---- messages from content script / popup
 chrome.runtime.onMessage.addListener((msg, sender, reply) => {
   if (msg.type === "getVerdict") {
-    const id = msg.tabId ?? sender.tab?.id;
-    reply(tabVerdicts.get(id) || null);
+    loadVerdict(msg.tabId ?? sender.tab?.id).then(reply);
+    return true;
   } else if (msg.type === "scan") {
     scan(msg.text).then(r => reply({ result: r }), e => reply({ error: e.message }));
     return true;
@@ -172,6 +190,7 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
   } else if (msg.type === "cardGuard" && sender.tab) {
     // The content script blocked a card form. Report the page URL (never the card data) so
     // the back end logs it - and reports it if it scores high enough.
-    scan(`${msg.reason}\n${sender.tab.url}`).catch(() => {});
+    const pu = new URL(sender.tab.url);  // no query string / fragment: they can hold private tokens
+    scan(`${msg.reason}\n${pu.origin + pu.pathname}`, false).catch(() => {});
   }
 });

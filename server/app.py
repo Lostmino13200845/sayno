@@ -62,10 +62,16 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def _json(self):
-        n = int(self.headers.get("Content-Length") or 0)
-        if n > MAX_BODY:
-            raise ValueError("Input too large")
-        return json.loads(self.rfile.read(n) or b"{}")
+        try:
+            n = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            raise ValueError("Bad request")
+        if n < 0 or n > MAX_BODY:
+            raise ValueError("Input too large" if n > 0 else "Bad request")
+        body = json.loads(self.rfile.read(n) or b"{}")
+        if not isinstance(body, dict):
+            raise ValueError("Bad request")
+        return body
 
     def _same_origin(self):
         # Block other websites from driving this local API (CSRF / DNS rebinding).
@@ -135,7 +141,7 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(200, result)
                 if CFG.get("auto_log", True):
                     record_scan(result, text, STORE, CFG.get("auto_log_threshold", 35),
-                                CFG.get("store_message_text", True), threshold)
+                                CFG.get("store_message_text", False), threshold)
                 result["reported"] = sum(1 for u in result["urls"] if CFG.get("auto_report", True)
                                          and CFG.get("auto_log", True) and is_reportable(u, result, threshold)
                                          and not INTEL.lookup_url(u["url"]))
@@ -156,8 +162,11 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"error": "bad status"})
                 STORE.set_status(int(body["id"]), body["status"])
                 return self._send(200, {"ok": True})
-        except Exception as e:
-            return self._send(500, {"error": str(e)})
+        except ValueError as e:  # bad input from the client: safe to explain
+            return self._send(400, {"error": str(e) if str(e) in ("Bad request", "Input too large") else "Bad request"})
+        except Exception as e:  # anything else: log here, never show internals to the client
+            log(f"[server] error on {self.path}: {e!r}")
+            return self._send(500, {"error": "Internal error"})
         self._send(404, {"error": "not found"})
 
 

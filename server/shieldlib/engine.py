@@ -75,8 +75,8 @@ BRANDS = {
     "office365": ["office.com", "microsoft.com", "office365.com"],
     "outlook": ["outlook.com", "live.com", "microsoft.com"],
     "amazon": ["amazon.com", "amazon.co.uk", "amazon.de", "amazon.fr", "amazon.ca", "amazon.in", "amazon.it",
-               "amazon.es", "amazon.co.jp", "amazon.com.au", "amazonaws.com", "amazon.jobs"],
-    "google": ["google.com", "gmail.com", "youtube.com", "googleusercontent.com", "goo.gl"],
+               "amazon.es", "amazon.co.jp", "amazon.com.au", "amazon.jobs"],  # not amazonaws.com: anyone can rent a bucket there
+    "google": ["google.com", "gmail.com", "youtube.com"],  # not googleusercontent.com / goo.gl: user content and a shortener
     "gmail": ["gmail.com", "google.com"],
     "netflix": ["netflix.com"],
     "facebook": ["facebook.com", "fb.com", "meta.com", "facebookmail.com"],
@@ -136,7 +136,18 @@ SUSPICIOUS_WORDS = re.compile(r"(login|log-in|signin|sign-in|verify|verification
 TWO_LEVEL_SUFFIXES = {"co.uk", "org.uk", "gov.uk", "ac.uk", "com.au", "net.au", "co.jp", "co.in", "com.br",
                       "co.za", "com.mx", "com.tr", "co.nz", "com.cn", "com.sg", "co.kr", "com.ar"}
 HOMOGLYPHS = str.maketrans({"0": "o", "1": "l", "3": "e", "4": "a", "5": "s", "7": "t", "8": "b", "@": "a",
-                            "$": "s", "!": "i"})
+                            "$": "s", "!": "i",
+                            # Cyrillic / Greek letters that look like Latin ones (e.g. "раураl" is not "paypal")
+                            "а": "a", "в": "b", "е": "e", "ё": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p",
+                            "с": "c", "т": "t", "у": "y", "х": "x", "і": "i", "ї": "i", "ј": "j", "ѕ": "s", "ԁ": "d",
+                            "ɡ": "g", "ο": "o", "α": "a", "ν": "v", "ρ": "p", "τ": "t", "υ": "u", "ι": "i", "κ": "k"})
+# Places anyone can publish a page under their own subdomain: a brand name here is not the brand.
+FREE_HOSTING = ("amazonaws.com", "googleusercontent.com", "azurewebsites.net", "web.core.windows.net",
+                "blob.core.windows.net", "github.io", "weebly.com", "wixsite.com", "blogspot.com", "web.app",
+                "firebaseapp.com", "pages.dev", "netlify.app", "vercel.app", "glitch.me", "herokuapp.com",
+                "000webhostapp.com", "sites.google.com", "r2.dev", "workers.dev")
+# Dotted/decimal/hex/octal IPv4 spellings that browsers accept, e.g. 3232235777, 0xC0A80101, 0300.0250.0.1
+IP_TRICK_RE = re.compile(r"(0x[0-9a-f]+|\d+)(\.(0x[0-9a-f]+|\d+)){0,3}", re.I)
 
 LEVELS = [(85, "critical"), (60, "high"), (35, "medium"), (15, "low"), (0, "safe")]
 
@@ -156,7 +167,9 @@ def is_official(host, brand):
 def brand_tokens(text):
     """Brands whose name appears as a token (split on . - _) in text; also after homoglyph folding."""
     raw = re.split(r"[.\-_+]", text.lower())
-    folded = [t.translate(HOMOGLYPHS).replace("rn", "m").replace("vv", "w") for t in raw]
+    # A capital "I" is easily mistaken for a lowercase "l" (paypaI.com), so fold it before lowercasing.
+    folded = [t.translate(HOMOGLYPHS).replace("rn", "m").replace("vv", "w")
+              for t in re.split(r"[.\-_+]", text.replace("I", "l").lower())]
     found = {}
 
     def hit(tokens, brand):
@@ -238,8 +251,9 @@ def analyze_url(url, intel, store=None):
         ipaddress.ip_address(host)
         add(22, "Uses a raw IP address instead of a domain name", "danger")
     except ValueError:
-        pass
-    if "xn--" in host:
+        if IP_TRICK_RE.fullmatch(host):
+            add(30, "Disguised IP address (number or hex form) instead of a domain name", "danger")
+    if "xn--" in host or any(ord(ch) > 127 for ch in host):
         add(22, "Punycode / internationalized domain (possible look-alike characters)", "danger")
     if "@" in parts.netloc:
         add(22, "Contains '@' before the host - the real destination is hidden", "danger")
@@ -267,13 +281,17 @@ def analyze_url(url, intel, store=None):
     if re.search(r"\.(exe|scr|apk|msi|bat|cmd|ps1|sh|dll|js|vbs|jar|iso|img|lnk|hta)(\?|$)", parts.path or "", re.I):
         add(25, "Link points directly to an executable / installer file", "danger")
 
-    for brand, kind in brand_tokens(host).items():
+    raw_host = parts.netloc.rsplit("@", 1)[-1].rsplit(":", 1)[0]  # keeps letter case, so "paypaI" (capital i) is visible
+    on_free_hosting = any(host == d or host.endswith("." + d) for d in FREE_HOSTING)
+    for brand, kind in brand_tokens(raw_host).items():
         if not is_official(host, brand):
             if kind == "lookalike":
-                add(30, f"Look-alike of '{brand}' (character substitution) on a non-{brand} domain", "danger",
+                add(36, f"Look-alike of '{brand}' (character substitution) on a non-{brand} domain", "danger",
                     brand=brand, lookalike=True)
             else:
                 add(24, f"Mentions '{brand}' but is not an official {brand} domain", "danger", brand=brand)
+            if on_free_hosting:
+                add(14, f"Uses the name '{brand}' on a free / shared hosting domain, not the real company", "danger")
 
     score = min(100, sum(f["weight"] for f in findings))
     return {"url": url, "host": host, "score": score, "level": level_for(score), "findings": findings}

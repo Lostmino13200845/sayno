@@ -87,7 +87,7 @@ On first start `config.json` is created from `config.example.json` and an admin 
 | `update_interval_sec` | 300 | Threat database update interval |
 | `auto_log` | true | Record suspicious scans in the report database |
 | `auto_log_threshold` | 35 | Minimum score to auto-log |
-| `store_message_text` | true | Store full message text (false = fingerprint only, for privacy) |
+| `store_message_text` | false | Store full message text (default false = fingerprint only, for privacy) |
 | `auto_report` | true | Back-end reporting to Netcraft / URLhaus |
 | `auto_report_threshold` | 60 | Risk needed for automatic reporting |
 | `reporter_email` | "" | **Required** for Netcraft auto-reporting |
