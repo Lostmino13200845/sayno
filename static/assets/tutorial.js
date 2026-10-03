@@ -52,6 +52,13 @@
       <ul class="ss-findings">${f.map(x => `<li class="${x.severity === "danger" ? "is-danger" : ""}">${esc(x.message)}</li>`).join("")
         || '<li class="is-ok">No warning signs found.</li>'}</ul>`;
   }
+  // "This site" shows the rating of the page itself. A safe page says so in words (a bare "SAFE 0/100"
+  // above a scam warning reads like a contradiction); the message result below is rated separately.
+  function renderSite(r) {
+    if (r.level !== "safe" && r.level !== "low") return renderResult(r);
+    return `<span class="ss-level ss-level--safe">This page looks safe</span>
+      <p class="ss-muted">${S.scanned ? "This rates the page you are on, not the message below." : "No warning signs found on this page."}</p>`;
+  }
   const BADGE = { safe: null, low: null, medium: ["!", "medium"], high: ["!!", "high"], critical: ["✖", "critical"] };
   function setBadge(level) {
     const b = BADGE[level];
@@ -68,7 +75,7 @@
     $("#mPanel").hidden = !S.panel;
     $("#mVeil").hidden = !S.veil;
     $("#mToast").hidden = !S.toast;
-    $("#pSite").innerHTML = `<div class="pp-host">${views[S.view].split("/")[0]}</div>` + renderResult(S.siteResult);
+    $("#pSite").innerHTML = `<div class="pp-host">${views[S.view].split("/")[0]}</div>` + renderSite(S.siteResult);
     $("#pTxt").value = S.pasted ? RBC_TEXT : "";
     $("#pOut").innerHTML = S.scanned ? renderResult(S.scanned) : "";
     $("#pBankRbc input").checked = S.bankRbc;
