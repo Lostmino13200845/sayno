@@ -33,6 +33,12 @@ async function scan(text, online = true) {
   return r.json();
 }
 
+// A refused connection surfaces as "Failed to fetch": say what it means and what to do about it.
+function friendlyError(e) {
+  return e instanceof TypeError ? "SAYNO server is not running. Start it (start.bat on Windows, ./start.sh on Mac/Linux), then try again."
+    : "SAYNO server problem (" + e.message + "). Try again.";
+}
+
 async function checkUrl(url) {
   const u = new URL(url);
   const key = u.host + u.pathname;
@@ -162,7 +168,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const result = await scan(text);
     chrome.tabs.sendMessage(tab.id, { type: "scanResult", result, text });
   } catch {
-    chrome.tabs.sendMessage(tab.id, { type: "scanResult", error: "SAYNO server is not running." });
+    chrome.tabs.sendMessage(tab.id, { type: "scanResult", error: "SAYNO server is not running. Start it (start.bat on Windows, ./start.sh on Mac/Linux), then try again." });
   }
 });
 
@@ -172,7 +178,7 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
     loadVerdict(msg.tabId ?? sender.tab?.id).then(reply);
     return true;
   } else if (msg.type === "scan") {
-    scan(msg.text).then(r => reply({ result: r }), e => reply({ error: e.message }));
+    scan(msg.text).then(r => reply({ result: r }), e => reply({ error: friendlyError(e) }));
     return true;
   } else if (msg.type === "status") {
     api("/api/status").then(u => fetch(u)).then(r => r.json()).then(reply, () => reply(null));

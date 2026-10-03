@@ -160,7 +160,11 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(404, {"error": "not found"})
                 if body.get("status") not in ("auto", "confirmed", "dismissed"):
                     return self._send(400, {"error": "bad status"})
-                STORE.set_status(int(body["id"]), body["status"])
+                try:
+                    item_id = int(body["id"])
+                except (KeyError, TypeError, ValueError):
+                    return self._send(400, {"error": "bad id"})
+                STORE.set_status(item_id, body["status"])
                 return self._send(200, {"ok": True})
         except ValueError as e:  # bad input from the client: safe to explain
             return self._send(400, {"error": str(e) if str(e) in ("Bad request", "Input too large") else "Bad request"})

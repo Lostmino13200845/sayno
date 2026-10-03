@@ -10,11 +10,13 @@ from .intel import host_of
 # ------------------------------------------------------------------ patterns
 URL_RE = re.compile(
     r"""(?:(?:https?|hxxps?)://|www\.)[^\s<>"'`]+"""
-    r"""|\b(?:[a-z0-9-]+\.)+(?:com|net|org|info|biz|xyz|top|club|online|site|shop|live|"""
+    # Bounded repeats ({1,63} per label, at most 10 labels): an unbounded (...+)+ here let a few thousand
+    # characters like "a.a.a.a." keep the server busy for minutes (regex backtracking).
+    r"""|\b(?:[a-z0-9-]{1,63}\.){1,10}(?:com|net|org|info|biz|xyz|top|club|online|site|shop|live|"""
     r"""click|link|icu|buzz|zip|mov|ru|cn|tk|ml|ga|cf|gq|io|co|me|app|ly|gl)(?:/[^\s<>"'`]*)?""",
     re.I,
 )
-EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}\b")
+EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]{1,64}@(?:[A-Za-z0-9-]{1,63}\.){1,10}[A-Za-z]{2,24}\b")
 
 # (category, weight, message, regex)
 TEXT_RULES = [

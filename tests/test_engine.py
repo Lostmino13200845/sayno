@@ -2,6 +2,7 @@
 Run:  python -m unittest discover -s tests -v     (from the project root; needs no network)"""
 import os
 import sys
+import time
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "server"))
@@ -107,6 +108,28 @@ class BlockListLookups(unittest.TestCase):
     def test_small_site_with_a_bad_link_is_still_flagged_as_a_whole(self):
         intel = self.make_intel()
         self.assertTrue(intel.lookup_url("https://badsite.example/other/page"))
+
+
+class HostileInput(unittest.TestCase):
+    """Inputs that once kept the server busy for minutes (regex backtracking) must stay fast."""
+
+    def assert_fast(self, text, limit=3.0):
+        start = time.time()
+        analyze(text, NoIntel())
+        self.assertLess(time.time() - start, limit)
+
+    def test_dotted_labels(self):
+        self.assert_fast("a." * 20000)
+
+    def test_email_like_runs(self):
+        self.assert_fast("a" * 100000)
+        self.assert_fast("@" * 50000)
+        self.assert_fast("a.b@" * 20000)
+
+    def test_odd_hosts_do_not_crash(self):
+        for text in ["http://[bad/x", "http://... http://.com", "http://a.com:99999/x", "\x00\x00 pin", ""]:
+            with self.subTest(text=text):
+                analyze(text, NoIntel())
 
 
 class Reporting(unittest.TestCase):
