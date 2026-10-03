@@ -34,6 +34,24 @@ _SOURCES = {
 }
 
 
+# Big shared platforms host millions of innocent pages next to the occasional bad file. For these, a
+# bad link on the site must not condemn the whole site: only an exact-link match counts.
+SHARED_HOSTS = (
+    "github.com", "githubusercontent.com", "github.io", "gitlab.com", "bitbucket.org",
+    "google.com", "googleusercontent.com", "googleapis.com", "gstatic.com", "withgoogle.com", "appspot.com",
+    "dropbox.com", "dropboxusercontent.com", "box.com", "mediafire.com", "mega.nz", "wetransfer.com",
+    "discord.com", "discordapp.com", "discordapp.net", "telegram.org", "t.me",
+    "microsoft.com", "live.com", "sharepoint.com", "onedrive.com", "1drv.ms", "windows.net", "azurewebsites.net",
+    "amazonaws.com", "cloudfront.net", "apple.com", "icloud.com", "notion.so", "wixsite.com", "weebly.com",
+    "wordpress.com", "blogspot.com", "medium.com", "reddit.com", "twitter.com", "x.com", "facebook.com",
+    "youtube.com", "vimeo.com", "archive.org", "sourceforge.net", "npmjs.com", "pypi.org",
+)
+
+
+def is_shared_host(host):
+    return any(host == d or host.endswith("." + d) for d in SHARED_HOSTS)
+
+
 def normalize_url(url):
     url = url.strip().rstrip(".,;:!?)]}>'\"")
     try:
@@ -185,7 +203,7 @@ class ThreatIntel:
                     continue
                 if n in d["urls"]:
                     hits.append((_SOURCES[name][2], "exact link"))
-                elif host in d["hosts"]:
+                elif host in d["hosts"] and not is_shared_host(host):
                     hits.append((_SOURCES[name][2], f"site hosts {d['hosts'][host]} known-bad link(s)"))
             dh = self._domain_hit(host)
             if dh:

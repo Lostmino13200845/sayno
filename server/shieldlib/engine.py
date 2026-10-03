@@ -218,8 +218,8 @@ def _history(store, kind, value, add):
 def analyze_url(url, intel, store=None):
     findings = []
 
-    def add(weight, msg, sev="warn"):
-        findings.append({"weight": weight, "message": msg, "severity": sev})
+    def add(weight, msg, sev="warn", **extra):
+        findings.append({"weight": weight, "message": msg, "severity": sev, **extra})
 
     full = url if re.match(r"^[a-z]+://", url, re.I) else "http://" + url
     try:
@@ -270,9 +270,10 @@ def analyze_url(url, intel, store=None):
     for brand, kind in brand_tokens(host).items():
         if not is_official(host, brand):
             if kind == "lookalike":
-                add(30, f"Look-alike of '{brand}' (character substitution) on a non-{brand} domain", "danger")
+                add(30, f"Look-alike of '{brand}' (character substitution) on a non-{brand} domain", "danger",
+                    brand=brand, lookalike=True)
             else:
-                add(24, f"Mentions '{brand}' but is not an official {brand} domain", "danger")
+                add(24, f"Mentions '{brand}' but is not an official {brand} domain", "danger", brand=brand)
 
     score = min(100, sum(f["weight"] for f in findings))
     return {"url": url, "host": host, "score": score, "level": level_for(score), "findings": findings}
@@ -281,8 +282,8 @@ def analyze_url(url, intel, store=None):
 def analyze_email(addr, intel, store=None):
     findings = []
 
-    def add(weight, msg, sev="warn"):
-        findings.append({"weight": weight, "message": msg, "severity": sev})
+    def add(weight, msg, sev="warn", **extra):
+        findings.append({"weight": weight, "message": msg, "severity": sev, **extra})
 
     local, domain = addr.split("@", 1)
     info = intel.lookup_email_domain(domain)
@@ -298,9 +299,9 @@ def analyze_email(addr, intel, store=None):
         if domain in FREE_MAIL:
             add(22, f"Claims to be '{brand}' but uses free webmail ({domain})", "danger")
         elif kind == "lookalike":
-            add(30, f"Look-alike of '{brand}' in the address", "danger")
+            add(30, f"Look-alike of '{brand}' in the address", "danger", brand=brand, lookalike=True)
         else:
-            add(20, f"Mentions '{brand}' but domain is not official", "danger")
+            add(20, f"Mentions '{brand}' but domain is not official", "danger", brand=brand)
     tld = domain.rsplit(".", 1)[-1]
     if tld in RISKY_TLDS:
         add(8, f"Top-level domain '.{tld}' is heavily abused")
@@ -334,6 +335,23 @@ def analyze(text, intel, store=None, online=None):
     url_results = [analyze_url(u, intel, store) for u in urls]
     email_results = [analyze_email(e, intel, store) for e in emails]
 
+    # Bank-phishing shape: a link or sender that imitates a brand, in a message that pressures you
+    # (urgency / threats / requests for data) and names that brand or uses a look-alike spelling.
+    impersonated = None
+    if matched & {"urgency", "threat", "credentials", "card_request", "etransfer", "new_account", "payment"}:
+        for r in url_results + email_results:
+            for f in r["findings"]:
+                b = f.get("brand")
+                if b and (f.get("lookalike") or re.search(r"\b" + re.escape(b) + r"\b", text, re.I)):
+                    impersonated = b
+                    break
+            if impersonated:
+                break
+    if impersonated:
+        text_findings.append({"weight": 20, "severity": "danger",
+                              "message": f"A link or sender imitates '{impersonated}' while the message pushes you to act "
+                                         "(typical bank-phishing pattern)"})
+
     if online:
         online.enrich(url_results, email_results)
 
@@ -345,6 +363,8 @@ def analyze(text, intel, store=None, online=None):
     # Overall: the worst single indicator dominates, others add on with diminishing weight.
     parts = sorted([text_score, worst_item], reverse=True)
     overall = min(100, round(parts[0] + 0.35 * parts[1]))
+    if impersonated:
+        overall = max(overall, 70)  # never leave this pattern at "medium"
 
     return {
         "score": overall,

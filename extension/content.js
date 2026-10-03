@@ -36,9 +36,12 @@
   }
 
   const allBankDomains = () => Object.values(SS_BANKS).flatMap(b => b.domains);
+  // Once the user picks their bank(s), only those banks are trusted with a card.
+  // Until they pick one, every listed bank is trusted so a first-time user's own bank isn't blocked.
   function trustedHost() {
     const mine = settings.myBanks.flatMap(k => SS_BANKS[k]?.domains || []);
-    return ssHostMatches(host, [...mine, ...allBankDomains(), ...SS_PAYMENT_PROCESSORS]);
+    const banks = mine.length ? mine : allBankDomains();
+    return ssHostMatches(host, [...banks, ...SS_PAYMENT_PROCESSORS]);
   }
 
   function luhn(num) {
