@@ -265,7 +265,15 @@
   const deep = location.hash.match(/^#tutorial-(\d+)$/);
   // /tutorial = the tutorial on its own (full-screen for presenting or embedding)
   const only = /\/tutorial\/?$/.test(location.pathname);
-  if (only) document.body.classList.add("tut-only");
+  if (only) {
+    document.body.classList.add("tut-only");
+    if (!document.querySelector("h1")) {  // the stand-alone tutorial hides the page hero: keep a heading for screen readers
+      const h = document.createElement("h1");
+      h.className = "sr-only";
+      h.textContent = "SAYNO practice tutorial";
+      document.body.prepend(h);
+    }
+  }
   draw();
   if (deep) {
     if (!only) document.getElementById("tutorial").scrollIntoView({ behavior: "instant" });

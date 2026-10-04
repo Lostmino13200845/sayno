@@ -22,7 +22,7 @@
 .ss-btn:disabled { opacity: .5; cursor: default; }
 .ss-btn--ghost { background: transparent; color: var(--ss-ink); border-color: var(--ss-line); }
 .ss-btn--ghost:hover { background: var(--ss-surface-2); }
-.ss-btn--danger { background: var(--ss-critical); color: #fff; }
+.ss-btn--danger { background: var(--ss-critical); color: var(--ss-on-critical); }
 .ss-btn--danger:hover { background: var(--ss-critical); filter: brightness(.92); }
 .ss-btn--link { background: none; color: var(--ss-ink-muted); padding: 11px 4px; text-decoration: underline; font-weight: var(--ss-weight-regular); }
 .ss-btn--link:hover { background: none; color: var(--ss-ink); }
@@ -34,11 +34,11 @@
   font: var(--ss-weight-bold) var(--ss-text-xs)/1.4 var(--ss-font); text-transform: uppercase; letter-spacing: .04em;
   color: #fff; background: var(--ss-offline);
 }
-.ss-level--safe { background: var(--ss-safe); }
-.ss-level--low { background: var(--ss-low); }
-.ss-level--medium { background: var(--ss-medium); }
-.ss-level--high { background: var(--ss-high); }
-.ss-level--critical { background: var(--ss-critical); }
+.ss-level--safe { background: var(--ss-safe); color: var(--ss-on-safe); }
+.ss-level--low { background: var(--ss-low); color: var(--ss-on-low); }
+.ss-level--medium { background: var(--ss-medium); color: var(--ss-on-medium); }
+.ss-level--high { background: var(--ss-high); color: var(--ss-on-high); }
+.ss-level--critical { background: var(--ss-critical); color: var(--ss-on-critical); }
 
 /* ---- card ---- */
 .ss-card { background: var(--ss-surface); border: 1px solid var(--ss-line); border-radius: var(--ss-radius-l); padding: var(--ss-space-5); box-shadow: var(--ss-shadow-1); }

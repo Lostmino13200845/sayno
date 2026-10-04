@@ -8,12 +8,12 @@
 <style>
 :root{
   --bg:#f6f7f9;--card:#fff;--ink:#16181d;--muted:#5d6470;--line:#e2e5ea;--accent:#2457d6;
-  --safe:#1a8f4c;--low:#6b9e1f;--medium:#c98a00;--high:#d9541e;--critical:#c11b2e;
+  --safe:#15803d;--low:#6b9e1f;--medium:#c98a00;--high:#c2410c;--critical:#c11b2e;--on-accent:#fff;--on-lvl:#fff;--on-lvl-light:#111;
   --chip:#eef1f6;color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root{
   --bg:#111317;--card:#1a1d23;--ink:#e8eaee;--muted:#9aa1ad;--line:#2b2f37;--accent:#7aa2ff;
-  --safe:#3fcf7e;--low:#a3d14a;--medium:#f0b429;--high:#ff7a45;--critical:#ff5468;--chip:#252a33;color-scheme:dark}}
+  --safe:#3fcf7e;--low:#a3d14a;--medium:#f0b429;--high:#ff7a45;--critical:#ff5468;--chip:#252a33;--on-accent:#0b1220;--on-lvl:#0b0d11;--on-lvl-light:#0b0d11;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 .wrap{max-width:980px;margin:0 auto;padding:24px 16px 64px}
@@ -29,7 +29,7 @@ h3{font-size:14px;margin:16px 0 6px}
 textarea,input[type=text],input[type=email],input[type=password]{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit}
 textarea{min-height:170px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:13px}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
-.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 18px;font:inherit;font-weight:600;cursor:pointer}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:8px;padding:9px 18px;font:inherit;font-weight:600;cursor:pointer}
 .btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
 .btn:disabled{opacity:.5;cursor:default}
 .muted{color:var(--muted);font-size:13px}
@@ -37,8 +37,9 @@ textarea{min-height:170px;resize:vertical;font-family:ui-monospace,Consolas,mono
 .gauge{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;position:relative}
 .gauge::after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--card)}
 .gauge span{position:relative;z-index:1;font-size:30px;font-weight:700}
-.lvl{display:inline-block;padding:3px 10px;border-radius:99px;color:#fff;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.lvl{display:inline-block;padding:3px 10px;border-radius:99px;color:var(--on-lvl);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
 .lvl.safe{background:var(--safe)}.lvl.low{background:var(--low)}.lvl.medium{background:var(--medium)}.lvl.high{background:var(--high)}.lvl.critical{background:var(--critical)}
+.lvl.low,.lvl.medium{color:var(--on-lvl-light)}
 ul.f{list-style:none;padding:0;margin:6px 0}
 ul.f li{padding:6px 0 6px 22px;border-top:1px solid var(--line);position:relative;font-size:14px}
 ul.f li::before{content:"";position:absolute;left:4px;top:13px;width:9px;height:9px;border-radius:50%;background:var(--medium)}
@@ -71,6 +72,7 @@ td,th{text-align:left;padding:6px 8px;border-top:1px solid var(--line)}
   </nav>
 </header>
 
+<main>
 <!-- ============ SCAN ============ -->
 <section id="tab-scan">
   <div class="card">
@@ -137,6 +139,7 @@ td,th{text-align:left;padding:6px 8px;border-top:1px solid var(--line)}
     <p class="muted">To check whether your <b>e-mail address</b> was in a breach, visit <b>haveibeenpwned.com</b> directly.</p>
   </div>
 </section>
+</main>
 
 </div>
 
