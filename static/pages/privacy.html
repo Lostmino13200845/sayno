@@ -59,20 +59,31 @@
         <p class="muted">If you use the "Stay informed" box in the footer, or the "Report a problem" form, your email app opens with a message to us. We only receive it if you send it. Reports sent from the "Report a scam" page are described above.</p></div>
 
       <div class="stack" style="--gap:.6rem"><h3>Where the block lists come from</h3>
-        <p class="muted">Public threat feeds: URLhaus and ThreatFox (abuse.ch), OpenPhish, Phishing Army, CERT Polska, the Phishing.Database project and a list of disposable email providers. They are fetched and republished as hashes every few hours by an automated GitHub workflow.</p></div>
+        <p class="muted">Public threat feeds: URLhaus and ThreatFox (abuse.ch), OpenPhish, Phishing Army, CERT Polska, the Phishing.Database project and a list of disposable email providers. They are fetched and republished as hashes about every 15 minutes by an automated GitHub workflow.</p></div>
 
-      <div class="stack" style="--gap:.9rem"><h3>Permissions the extension asks for, and why</h3>
-        <div class="card table-wrap" style="padding:8px"><table class="t">
-          <thead><tr><th>Permission</th><th>Why</th></tr></thead>
-          <tbody>
-            <tr><td>Access to all websites</td><td>To see whether a page is asking for card details and block it, and to rate the page address. Pages are processed on your device.</td></tr>
-            <tr><td>Access to the SAYNO block-list host</td><td>To download the block-list files described above.</td></tr>
-            <tr><td>Tabs</td><td>To show each tab's rating on the toolbar icon.</td></tr>
-            <tr><td>Storage</td><td>To remember your settings and keep the block-list fingerprints.</td></tr>
-            <tr><td>Alarms</td><td>To check for a new block list every 30 minutes.</td></tr>
-            <tr><td>Context menus</td><td>For the right-click "Check this text / link with SAYNO" items.</td></tr>
-            <tr><td>Notifications (optional, off until you allow it)</td><td>To warn you about unencrypted pages.</td></tr>
-          </tbody></table></div></div>
+      <div class="stack" style="--gap:1rem"><h3>What the extension needs access to</h3>
+        <p class="muted">Chrome shows a standard list of permissions when you add any extension. SAYNO asks only for what its protection needs, and everything it sees is handled on your device.</p>
+        <ul class="check-list">
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>It looks at the page address and which fields a page asks for, so it can warn you before you type card details.</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>It remembers your settings and keeps its public block list up to date.</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>It adds a right-click option so you can check a piece of text or a link.</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>Notifications are optional and stay off until you switch them on.</li>
+        </ul>
+        <p class="muted">It never sends the pages you visit, what you type or the messages you check anywhere, and it does not ask for your passwords, browsing history, cookies or bookmarks.</p>
+        <details class="faq">
+          <summary>See the full technical permission list</summary>
+          <div class="card table-wrap" style="padding:8px;margin-top:8px"><table class="t">
+            <thead><tr><th>Permission</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Access to all websites</td><td>To see whether a page is asking for card details and block it, and to rate the page address. Pages are processed on your device.</td></tr>
+              <tr><td>Access to the SAYNO block-list host</td><td>To download the public block-list files.</td></tr>
+              <tr><td>Tabs</td><td>To show each tab's rating on the toolbar icon.</td></tr>
+              <tr><td>Storage</td><td>To remember your settings and keep the block-list fingerprints.</td></tr>
+              <tr><td>Alarms</td><td>To check for a new block list every 15 minutes.</td></tr>
+              <tr><td>Context menus</td><td>For the right-click "Check this text / link with SAYNO" items.</td></tr>
+              <tr><td>Notifications (optional, off until you allow it)</td><td>To warn you about unencrypted pages.</td></tr>
+            </tbody></table></div>
+        </details></div>
 
       <div class="stack" style="--gap:.6rem"><h3>Children</h3><p class="muted">SAYNO does not knowingly collect personal information from anyone, including children.</p></div>
       <div class="stack" style="--gap:.6rem"><h3>Changes and contact</h3><p class="muted">If this policy changes, we will update the date above. Questions: <a href="mailto:sayoshield@gmail.com">sayoshield@gmail.com</a>.</p></div>
