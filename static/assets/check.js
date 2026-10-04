@@ -82,6 +82,18 @@
   const numbered = items => `<ol class="reasons">${items.map((t, i) => `<li><span class="num">${i + 1}</span><span>${t}</span></li>`).join("")}</ol>`;
   const qa = (title, body) => `<div class="qa"><h2>${title}</h2><div>${body}</div></div>`;
 
+  // ---------- optional: report it so the real block lists can learn about it (the user does this, SAYNO sends nothing)
+  const EXT = 'target="_blank" rel="noopener"';
+  function reportBlock(kind, link) {
+    const items = kind === "site"
+      ? [["Report the website to Google Safe Browsing", "https://safebrowsing.google.com/safebrowsing/report_phish/"], ["Report it to Netcraft", "https://report.netcraft.com/report"]]
+      : [["Report a scam website to Google Safe Browsing", "https://safebrowsing.google.com/safebrowsing/report_phish/"], ["Report it to Netcraft", "https://report.netcraft.com/report"], ["Forward a scam text to 7726 (SPAM), free on most Canadian carriers", ""], ["Forward a scam email to reportphishing@apwg.org", ""]];
+    const links = items.map(([t, u]) => u ? `<li><a href="${u}" ${EXT}>${t}<span class="sr-only"> (opens in a new tab)</span></a></li>` : `<li>${t}</li>`).join("");
+    const copy = link ? `<p style="margin-top:14px"><button class="btn btn-secondary" type="button" data-copy="${esc(link)}">Copy the suspicious link</button> <span class="small" role="status" data-copied></span></p>` : "";
+    return `<p class="muted" style="margin-bottom:12px">Reporting is optional and helps protect other people. Reports go to these organisations, not to SAYNO, and SAYNO sends nothing for you. Each has its own privacy rules.</p>
+      <ul class="check-list">${links}<li><a href="https://www.antifraudcentre-centreantifraude.ca/report-signalez-eng.htm" ${EXT}>Report it to the Canadian Anti-Fraud Centre<span class="sr-only"> (opens in a new tab)</span></a></li></ul>${copy}`;
+  }
+
   // ---------- result screens
   function renderMessage(text, r) {
     const o = outcome(r.level), urls = r.urls, reasons = reasonsOf(r);
@@ -112,7 +124,7 @@
       : `<button class="btn btn-primary btn-lg" type="button" data-again>Go back</button>${checkSite}`}</div>
       <p style="margin-top:14px"><button class="linkish" type="button" data-again>Check another message</button></p>`;
     return `<div class="stack" style="--gap:1.25rem">${head}</div><div style="margin-top:2rem">${stop}</div>
-      <div style="margin-top:2.25rem">${qa("What happened", happened)}${qa(o === "safe" ? "What we checked" : "Why SAYNO says this", why)}${qa("What to do now", doNow)}</div>`;
+      <div style="margin-top:2.25rem">${qa("What happened", happened)}${qa(o === "safe" ? "What we checked" : "Why SAYNO says this", why)}${qa("What to do now", doNow)}${o === "safe" ? "" : qa("Help stop it (optional)", reportBlock("msg", firstUrl))}</div>`;
   }
 
   function renderWebsite(href, r, listsReady, L) {
@@ -145,7 +157,7 @@
       ? `<a class="btn btn-primary btn-lg" href="${base()}/">Done</a><button class="btn btn-secondary btn-lg" type="button" data-again>Check another website</button>`
       : `<a class="btn btn-primary btn-lg" href="${base()}/">Leave website</a><button class="btn btn-secondary btn-lg" type="button" data-again>Go back</button>`}</div>`;
     return `<div class="stack" style="--gap:1.25rem">${head}</div><div style="margin-top:2rem">${stop}</div>
-      <div style="margin-top:2.25rem">${qa("What happened", happened)}${qa(o === "safe" ? "The signals" : "Why SAYNO says this", why)}${qa("What to do now", doNow)}</div>`;
+      <div style="margin-top:2.25rem">${qa("What happened", happened)}${qa(o === "safe" ? "The signals" : "Why SAYNO says this", why)}${qa("What to do now", doNow)}${o === "safe" ? "" : qa("Help stop it (optional)", reportBlock("site", href))}</div>`;
   }
 
   // ---------- run a check
@@ -192,7 +204,15 @@
     } else { lastInput = raw; run(raw); }
   });
   document.querySelectorAll("[data-example]").forEach(b => b.addEventListener("click", () => { field.value = EXAMPLES[mode][b.dataset.example]; err.hidden = true; field.focus(); }));
-  views.result.addEventListener("click", e => { if (e.target.closest("[data-again]")) reset(false); });
+  views.result.addEventListener("click", e => {
+    if (e.target.closest("[data-again]")) reset(false);
+    const c = e.target.closest("[data-copy]");
+    if (c) {
+      const note = c.parentElement.querySelector("[data-copied]");
+      const done = ok => { note.textContent = ok ? "Copied. Paste it into the report form." : "Select the link and copy it yourself."; };
+      (navigator.clipboard ? navigator.clipboard.writeText(c.dataset.copy).then(() => done(true), () => done(false)) : Promise.resolve(done(false)));
+    }
+  });
 
   // links from other pages: /website-check/#q=<address> checks that address straight away
   const q = new URLSearchParams(location.hash.slice(1)).get("q");
