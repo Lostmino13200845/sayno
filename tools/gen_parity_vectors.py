@@ -38,6 +38,14 @@ bit.ly/3xYz
 https://tinyurl.com/abc
 https://a.b.c.d.e.example.com/
 https://my-bank-secure-login-verify.example.com/
+https://www.rbcroyalbank.com.verify-login.net/
+https://rbcroyalbank.com.verify-login.net/login
+https://paypal.com-login.net/signin
+https://login.microsoftonline.com.evil.io/
+https://www.google.com.au/
+https://www.amazon.com.au/
+https://my-office.com/
+https://signin.paypal.com/
 http://example.com:99999/x
 http://example.com:abc/x
 http://[bad/x

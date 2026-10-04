@@ -107,11 +107,11 @@
       steps = ["Do not tap any link or reply to the message.", "Open your bank's app, or type its address yourself, to see if anything is wrong.", "If you are unsure, call the number on the back of your card.", ...r.advice.slice(2).map(esc)];
     } else if (o === "caution") {
       head = `<span class="verdict verdict--caution">${ICON.warn}BE CAREFUL</span><h1>This message has some warning signs.</h1><p class="lead">SAYNO is not sure. Treat it with caution until you have checked it another way.</p>`;
-      stop = `<div class="note-box"><strong>Do not click or reply yet.</strong><p class="muted">Check with the company using an app or phone number you already trust.</p></div>`;
+      stop = `<div class="note-box note-box--caution"><strong>Do not click or reply yet.</strong><p class="muted">Check with the company using an app or phone number you already trust.</p></div>`;
       steps = ["Do not tap any link until you have checked it.", "Contact the company through its official app or a website you type yourself.", "If it asks for card details or codes, treat it as a scam.", ...r.advice.slice(1).map(esc)];
     } else {
       head = `<span class="verdict verdict--safe">${ICON.safe}SAFE</span><h1>No strong scam signs were found.</h1><p class="lead">SAYNO did not find pressure, threats, requests for card details or dangerous links in this message.</p>`;
-      stop = `<div class="note-box"><strong>Safe does not guarantee trustworthy.</strong><p class="muted">SAYNO looks for known scam signs. If something still feels wrong, contact the person or company using a phone number or app you already trust.</p></div>`;
+      stop = `<div class="note-box note-box--safe"><strong>Safe does not guarantee trustworthy.</strong><p class="muted">SAYNO looks for known scam signs. If something still feels wrong, contact the person or company using a phone number or app you already trust.</p></div>`;
       steps = ["You can carry on.", "If the message asks you to open a link and enter card details, check that website first."];
     }
     const happened = o === "safe"
@@ -124,7 +124,7 @@
       ? `<a class="btn btn-primary btn-lg" href="${base()}/">Done</a><a class="btn btn-secondary btn-lg" href="${base()}/website-check/">Check a website</a>`
       : `<button class="btn btn-primary btn-lg" type="button" data-again>Go back</button>${checkSite}`}</div>
       <p style="margin-top:14px"><button class="linkish" type="button" data-again>Check another message</button></p>`;
-    return `<div class="stack" style="--gap:1.25rem">${head}</div><div style="margin-top:2rem">${stop}</div>
+    return `<div class="stack result-banner result-banner--${o}" style="--gap:1.25rem">${head}</div><div style="margin-top:2rem">${stop}</div>
       <div style="margin-top:2.25rem">${qa("What happened", happened)}${qa(o === "safe" ? "What we checked" : "Why SAYNO says this", why)}${qa("What to do now", doNow)}${o === "safe" ? "" : qa("Help stop it (optional)", reportBlock("msg", firstUrl))}</div>`;
   }
 
@@ -143,11 +143,11 @@
       steps = ["Do not open this website.", "If you already opened it, do not type anything. Close the page.", "Go to your bank by opening its app or typing its address yourself."];
     } else if (o === "caution") {
       head = `<span class="verdict verdict--caution">${ICON.warn}BE CAREFUL</span><h1>This website has some warning signs.</h1><p class="lead">SAYNO is not sure about it. Do not enter sensitive information until you are certain.</p>`;
-      stop = `<div class="note-box"><strong>Do not enter card details or passwords here.</strong><p class="muted">Reach the company through its app or a website address you type yourself.</p></div>`;
+      stop = `<div class="note-box note-box--caution"><strong>Do not enter card details or passwords here.</strong><p class="muted">Reach the company through its app or a website address you type yourself.</p></div>`;
       steps = ["Do not enter card details, passwords or codes.", "Reach the company through its official app or an address you type yourself.", "If a message sent you here, treat the message as suspicious too."];
     } else {
       head = `<span class="verdict verdict--safe">${ICON.safe}SAFE</span><h1>No strong warning signs were found.</h1><p class="lead">SAYNO checked <b>${esc(host)}</b> and did not find signs that it is malicious.</p>`;
-      stop = `<div class="note-box"><strong>Safe does not guarantee trustworthy.</strong><p class="muted">SAYNO cannot see everything. Still type your details only into websites you opened yourself, and never share codes sent to your phone.</p></div>`;
+      stop = `<div class="note-box note-box--safe"><strong>Safe does not guarantee trustworthy.</strong><p class="muted">SAYNO cannot see everything. Still type your details only into websites you opened yourself, and never share codes sent to your phone.</p></div>`;
       steps = ["You can continue.", "Card Guard keeps watching while you browse, in case a page asks for card details it should not."];
     }
     const happened = `<p style="margin-bottom:12px">SAYNO checked this address without opening it:</p><p class="excerpt" style="font-weight:700;font-size:1.15rem">${esc(href)}</p>`;
@@ -157,7 +157,7 @@
     const doNow = `${numbered(steps)}<div class="flow" style="margin-top:22px">${o === "safe"
       ? `<a class="btn btn-primary btn-lg" href="${base()}/">Done</a><button class="btn btn-secondary btn-lg" type="button" data-again>Check another website</button>`
       : `<a class="btn btn-primary btn-lg" href="${base()}/">Leave website</a><button class="btn btn-secondary btn-lg" type="button" data-again>Go back</button>`}</div>`;
-    return `<div class="stack" style="--gap:1.25rem">${head}</div><div style="margin-top:2rem">${stop}</div>
+    return `<div class="stack result-banner result-banner--${o}" style="--gap:1.25rem">${head}</div><div style="margin-top:2rem">${stop}</div>
       <div style="margin-top:2.25rem">${qa("What happened", happened)}${qa(o === "safe" ? "The signals" : "Why SAYNO says this", why)}${qa("What to do now", doNow)}${o === "safe" ? "" : qa("Help stop it (optional)", reportBlock("site", href))}</div>`;
   }
 

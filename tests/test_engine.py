@@ -138,5 +138,30 @@ class Reporting(unittest.TestCase):
         self.assertFalse(any(is_reportable(u, r, 0) for u in r["urls"]))
 
 
+
+class EmbeddedOfficialAddress(unittest.TestCase):
+    """A real brand address used inside someone else's domain is a classic phishing disguise."""
+
+    class _NoThreats:
+        def lookup_url(self, url):
+            return []
+
+    def level(self, url):
+        from shieldlib.engine import analyze_url
+        return analyze_url(url, self._NoThreats())["level"]
+
+    def test_brand_address_inside_another_domain_is_high_or_worse(self):
+        for url in ("https://www.rbcroyalbank.com.verify-login.net/", "https://paypal.com-login.net/signin",
+                    "https://login.microsoftonline.com.evil.io/"):
+            self.assertIn(self.level(url), ("high", "critical"), url)
+
+    def test_real_and_unrelated_domains_are_not_flagged_by_this_rule(self):
+        from shieldlib.engine import analyze_url
+        for url in ("https://www.rbcroyalbank.com/personal.html", "https://signin.paypal.com/", "https://my-office.com/",
+                    "https://www.amazon.com.au/", "https://www.google.com.au/", "https://example.com/"):
+            findings = analyze_url(url, self._NoThreats())["findings"]
+            self.assertFalse([f for f in findings if "inside a different website" in f["message"]], url)
+
+
 if __name__ == "__main__":
     unittest.main()

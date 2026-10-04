@@ -166,6 +166,20 @@ def is_official(host, brand):
     return any(reg == d or host == d or host.endswith("." + d) for d in BRANDS[brand])
 
 
+OFFICIAL_DOMAINS = sorted({d for ds in BRANDS.values() for d in ds}, key=lambda d: (-len(d), d))
+
+
+def embedded_official(host):
+    """A real brand address used as part of someone else's domain, e.g. rbcroyalbank.com.verify-login.net or
+    paypal.com-login.net. Returns that address, or "". A bare two-letter ending (google.com.au) is a country site."""
+    for d in OFFICIAL_DOMAINS:
+        for m in re.finditer(r"(?:^|\.)" + re.escape(d) + r"(?=$|[.-])", host):
+            if re.fullmatch(r"\.[a-z]{2}", host[m.end():]):
+                continue
+            return d
+    return ""
+
+
 def brand_tokens(text):
     """Brands whose name appears as a token (split on . - _) in text; also after homoglyph folding."""
     raw = re.split(r"[.\-_+]", text.lower())
@@ -294,6 +308,11 @@ def analyze_url(url, intel, store=None):
                 add(24, f"Mentions '{brand}' but is not an official {brand} domain", "danger", brand=brand)
             if on_free_hosting:
                 add(14, f"Uses the name '{brand}' on a free / shared hosting domain, not the real company", "danger")
+
+    if not official:
+        real = embedded_official(host)
+        if real:
+            add(55, f"Contains the real address '{real}' inside a different website, a common disguise", "danger")
 
     score = min(100, sum(f["weight"] for f in findings))
     return {"url": url, "host": host, "score": score, "level": level_for(score), "findings": findings}

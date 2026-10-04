@@ -11,6 +11,7 @@ const IP_TRICK = new RegExp("^(?:" + D.ipTrick + ")$", "i");
 const IPV4 = /^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;  // strict, like Python's ipaddress
 const EXEC_RE = /\.(exe|scr|apk|msi|bat|cmd|ps1|sh|dll|js|vbs|jar|iso|img|lnk|hta)(\?|$)/i;
 const BRAND_NAMES = Object.keys(D.brands);
+const OFFICIAL_DOMAINS = [...new Set(Object.values(D.brands).flat())].sort((a, b) => b.length - a.length || (a < b ? -1 : a > b ? 1 : 0));
 
 export function levelFor(score) {
   for (const [threshold, name] of D.levels) if (score >= threshold) return name;
@@ -21,6 +22,20 @@ export function registeredDomain(host) {
   const labels = host.toLowerCase().replace(/^\.+|\.+$/g, "").split(".");
   if (labels.length >= 3 && TWO_LEVEL.has(labels.slice(-2).join("."))) return labels.slice(-3).join(".");
   return labels.slice(-2).join(".");
+}
+
+// A real brand address used inside someone else's domain (rbcroyalbank.com.verify-login.net, paypal.com-login.net).
+// A bare two-letter ending (google.com.au) is a country site, so it is skipped. Same rule as embedded_official() in engine.py.
+export function embeddedOfficial(host) {
+  for (const d of OFFICIAL_DOMAINS) {
+    const re = new RegExp("(?:^|\\.)" + d.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?=$|[.-])", "g");
+    let m;
+    while ((m = re.exec(host)) !== null) {
+      if (/^\.[a-z]{2}$/.test(host.slice(m.index + m[0].length))) continue;
+      return d;
+    }
+  }
+  return "";
 }
 
 export function isOfficial(host, brand) {
@@ -115,6 +130,10 @@ export function analyzeUrl(url, listed = null) {
     if (kind === "lookalike") add(36, `Look-alike of '${brand}' (character substitution) on a non-${brand} domain`, "danger", { brand, lookalike: true });
     else add(24, `Mentions '${brand}' but is not an official ${brand} domain`, "danger", { brand });
     if (onFreeHosting) add(14, `Uses the name '${brand}' on a free / shared hosting domain, not the real company`, "danger");
+  }
+  if (!official) {
+    const real = embeddedOfficial(host);
+    if (real) add(55, `Contains the real address '${real}' inside a different website, a common disguise`, "danger");
   }
   const score = Math.min(100, findings.reduce((s, f) => s + f.weight, 0));
   return { url, host, score, level: levelFor(score), findings };

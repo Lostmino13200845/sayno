@@ -373,6 +373,111 @@
    ]
   },
   {
+   "url": "https://www.rbcroyalbank.com.verify-login.net/",
+   "score": 71,
+   "level": "high",
+   "findings": [
+    [
+     8,
+     "Unusually many sub-domains"
+    ],
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     55,
+     "Contains the real address 'rbcroyalbank.com' inside a different website, a common disguise"
+    ]
+   ]
+  },
+  {
+   "url": "https://rbcroyalbank.com.verify-login.net/login",
+   "score": 63,
+   "level": "high",
+   "findings": [
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     55,
+     "Contains the real address 'rbcroyalbank.com' inside a different website, a common disguise"
+    ]
+   ]
+  },
+  {
+   "url": "https://paypal.com-login.net/signin",
+   "score": 87,
+   "level": "critical",
+   "findings": [
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     24,
+     "Mentions 'paypal' but is not an official paypal domain"
+    ],
+    [
+     55,
+     "Contains the real address 'paypal.com' inside a different website, a common disguise"
+    ]
+   ]
+  },
+  {
+   "url": "https://login.microsoftonline.com.evil.io/",
+   "score": 95,
+   "level": "critical",
+   "findings": [
+    [
+     8,
+     "Unusually many sub-domains"
+    ],
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     24,
+     "Mentions 'microsoft' but is not an official microsoft domain"
+    ],
+    [
+     55,
+     "Contains the real address 'microsoftonline.com' inside a different website, a common disguise"
+    ]
+   ]
+  },
+  {
+   "url": "https://www.google.com.au/",
+   "score": 24,
+   "level": "low",
+   "findings": [
+    [
+     24,
+     "Mentions 'google' but is not an official google domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://www.amazon.com.au/",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://my-office.com/",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://signin.paypal.com/",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
    "url": "http://example.com:99999/x",
    "score": 20,
    "level": "low",
@@ -507,8 +612,8 @@
   },
   {
    "url": "https://login.paypal.com.evil.top/x",
-   "score": 50,
-   "level": "medium",
+   "score": 100,
+   "level": "critical",
    "findings": [
     [
      10,
@@ -525,6 +630,10 @@
     [
      24,
      "Mentions 'paypal' but is not an official paypal domain"
+    ],
+    [
+     55,
+     "Contains the real address 'paypal.com' inside a different website, a common disguise"
     ]
    ]
   },
