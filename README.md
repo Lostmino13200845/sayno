@@ -2,6 +2,8 @@
 
 A scam, phishing and malicious-link scanner with a private, self-updating threat database and a server-side report database.
 
+**Live website and web scanner: https://lostmino13200845.github.io/sayno/** · [Privacy policy](https://lostmino13200845.github.io/sayno/privacy/) · everything is checked on your own device, nothing you paste or browse is uploaded.
+
 ## Architecture
 
 ```
