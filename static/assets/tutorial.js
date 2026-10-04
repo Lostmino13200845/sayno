@@ -39,7 +39,7 @@
   fetch(BASE + "/v1/meta.json").then(r => r.json()).then(s => {
     const n = s.entries;
     if (n) { $("#statThreats") && ($("#statThreats").textContent = n.toLocaleString()); $("#pStatus").textContent = `🟢 ${n.toLocaleString()} threats`; }
-  }).catch(() => { $("#pStatus").textContent = "🟢 700k+ threats"; });
+  }).catch(() => { $("#pStatus").textContent = "🟢 600k+ threats"; });
 
   // ================= practice browser state =================
   const S = { view: "inbox", popup: false, ctx: false, panel: false, veil: false, toast: false,
@@ -179,7 +179,7 @@
       setup() { S.toast = false; if (S.view === "bank") return go("inbox"); draw(); },
       done: () => S.toast, doIt: async () => { if (S.view !== "shop") await go("shop"); A.typeCard(); } },
     { title: "You're protected",
-      text: "<p>That's it: <b>Card Guard</b>, <b>site check</b>, <b>message check</b> and <b>auto-report</b> all work on their own.</p><p><a class='ss-btn' href='#add'>Add to browser</a></p>",
+      text: "<p>That's it: <b>Card Guard</b>, <b>site check</b>, <b>message check</b> all work on their own, and nothing leaves your device.</p><p><a class='ss-btn' href='#add'>Add to browser</a></p>",
       target: () => null, setup() { S.popup = false; if (S.view !== "inbox") return go("inbox"); draw(); } },
   ];
 

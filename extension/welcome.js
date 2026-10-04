@@ -24,3 +24,6 @@ $("#allowBtn").onclick = () => {
 $("#testBtn").onclick = () => chrome.runtime.sendMessage({ type: "testNotification" }, ok => {
   if (!ok) $("#permMsg").textContent = "Couldn't show a notification. Check that notifications for your browser are allowed in Windows Settings → System → Notifications.";
 });
+
+// The tutorial lives on the SAYNO website (the same address the block lists come from).
+import("./config.js").then(({ DEFAULT_API }) => { $("#tourLink").href = DEFAULT_API.replace(/\/+$/, "") + "/tutorial/"; });

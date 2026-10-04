@@ -38,12 +38,13 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--api", required=True, help="public SAYNO server, e.g. https://sayno.example (https only)")
     ap.add_argument("--out", default=os.path.join(ROOT, "dist"))
+    ap.add_argument("--stable-name", action="store_true", help="name the zip sayno-extension.zip (for a fixed website download link)")
     args = ap.parse_args()
 
     u = urlsplit(args.api)
     if u.scheme != "https" or not u.hostname or u.query or u.fragment:
         sys.exit("--api must be an https address such as https://you.github.io/sayno (no query or #fragment)")
-    origin = f"https://{u.netloc}"
+    origin = f"https://{u.netloc.lower()}"  # host names are case-insensitive; match patterns want lower case
     base = origin + u.path.rstrip("/")  # the folder that holds v1/ (GitHub Pages serves a project under /<name>)
 
     work = tempfile.mkdtemp(prefix="sayno-pack-")
@@ -69,7 +70,7 @@ def main():
             sys.exit("manifest points to files that are not in the extension folder: " + ", ".join(missing))
 
         os.makedirs(args.out, exist_ok=True)
-        out = os.path.join(args.out, f"sayno-extension-{m['version']}.zip")
+        out = os.path.join(args.out, "sayno-extension.zip" if args.stable_name else f"sayno-extension-{m['version']}.zip")
         with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
             for folder, _, names in os.walk(build):
                 for n in sorted(names):
