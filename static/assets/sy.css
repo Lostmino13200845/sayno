@@ -243,3 +243,8 @@ table.t th { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; 
 @media (max-width: 860px) { #report-grid { grid-template-columns: 1fr !important; } }
 
 [hidden]{display:none!important}
+
+.hero-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.status-line{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;font-weight:800;letter-spacing:.12em;color:var(--sy-safe)}
+.status-line i{width:9px;height:9px;border-radius:50%;background:currentColor}
+.section-lead{color:var(--sy-muted);font-size:1.1rem;max-width:42rem;text-wrap:pretty}
