@@ -271,7 +271,7 @@
       const h = document.createElement("h1");
       h.className = "sr-only";
       h.textContent = "SAYNO practice tutorial";
-      document.body.prepend(h);
+      (document.querySelector("main") || document.body).prepend(h);
     }
   }
   draw();

@@ -42,7 +42,7 @@ Developer mode → Load unpacked on `extension/`) and try it before uploading.
 1. Register at https://chrome.google.com/webstore/devconsole (one-time US$5 fee, 2-step verification required).
 2. *New item* → upload the zip.
 3. Fill the listing from `docs/STORE_LISTING.md` (description, single purpose, permission justifications, data-use answers).
-4. Privacy policy URL: `https://<user>.github.io/<repo>/privacy/` (first replace `[CONTACT EMAIL]` in `static/site/privacy.html`).
+4. Privacy policy URL: `https://<user>.github.io/<repo>/privacy/` (the contact email in `static/site/privacy.html` is already filled in).
 5. Screenshots: `python tools/store_screenshots.py` (needs the local server running and Playwright) → `dist/screenshots/`.
 6. Submit for review (usually a few days). Broad "all websites" access gets a closer look, so the justifications matter.
 
