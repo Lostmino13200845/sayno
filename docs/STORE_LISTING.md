@@ -31,7 +31,7 @@ Protect users from phishing and card-theft scams by rating web pages and blockin
 - **Host permission: the SAYNO block-list host (GitHub Pages)** – Downloads the static block-list files (meta.json, prefixes.bin and small shard files). Nothing about the user or their browsing is uploaded.
 - **tabs** – Shows each tab's rating on the toolbar icon and re-checks a tab after in-page navigation.
 - **storage** – Saves the user's settings (chosen bank, switches) and the block-list fingerprints used for local checks.
-- **alarms** – Checks for a new block list every 30 minutes.
+- **alarms** – Checks for a new block list every 15 minutes.
 - **contextMenus** – Adds "Check this text / link with SAYNO" to the right-click menu.
 - **notifications (optional)** – Only after the user switches it on: warns about unencrypted pages.
 - **Optional host permissions** – Only if the user enters their own block-list address in Advanced settings.

@@ -9,7 +9,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "17 */3 * * *"   # block lists refreshed every 3 hours
+    - cron: "*/15 * * * *"   # block lists refreshed every 15 minutes (GitHub's shortest schedule is 5)
   workflow_dispatch:
 
 permissions:
