@@ -121,7 +121,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs both on Ubuntu, macOS and Windo
 Set `port` in `config.json`, then in the extension popup open **Advanced: SAYNO server port** and enter the same number.
 
 ## Going public (everyone's browser, no server needed)
-SAYNO is published as **static files on GitHub Pages**, rebuilt every 15 minutes by `.github/workflows/pages.yml`:
+SAYNO is published as **static files on GitHub Pages**, rebuilt every 5 minutes (the extension checks for a new list every 15) by `.github/workflows/pages.yml`:
 the website, the message and website checks (`/message-check/`, `/website-check/`), the practice tutorial, the privacy policy, and the block lists as hashed files (`/v1/`).
 - The extension and the web scanner check **everything on the device** (`extension/heuristics.js`, `extension/engine.js`, `extension/lookup.js`; the website uses identical copies in `static/assets/`). Pages you visit and text you check are never uploaded; only public block-list files are downloaded. See `static/pages/privacy.html`.
 - Build the store package: `python tools/package_extension.py --api https://<user>.github.io/<repo>`, then follow `docs/PUBLISHING.md` and `docs/STORE_LISTING.md`.
