@@ -12,6 +12,7 @@
     ["Protect yourself", "/protect/", "protect checklist password breach passkey 2fa", false],
     ["Get the extension", "/get-extension/", "install extension download chrome edge add browser", false],
     ["Take the 60-second tour", "/tutorial/", "tour tutorial practice demo learn", false],
+    ["Report a scam", "/report-scam/", "report scam phishing fraud block list send template email text call", true],
     ["Report a problem", "/report/", "report problem bug contact feedback", false],
     ["About SAYNO", "/about/", "about stormhacks team problem approach", false],
     ["Accessibility", "/accessibility/", "accessibility keyboard screen reader contrast", false],

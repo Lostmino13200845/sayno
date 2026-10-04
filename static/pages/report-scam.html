@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--#include head title="Report a scam: SAYNO" description="Report a scam website, text, email or call. Fill in a short template and our team sends it to anti-phishing organisations for you, without sharing your name or email address." -->
+</head>
+<body>
+<!--#include header -->
+
+<main id="main" class="section">
+  <div class="container stack" style="--gap:2rem">
+    <div class="stack" style="--gap:1rem;max-width:46rem">
+      <p class="eyebrow">Report a scam</p>
+      <h1>Help get this scam blocked.</h1>
+      <p class="lead">Pick what happened and fill in the blanks. We send the report to anti-phishing organisations <b>from the SAYNO team address</b>, so your name and email address are never included.</p>
+    </div>
+
+    <div class="report-scam-grid" id="rs-grid">
+      <form id="rs-form" class="stack" style="--gap:1.75rem" novalidate>
+        <fieldset class="rs-fieldset">
+          <legend class="label">1. What kind of scam is it?</legend>
+          <div class="rs-types" id="rs-types"></div>
+        </fieldset>
+
+        <div class="stack" style="--gap:1.4rem" id="rs-fields" aria-live="polite"></div>
+
+        <!-- trap for bots; people never see or fill this -->
+        <div class="rs-trap" aria-hidden="true"><label>Leave this empty<input type="text" id="rs-trap" tabindex="-1" autocomplete="off"></label></div>
+
+        <p class="small">Please do not include card numbers, passwords, PINs or one-time codes. Do not paste anything about yourself.</p>
+      </form>
+
+      <aside class="stack" style="--gap:1.25rem" aria-label="Your report">
+        <div class="card stack" style="--gap:.9rem">
+          <h2 style="font-size:1.25rem">2. Check your report</h2>
+          <p class="small">This is exactly what will be sent. It updates as you type.</p>
+          <pre class="rs-preview" id="rs-preview" tabindex="0" aria-label="Report preview"></pre>
+        </div>
+
+        <div class="card stack" style="--gap:1rem">
+          <h2 style="font-size:1.25rem">3. Send it</h2>
+          <label class="rs-consent"><input type="checkbox" id="rs-consent"> <span>I understand SAYNO will email this report to anti-phishing organisations and keep a copy in its team mailbox. I have not included card numbers, passwords or codes.</span></label>
+          <div class="flow">
+            <button class="btn btn-primary" type="button" id="rs-send">Send report</button>
+            <button class="btn btn-secondary" type="button" id="rs-copy">Copy report</button>
+          </div>
+          <p class="small" id="rs-status" role="status" aria-live="polite"></p>
+          <p class="small" id="rs-fallback">Prefer your own email? <a id="rs-mailto" href="#">Open it in your email app</a>. That version is sent from your address, so the recipient will see it.</p>
+        </div>
+
+        <div class="note-box">
+          <strong>Also report it where it counts.</strong>
+          <p class="muted" style="margin-top:6px">Phone numbers and texts cannot be added to web block lists. Report those to the <a href="https://www.antifraudcentre-centreantifraude.ca/report-signalez-eng.htm" target="_blank" rel="noopener">Canadian Anti-Fraud Centre<span class="sr-only"> (opens in a new tab)</span></a>, and forward scam texts to 7726 (SPAM).</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!--#include footer -->
+<script src="/assets/report-scam.js"></script>
+</body>
+</html>

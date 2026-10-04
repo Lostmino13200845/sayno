@@ -67,6 +67,7 @@ Demo pages (fictional bank): `/demo/fake-bank.html` (blocked), `/demo/shop.html`
 |---|---|
 | `/` | Landing page with a 6-step **"Try now" demo** (one step per main feature, pulsing "click here" rings, live scans that are never stored or reported) |
 | `/tutorial` · `/tutorial#tutorial-9` | Tutorial only, full-screen or jump to a step (for presenting) |
+| `/report-scam/` | Report a scam: incident-type template; sends from the team address through the relay in `backend/` (see `docs/REPORT_BACKEND.md`) |
 | `/message-check/`, `/website-check/`, `/card-guard/` | The three checks (`/app` redirects here); `/protect/` has the safety checklist and password breach check |
 | `/design` | Living style guide: tokens, components, every extension screen and state |
 

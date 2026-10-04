@@ -87,7 +87,7 @@ LIMITS = {"scan": 30, "hashes": 120, "prefixes": 60, "pwned": 20, "status": 120}
 SITE_PAGES = {"": "home", "message-check": "message-check", "website-check": "website-check", "card-guard": "card-guard",
               "how-it-works": "how-it-works", "privacy": "privacy", "security": "security", "help": "help",
               "protect": "protect", "search": "search", "report": "report", "about": "about",
-              "accessibility": "accessibility", "terms": "terms", "get-extension": "get-extension",
+              "accessibility": "accessibility", "terms": "terms", "get-extension": "get-extension", "report-scam": "report-scam",
               "tutorial": "tutorial", "app": "app"}
 REPORT_NOW = threading.Event()  # wakes the back-end reporter right after a suspicious scan
 

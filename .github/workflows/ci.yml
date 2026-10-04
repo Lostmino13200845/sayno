@@ -43,6 +43,7 @@ jobs:
         run: |
           python tools/gen_parity_vectors.py
           node tests/parity.test.mjs
+          node tests/report_relay.test.mjs
         shell: bash
 
       - name: Extension JavaScript parses

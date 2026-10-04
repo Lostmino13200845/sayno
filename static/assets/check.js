@@ -88,9 +88,10 @@
     const items = kind === "site"
       ? [["Report the website to Google Safe Browsing", "https://safebrowsing.google.com/safebrowsing/report_phish/"], ["Report it to Netcraft", "https://report.netcraft.com/report"]]
       : [["Report a scam website to Google Safe Browsing", "https://safebrowsing.google.com/safebrowsing/report_phish/"], ["Report it to Netcraft", "https://report.netcraft.com/report"], ["Forward a scam text to 7726 (SPAM), free on most Canadian carriers", ""], ["Forward a scam email to reportphishing@apwg.org", ""]];
-    const links = items.map(([t, u]) => u ? `<li><a href="${u}" ${EXT}>${t}<span class="sr-only"> (opens in a new tab)</span></a></li>` : `<li>${t}</li>`).join("");
+    const mine = `<li><a href="${base()}/report-scam/#type=${kind === "site" ? "website" : "text"}${link && /^https?:/i.test(link) ? "&url=" + encodeURIComponent(link) : ""}"><b>Report it with SAYNO</b>: fill in a short template and our team sends it for you, without your name or email<span class="sr-only"> (opens the report page)</span></a></li>`;
+    const links = mine + items.map(([t, u]) => u ? `<li><a href="${u}" ${EXT}>${t}<span class="sr-only"> (opens in a new tab)</span></a></li>` : `<li>${t}</li>`).join("");
     const copy = link ? `<p style="margin-top:14px"><button class="btn btn-secondary" type="button" data-copy="${esc(link)}">Copy the suspicious link</button> <span class="small" role="status" data-copied></span></p>` : "";
-    return `<p class="muted" style="margin-bottom:12px">Reporting is optional and helps protect other people. Reports go to these organisations, not to SAYNO, and SAYNO sends nothing for you. Each has its own privacy rules.</p>
+    return `<p class="muted" style="margin-bottom:12px">Reporting is optional and helps protect other people. Nothing is sent unless you choose to. The links below go to other organisations, which have their own privacy rules.</p>
       <ul class="check-list">${links}<li><a href="https://www.antifraudcentre-centreantifraude.ca/report-signalez-eng.htm" ${EXT}>Report it to the Canadian Anti-Fraud Centre<span class="sr-only"> (opens in a new tab)</span></a></li></ul>${copy}`;
   }
 

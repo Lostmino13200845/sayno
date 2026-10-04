@@ -50,6 +50,10 @@
       <div class="stack" style="--gap:.6rem"><h3>The web scanner on this website</h3>
         <p class="muted">The message and website checks, and the practice tutorial, run entirely in your browser tab. What you paste is not uploaded. The one exception is the password check on the <a href="/protect/">Protect yourself</a> page: your browser hashes the password itself and sends only the first 5 characters of the hash to Have I Been Pwned (<code>api.pwnedpasswords.com</code>), which answers with all hashes sharing that start; your browser does the final comparison. The password never leaves your device.</p></div>
 
+      <div class="stack" style="--gap:.6rem"><h3>Reporting a scam from this website (optional)</h3>
+        <p class="muted">The <a href="/report-scam/">Report a scam</a> page lets you help get a scam blocked. Nothing is sent unless you press <b>Send report</b> after ticking the consent box. If you do, the blanks you filled in (the link, phone number or sender address, any message text, the options you ticked and your notes) are sent to a small relay run by the SAYNO team, which emails them <b>from the SAYNO team address</b>. Links and scam emails are emailed to anti-phishing organisations (currently the Anti-Phishing Working Group) so they can be added to block lists; every report is also copied to the SAYNO team mailbox, where we may keep it to spot trends and avoid duplicates. We can delete a report on request.</p>
+        <p class="muted">Your name and email address are never part of the report, and the relay does not receive your IP address. Please do not type card numbers, passwords or codes, or anything about yourself. Because the report is sent through Google services, Google handles the transmission under its own policies. You can instead copy the report or open it in your own email app, which sends it from your address. <b>The browser extension never sends reports or anything you check; this applies only to the website page you choose to use.</b></p></div>
+
       <div class="stack" style="--gap:.6rem"><h3>What is stored on your device</h3>
         <p class="muted">Your settings (for example your chosen bank), the block-list fingerprints, and the rating of each open tab for the current browser session. The website remembers your checklist ticks in your browser. You can remove all of it by uninstalling the extension or clearing site data.</p></div>
 
@@ -59,7 +63,7 @@
           <li><span class="tick">&times;</span>Page contents, text you check, form entries, passwords or card numbers.</li>
           <li><span class="tick">&times;</span>Your name, email address or any account (there are no accounts).</li>
         </ul>
-        <p class="muted">If you use the "Stay informed" box in the footer, or the report form, your email app opens with a message to us. We only receive it if you send it.</p></div>
+        <p class="muted">If you use the "Stay informed" box in the footer, or the "Report a problem" form, your email app opens with a message to us. We only receive it if you send it. Reports sent from the "Report a scam" page are described above.</p></div>
 
       <div class="stack" style="--gap:.6rem"><h3>Where the block lists come from</h3>
         <p class="muted">Public threat feeds: URLhaus and ThreatFox (abuse.ch), OpenPhish, Phishing Army, CERT Polska, the Phishing.Database project and a list of disposable email providers. They are fetched and republished as hashes every few hours by an automated GitHub workflow.</p></div>

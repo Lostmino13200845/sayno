@@ -28,7 +28,7 @@ STATIC = os.path.join(ROOT, "static")
 SITE_PAGES = {"": "home", "message-check": "message-check", "website-check": "website-check", "card-guard": "card-guard",
               "how-it-works": "how-it-works", "privacy": "privacy", "security": "security", "help": "help",
               "protect": "protect", "search": "search", "report": "report", "about": "about",
-              "accessibility": "accessibility", "terms": "terms", "get-extension": "get-extension",
+              "accessibility": "accessibility", "terms": "terms", "get-extension": "get-extension", "report-scam": "report-scam",
               "tutorial": "tutorial", "app": "app"}
 ROUTES = {"/" + slug: "/" + slug + "/" for slug in SITE_PAGES if slug}
 ROUTES["/design"] = "/design/"
