@@ -38,7 +38,7 @@
 
         <div class="card stack" style="--gap:1rem">
           <h2 style="font-size:1.25rem">3. Send it</h2>
-          <label class="rs-consent"><input type="checkbox" id="rs-consent"> <span>I understand SAYNO will email this report to anti-phishing organisations and keep a copy in its team mailbox. I have not included card numbers, passwords or codes.</span></label>
+          <div class="rs-consent" data-row><input type="checkbox" id="rs-consent" aria-labelledby="rs-consent-t"> <span id="rs-consent-t">I understand SAYNO will email this report to anti-phishing organisations and keep a copy in its team mailbox. I have not included card numbers, passwords or codes.</span></div>
           <div class="flow">
             <button class="btn btn-primary" type="button" id="rs-send">Send report</button>
             <button class="btn btn-secondary" type="button" id="rs-copy">Copy report</button>

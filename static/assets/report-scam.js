@@ -88,7 +88,7 @@ const REPORT_ENDPOINT = "";
       const err = `<p class="small rs-err" id="${id}-e" role="alert" hidden></p>`;
       if (f.kind === "multi") {
         return `<fieldset class="rs-fieldset"><legend class="label">${esc(f.label)}</legend>` + f.options.map((o, i) =>
-          `<label class="rs-check"><input type="checkbox" data-asked="${i}" ${(state.asked[f.id] || []).includes(o) ? "checked" : ""}> <span>${esc(o)}</span></label>`).join("") + `</fieldset>`;
+          `<div class="rs-check" data-row><input type="checkbox" data-asked="${i}" aria-labelledby="rs-a${i}" ${(state.asked[f.id] || []).includes(o) ? "checked" : ""}> <span id="rs-a${i}">${esc(o)}</span></div>`).join("") + `</fieldset>`;
       }
       let input;
       if (f.kind === "select") input = `<select class="field" id="${id}" data-f="${f.id}">${f.options.map((o, i) => `<option ${v ? (v === o ? "selected" : "") : (i === 0 ? "selected" : "")}>${esc(o)}</option>`).join("")}</select>`;
@@ -104,6 +104,15 @@ const REPORT_ENDPOINT = "";
       update();
     }));
   }
+
+  // The options are plain rows (not <label> elements) on purpose: the SAYNO browser extension reads label text to find card fields,
+  // and an option such as "Card number, expiry or CVV" must not be mistaken for one. aria-labelledby keeps them accessible.
+  document.addEventListener("click", e => {
+    const row = e.target.closest("[data-row]");
+    if (!row || e.target.matches("input, a, button")) return;
+    const box = row.querySelector("input[type=checkbox]");
+    if (box) { box.checked = !box.checked; box.dispatchEvent(new Event("change", { bubbles: true })); }
+  });
 
   // ---------- read the form, validate, and build the email (the relay builds the same text on its side)
   function collect() {
