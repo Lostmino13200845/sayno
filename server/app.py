@@ -18,6 +18,7 @@ from urllib.parse import parse_qs, urlsplit
 from shieldlib import (OnlineChecker, ReportStore, ThreatIntel, analyze, auto_report, is_reportable,
                        manual_links, pwned_range, record_scan)
 from shieldlib.hashindex import HashIndex
+from shieldlib.pagekit import render as render_page
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # project root (server/ is one level down)
 CONFIG_PATH = os.path.join(BASE_DIR, "config.json")
@@ -82,6 +83,12 @@ class RateLimiter:
 
 LIMITER = RateLimiter()
 LIMITS = {"scan": 30, "hashes": 120, "prefixes": 60, "pwned": 20, "status": 120}  # requests per minute per client
+# URL slug -> static/pages/<name>.html (the same table tools/build_site.py uses for GitHub Pages)
+SITE_PAGES = {"": "home", "message-check": "message-check", "website-check": "website-check", "card-guard": "card-guard",
+              "how-it-works": "how-it-works", "privacy": "privacy", "security": "security", "help": "help",
+              "protect": "protect", "search": "search", "report": "report", "about": "about",
+              "accessibility": "accessibility", "terms": "terms", "get-extension": "get-extension",
+              "tutorial": "tutorial", "app": "app"}
 REPORT_NOW = threading.Event()  # wakes the back-end reporter right after a suspicious scan
 
 
@@ -153,17 +160,21 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(403, {"error": "forbidden"})
         u = urlsplit(self.path)
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
-        pages = {"/": "site/index.html", "/index.html": "site/index.html",
-                 "/app": "index.html", "/app/": "index.html", "/design": "site/design.html", "/design/": "site/design.html",
-                 "/tutorial": "site/index.html", "/tutorial/": "site/index.html"}
-        if u.path in pages:
-            with open(os.path.join(STATIC, pages[u.path]), "rb") as f:
+        slug = u.path.strip("/")
+        if u.path == "/index.html":
+            slug = ""
+        if slug.endswith(".html") and slug[:-5] in SITE_PAGES:
+            slug = slug[:-5]
+        if slug in SITE_PAGES:
+            return self._send(200, render_page(STATIC, SITE_PAGES[slug]).encode("utf-8"), "text/html; charset=utf-8")
+        if u.path in ("/design", "/design/"):  # the extension's style guide (kept as it was)
+            with open(os.path.join(STATIC, "site", "design.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
-        m = re.fullmatch(r"/assets/([a-z0-9-]+\.(css|js|png|svg))", u.path)
+        m = re.fullmatch(r"/assets/((?:fonts/)?[a-z0-9-]+\.(css|js|png|svg|woff2))", u.path)
         if m and os.path.exists(os.path.join(STATIC, "assets", m.group(1))):
             with open(os.path.join(STATIC, "assets", m.group(1)), "rb") as f:
                 ctype = {"css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8",
-                         "png": "image/png", "svg": "image/svg+xml"}[m.group(2)]
+                         "png": "image/png", "svg": "image/svg+xml", "woff2": "font/woff2"}[m.group(2)]
                 return self._send(200, f.read(), ctype)
         if u.path == "/healthz":
             return self._send(200, {"ok": True, "index": INDEX.count > 0})
@@ -192,9 +203,6 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, f.read(), "text/html; charset=utf-8")
 
         # ---- back office (admin token required; unknown paths look like 404s)
-        if u.path in ("/privacy", "/privacy/", "/privacy.html"):
-            with open(os.path.join(STATIC, "site", "privacy.html"), "rb") as f:
-                return self._send(200, f.read(), "text/html; charset=utf-8")
         if not ADMIN_ENABLED and u.path.startswith(("/admin", "/api/admin/")):
             return self._send(404, {"error": "not found"})
         if u.path == "/admin":  # the page only holds a login box; all data needs the header token

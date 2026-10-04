@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--#include head title="Report a problem: SAYNO" description="Tell us if a safe website was blocked, a scam was not caught, or something is hard to use." -->
+</head>
+<body>
+<!--#include header -->
+
+<main id="main" class="section">
+  <div class="container" style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start" id="report-grid">
+    <form id="report" class="stack" style="--gap:1.75rem" novalidate>
+      <div class="stack" style="--gap:1rem">
+        <h1 style="font-size:clamp(2.2rem,3.4vw + .6rem,3.4rem)">REPORT A PROBLEM</h1>
+        <p class="lead">Something not right? Tell us what happened so we can fix it.</p>
+      </div>
+      <fieldset style="border:0;padding:0;margin:0;min-width:0">
+        <legend class="label" style="margin-bottom:12px">What is this about?</legend>
+        <div class="grid grid-2" style="gap:12px">
+          <label class="card card--plain row-choice"><input type="radio" name="kind" value="Website" checked> <b>Website</b></label>
+          <label class="card card--plain row-choice"><input type="radio" name="kind" value="Message"> <b>Message</b></label>
+          <label class="card card--plain row-choice"><input type="radio" name="kind" value="Card Guard"> <b>Card Guard</b></label>
+          <label class="card card--plain row-choice"><input type="radio" name="kind" value="Other"> <b>Other</b></label>
+        </div>
+      </fieldset>
+      <div>
+        <label class="label" for="what">Tell us what happened</label>
+        <textarea class="field" id="what" rows="8" placeholder="For example: a safe website was blocked, or a scam was not caught."></textarea>
+        <p class="small" style="margin-top:8px">Please do not include card numbers, passwords or one-time codes.</p>
+        <p class="small" id="what-err" role="alert" style="color:var(--sy-high);margin-top:8px" hidden>Please tell us a little about what happened.</p>
+      </div>
+      <div class="stack" style="--gap:.6rem">
+        <div><button class="btn btn-primary btn-lg" type="submit">Submit report</button></div>
+        <p class="small">This opens your email app with the report ready to send to <b>sayoshield@gmail.com</b>. Nothing is sent until you press send there.</p>
+      </div>
+    </form>
+    <aside class="card" aria-labelledby="wait-h">
+      <h2 id="wait-h" style="font-size:1.4rem">While you wait</h2>
+      <p class="muted" style="margin-top:10px">Think you entered your card details on a suspicious page? Call your bank right away using the number on the back of your card.</p>
+      <p style="margin-top:14px"><a class="arrow-link" href="/help/">Read the FAQ <span aria-hidden="true">&rarr;</span></a></p>
+    </aside>
+  </div>
+</main>
+
+<!--#include footer -->
+<script>
+(() => {
+  document.getElementById("report").addEventListener("submit", e => {
+    e.preventDefault();
+    const what = document.getElementById("what"), err = document.getElementById("what-err");
+    if (!what.value.trim()) { err.hidden = false; what.focus(); return; }
+    err.hidden = true;
+    const kind = document.querySelector("input[name=kind]:checked").value;
+    location.href = "mailto:sayoshield@gmail.com?subject=" + encodeURIComponent("SAYNO report: " + kind) +
+      "&body=" + encodeURIComponent(what.value.trim());
+  });
+})();
+</script>
+</body>
+</html>

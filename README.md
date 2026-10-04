@@ -67,13 +67,13 @@ Demo pages (fictional bank): `/demo/fake-bank.html` (blocked), `/demo/shop.html`
 |---|---|
 | `/` | Landing page with a 6-step **"Try now" demo** (one step per main feature, pulsing "click here" rings, live scans that are never stored or reported) |
 | `/tutorial` · `/tutorial#tutorial-9` | Tutorial only, full-screen or jump to a step (for presenting) |
-| `/app` | Web scanner (paste-and-scan, password breach check, safety checklist) |
+| `/message-check/`, `/website-check/`, `/card-guard/` | The three checks (`/app` redirects here); `/protect/` has the safety checklist and password breach check |
 | `/design` | Living style guide: tokens, components, every extension screen and state |
 
 All visual styling comes from `design/*.css`; run `py tools/sync_design.py` after editing. See **DESIGN.md**.
 
 ## Run
-Python 3.10 or newer is the only requirement (standard library only, nothing to install). Then open http://127.0.0.1:8765 (website); the scanner is at `/app`.
+Python 3.10 or newer is the only requirement (standard library only, nothing to install). Then open http://127.0.0.1:8765 (website); the checks are at `/message-check/` and `/website-check/`.
 
 | OS | Start |
 |---|---|
@@ -122,8 +122,8 @@ Set `port` in `config.json`, then in the extension popup open **Advanced: SAYNO 
 
 ## Going public (everyone's browser, no server needed)
 SAYNO is published as **static files on GitHub Pages**, rebuilt every 3 hours by `.github/workflows/pages.yml`:
-the website, the web scanner (`/app/`), the practice tutorial, the privacy policy, and the block lists as hashed files (`/v1/`).
-- The extension and the web scanner check **everything on the device** (`extension/heuristics.js`, `extension/engine.js`, `extension/lookup.js`; the website uses identical copies in `static/assets/`). Pages you visit and text you check are never uploaded; only public block-list files are downloaded. See `static/site/privacy.html`.
+the website, the message and website checks (`/message-check/`, `/website-check/`), the practice tutorial, the privacy policy, and the block lists as hashed files (`/v1/`).
+- The extension and the web scanner check **everything on the device** (`extension/heuristics.js`, `extension/engine.js`, `extension/lookup.js`; the website uses identical copies in `static/assets/`). Pages you visit and text you check are never uploaded; only public block-list files are downloaded. See `static/pages/privacy.html`.
 - Build the store package: `python tools/package_extension.py --api https://<user>.github.io/<repo>`, then follow `docs/PUBLISHING.md` and `docs/STORE_LISTING.md`.
 - Keep the on-device rules and the Python rules identical: after editing `server/shieldlib/engine.py` run `python tools/gen_heuristics.py`, `python tools/gen_parity_vectors.py` and `python tools/sync_engine.py`. CI fails if they drift.
 - `server/app.py` remains for local development and self-hosting (it serves the same files, plus an optional admin back office). A `Dockerfile` and `render.yaml` are included for hosting it publicly.

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--#include head title="Check a message: SAYNO" description="Paste a suspicious text or email. SAYNO checks it on your device and tells you why it is risky and what to do next." -->
+</head>
+<body>
+<!--#include header -->
+
+<main id="main" class="section" data-check="message">
+  <div class="container stack" style="--gap:2.5rem">
+    <ol class="tracker" aria-label="Steps">
+      <li id="tr-1" aria-current="step">1 &middot; CHECK</li><li id="tr-2">2 &middot; UNDERSTAND</li><li id="tr-3">3 &middot; ACT</li>
+    </ol>
+
+    <!-- 1. input -->
+    <section id="view-input" aria-labelledby="h-input">
+      <div class="stack" style="--gap:1rem;max-width:46rem">
+        <h1 id="h-input">Check a Message</h1>
+        <p class="lead">Not sure if a text or email is real? Paste it here. SAYNO looks for scam signs and tells you what to do next.</p>
+      </div>
+      <div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);margin-top:2.25rem;align-items:start" id="input-grid">
+        <form id="form" class="stack" style="--gap:1.25rem" novalidate>
+          <div>
+            <label class="label" for="text">Paste the SMS or email</label>
+            <textarea class="field" id="text" rows="9" placeholder="Paste the message here..."></textarea>
+            <p class="small" id="err" role="alert" style="color:var(--sy-high);margin-top:8px" hidden>Paste a message first, or try one of the examples.</p>
+          </div>
+          <div class="flow"><button class="btn btn-primary btn-lg" type="submit">Check message</button></div>
+          <div class="stack" style="--gap:.6rem">
+            <p class="small">No message to hand? Try an example:</p>
+            <div class="chips">
+              <button class="pill" type="button" data-example="scam">A scam text</button>
+              <button class="pill" type="button" data-example="normal">A normal message</button>
+            </div>
+          </div>
+          <p class="small">Your message is checked on your device. It is not uploaded and not stored.</p>
+        </form>
+        <div class="card" aria-labelledby="what-h">
+          <h2 id="what-h" style="font-size:1.4rem;margin-bottom:12px">What SAYNO checks</h2>
+          <ul class="check-list">
+            <li><span class="tick">1</span>Pressure to act fast or threats about your account</li>
+            <li><span class="tick">2</span>Requests for card details, codes or personal information</li>
+            <li><span class="tick">3</span>Links that imitate a bank or a trusted company</li>
+            <li><span class="tick">4</span>Known scam patterns and lists of dangerous websites</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. scanning -->
+    <section id="view-scan" hidden aria-live="polite" aria-labelledby="h-scan">
+      <div class="stack" style="--gap:1rem;text-align:center;align-items:center">
+        <h1 id="h-scan">Checking Your Message</h1>
+        <p class="lead">This takes a few seconds. Your message stays on your device.</p>
+      </div>
+      <div class="card" style="max-width:46rem;margin:2rem auto 0">
+        <div class="progress" role="progressbar" aria-label="Checking progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8"><i id="bar"></i></div>
+        <ul class="scan-steps" style="margin-top:14px">
+          <li data-step="1" data-state="active"><span class="tick">&hellip;</span>Reading the wording</li>
+          <li data-step="2" data-state="todo"><span class="tick">&nbsp;</span>Checking the links</li>
+          <li data-step="3" data-state="todo"><span class="tick">&nbsp;</span>Comparing with known threat lists</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. result (filled by check.js) -->
+    <section id="view-result" hidden aria-live="polite"></section>
+  </div>
+</main>
+
+<!--#include footer -->
+<script src="/assets/check.js"></script>
+</body>
+</html>

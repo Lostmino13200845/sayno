@@ -19,12 +19,19 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "server"))
+from shieldlib.pagekit import render  # noqa: E402
+
 STATIC = os.path.join(ROOT, "static")
 
-# source page -> folder in the build (every page becomes <folder>/index.html, so URLs work without ".html")
-PAGES = {"site/index.html": ["", "tutorial"], "index.html": ["app"], "site/design.html": ["design"],
-         "site/privacy.html": ["privacy"]}
-ROUTES = {"/app": "/app/", "/design": "/design/", "/tutorial": "/tutorial/", "/privacy": "/privacy/"}
+# URL slug -> static/pages/<name>.html. Every page becomes <slug>/index.html, so URLs work without ".html".
+# (server/app.py serves the same pages, from the same table, for local use.)
+SITE_PAGES = {"": "home", "message-check": "message-check", "website-check": "website-check", "card-guard": "card-guard",
+              "how-it-works": "how-it-works", "privacy": "privacy", "security": "security", "help": "help",
+              "protect": "protect", "search": "search", "report": "report", "about": "about",
+              "accessibility": "accessibility", "terms": "terms", "get-extension": "get-extension",
+              "tutorial": "tutorial", "app": "app"}
+ROUTES = {"/" + slug: "/" + slug + "/" for slug in SITE_PAGES if slug}
+ROUTES["/design"] = "/design/"
 
 
 def rewrite(html, base):
@@ -53,14 +60,17 @@ def main():
     os.makedirs(out)
 
     # ---- pages
-    for src, folders in PAGES.items():
-        with open(os.path.join(STATIC, src), encoding="utf-8") as f:
-            html = rewrite(f.read(), base)
-        for folder in folders:
-            dest = os.path.join(out, folder)
-            os.makedirs(dest, exist_ok=True)
-            with open(os.path.join(dest, "index.html"), "w", encoding="utf-8", newline="\n") as f:
-                f.write(html)
+    for slug, name in SITE_PAGES.items():
+        html = rewrite(render(STATIC, name), base)
+        dest = os.path.join(out, slug)
+        os.makedirs(dest, exist_ok=True)
+        with open(os.path.join(dest, "index.html"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(html)
+    os.makedirs(os.path.join(out, "design"))  # the extension's style guide
+    with open(os.path.join(STATIC, "site", "design.html"), encoding="utf-8") as f:
+        html = rewrite(f.read(), base)
+    with open(os.path.join(out, "design", "index.html"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(html)
     shutil.copytree(os.path.join(STATIC, "assets"), os.path.join(out, "assets"))
     os.makedirs(os.path.join(out, "demo"))
     for name in os.listdir(os.path.join(STATIC, "demo")):

@@ -15,7 +15,7 @@ Maya, 24, is new to Canada. She gets an SMS: "Your new debit card is locked. Ver
 Every result answers three questions: what happened, why SAYNO did this, what to do now.
 
 ## Live demo script (about 3 minutes)
-Before you start: install the extension (download it from the website, unzip, `chrome://extensions` → Developer mode → Load unpacked). Open these tabs: the home page, the scanner (`/app/`), and `/demo/fake-bank.html` and `/demo/shop.html` on https://lostmino13200845.github.io/sayno/. Use the live site so nothing runs locally.
+Before you start: install the extension (download it from the website, unzip, `chrome://extensions` → Developer mode → Load unpacked). Open these tabs: the home page, the message check (`/message-check/`), and `/demo/fake-bank.html` and `/demo/shop.html` on https://lostmino13200845.github.io/sayno/. Use the live site so nothing runs locally.
 
 1. **(0:00) Hook:** show the fake SMS on the home page. "Would you click?"
 2. **(0:20) Message check:** open the web scanner and paste the RBC text. It rates HIGH or CRITICAL and lists the reasons: urgency, a locked-card threat, new-card activation, a link imitating RBC. Point at "Do not click the link".

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--#include head title="Search SAYNO" description="Search the SAYNO website: how it works, Card Guard, privacy, Message Check, Website Check and Help." -->
+</head>
+<body>
+<!--#include header -->
+
+<main id="main" class="section">
+  <div class="container stack" style="--gap:2rem;max-width:52rem">
+    <h1>SEARCH SAYNO</h1>
+    <form role="search" id="search-form" class="flow" style="flex-wrap:nowrap">
+      <label class="sr-only" for="q">Search SAYNO</label>
+      <input class="field" id="q" type="search" placeholder="Search SAYNO..." autocomplete="off" style="font-size:1.2rem;padding:18px 20px">
+      <button class="icon-btn" type="submit" aria-label="Search" style="width:64px;height:64px;flex:none;background:var(--sy-brand);color:var(--sy-on-brand);border-color:var(--sy-brand)">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      </button>
+    </form>
+    <section aria-labelledby="pop-h" id="results-wrap">
+      <h2 id="pop-h" class="eyebrow" style="margin-bottom:14px">Popular searches</h2>
+      <ul id="results" style="border-top:2px solid var(--sy-ink)"></ul>
+      <p id="none" class="muted" hidden>Nothing matched that. Try "privacy", "card" or "message".</p>
+    </section>
+  </div>
+</main>
+
+<!--#include footer -->
+<script src="/assets/search.js"></script>
+</body>
+</html>

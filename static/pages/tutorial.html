@@ -1,81 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAYNO — protection for new bank accounts</title>
-<meta name="description" content="SAYNO is a browser extension that blocks fake bank pages before you type your card and checks suspicious messages.">
-<link rel="icon" href="/assets/shield-48.png">
-<link rel="stylesheet" href="/assets/tokens.css">
-<link rel="stylesheet" href="/assets/components.css">
-<link rel="stylesheet" href="/assets/popup.css">
-<link rel="stylesheet" href="/assets/overlay.css">
-<link rel="stylesheet" href="/assets/site.css">
+<!--#include head title="Take the 60-second tour: SAYNO" description="A safe practice browser: see how SAYNO checks a message, blocks a fake bank page and leaves a normal shop alone." -->
+<link rel="stylesheet" href="/assets/tour.css">
+<style>
+  .tour .mock, .tour .mock * { font-family: var(--ss-font); }
+  .tour .tut-guide { font-family: var(--sy-body); }
+  .tour .tut-guide h3 { font-family: var(--sy-display); }
+  .tour .ss-eyebrow { font-family: var(--sy-body); }
+  .tour .tut { max-width: 1200px; margin-inline: auto; }
+</style>
 </head>
 <body>
+<!--#include header -->
 
-<header class="nav">
-  <a class="nav-brand" href="#top"><img src="/assets/shield-48.png" alt=""> SAYNO</a>
-  <nav class="nav-links" aria-label="Main">
-    <a href="#features">Features</a>
-    <a href="#try">Try now</a>
-    <a href="/app">Web scanner</a>
-  </nav>
-  <button class="nav-search" id="searchBtn" aria-label="Check a link or message" aria-expanded="false" aria-controls="searchPanel">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20 L16 16"></path></svg>
-  </button>
-  <a class="ss-btn ss-btn--s nav-cta" href="#add">Add to browser</a>
-</header>
-<form class="search-panel" id="searchPanel" role="search" hidden>
-  <label for="searchInput" class="sr-only">Check a link or message</label>
-  <input class="ss-input" id="searchInput" type="search" placeholder="Paste a link or message to check if it's a scam" autocomplete="off">
-  <button class="ss-btn" type="submit">Check</button>
-</form>
-
-<main id="top">
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <div class="hero-text">
-    <p class="ss-eyebrow">For new bank customers</p>
-    <h1>Your new bank account is a target.<br><span>We stop the scam before you type your card.</span></h1>
-    <p class="hero-lead">SAYNO blocks fake bank pages and tells you if a message is a scam.</p>
-    <div class="hero-actions">
-      <a class="ss-btn" href="#try">Try now</a>
-      <a class="ss-btn ss-btn--ghost" href="#add">Add to browser</a>
+<main id="main" class="section">
+  <div class="container stack" style="--gap:2rem">
+    <div class="stack" style="--gap:1rem;max-width:46rem">
+      <p class="eyebrow">Practice tour</p>
+      <h1>Take the 60-second tour.</h1>
+      <p class="lead">A safe practice browser. See how SAYNO checks a message, stops a fake bank page and leaves a normal shop alone. Click where the ring pulses, or use <b>Do it for me</b>.</p>
     </div>
-    <p class="hero-note">Checks every site against <b id="statThreats">700,000+</b> known scam sites, updated every 5 minutes.</p>
-  </div>
-  <div class="hero-art" aria-hidden="true">
-    <div class="phone">
-      <div class="phone-msg">RBC: Your new debit card has been temporarily locked. Activate within 24 hours at rbc-card-activation.help</div>
-      <div class="phone-verdict"><span class="ss-level ss-level--critical">critical · 92</span> Fake bank message</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= FEATURES ================= -->
-<section class="band" id="features">
-  <h2>Features</h2>
-  <div class="grid-3 features">
-    <article class="ss-card feature"><h3>Card Guard</h3><p>Blocks fake pages that ask for your card or PIN.</p></article>
-    <article class="ss-card feature"><h3>Site check</h3><p>The shield shows if the page you're on is safe.</p></article>
-    <article class="ss-card feature"><h3>Message check</h3><p>Paste a text or link to see if it's a scam.</p></article>
-    <article class="ss-card feature"><h3>Screen alerts</h3><p>Warns you when a page isn't secure.</p></article>
-    <article class="ss-card feature"><h3>Your bank only</h3><p>Only your bank's real website gets your card.</p></article>
-    <article class="ss-card feature"><h3>Private by design</h3><p>Everything is checked on your device. Nothing you browse or paste is uploaded.</p></article>
-  </div>
-</section>
-
-<!-- ================= TRY NOW ================= -->
-<section class="band band--tint" id="try">
-  <h2>Try it now</h2>
-  <p class="section-lead">See how SAYNO protects you. Click where the ring pulses.</p>
-
-  <div class="tut" id="tutorial">
+    <div class="tour">
+<div class="tut" id="tutorial">
     <div class="tut-guide ss-card" role="region" aria-label="Tutorial step" aria-live="polite">
       <div class="tut-progress"><div id="tProg"></div></div>
       <p class="ss-eyebrow" id="tCount">Step 1 of 6</p>
-      <h3 id="tTitle">Open SAYNO</h3>
+      <h2 id="tTitle">Open SAYNO</h2>
       <div id="tText" class="tut-text"></div>
       <div class="tut-actions">
         <button class="ss-btn ss-btn--ghost ss-btn--s" id="tBack">Back</button>
@@ -187,53 +138,12 @@
       <div class="hotspot" id="hot" hidden><span class="hotspot-label" id="hotLabel">Click here</span></div>
     </div>
   </div>
-</section>
-
-<!-- ================= YOUR BANK WILL NEVER ================= -->
-<section class="band" id="tips">
-  <h2>Your bank will never ask you to…</h2>
-  <div class="grid-4 tips">
-    <div class="tip">share your <b>PIN, CVV or a one-time code</b></div>
-    <div class="tip"><b>“activate”</b> your card through a link</div>
-    <div class="tip">accept an <b>e-Transfer</b> with your card details</div>
-    <div class="tip">move money to a <b>“safe account”</b></div>
+    </div>
+    <p class="small">This is a simulation. Nothing you click here is sent anywhere.</p>
   </div>
-</section>
-
-<!-- ================= ADD TO BROWSER ================= -->
-<section class="band band--tint" id="add">
-  <h2>Add SAYNO to your browser</h2>
-  <p class="section-lead">Works in Chrome and Edge. Takes about a minute. The Chrome Web Store version is coming soon; until then, install it yourself like this:</p>
-  <p><a class="ss-btn" href="/download/sayno-extension.zip" download>Download the extension (zip)</a></p>
-  <ol class="install">
-    <li class="ss-card"><span class="install-n">1</span><div><h3>Unzip it</h3><p>Right-click the downloaded file and choose <b>Extract all</b> (or double-click it on a Mac). Keep the folder somewhere permanent.</p></div></li>
-    <li class="ss-card"><span class="install-n">2</span><div><h3>Add the extension</h3><p>Open <code>chrome://extensions</code> (or <code>edge://extensions</code>), turn on <b>Developer mode</b>, click <b>Load unpacked</b> and pick the unzipped folder.</p></div></li>
-    <li class="ss-card"><span class="install-n">3</span><div><h3>Pin the shield</h3><p>Click the puzzle icon and pin <b>SAYNO</b>. That's it.</p></div></li>
-  </ol>
-</section>
 </main>
 
-<footer class="site-footer">
-  <div class="footer-brand">
-    <a class="nav-brand" href="#top"><img src="/assets/shield-48.png" alt=""> SAYNO</a>
-    <p>Stops scams before you type your card.</p>
-  </div>
-  <nav class="footer-col" aria-label="Product">
-    <h3>Product</h3>
-    <a href="#features">Features</a>
-    <a href="#try">Try now</a>
-    <a href="#add">Add to browser</a>
-  </nav>
-  <nav class="footer-col" aria-label="Help">
-    <h3>Help</h3>
-    <a href="/app">Check a message</a>
-    <a href="/app#guide">If you were scammed</a>
-    <a href="/app#pw">Password check</a>
-  </nav>
-  <p class="footer-legal">© 2026 SAYNO · SFU Hackathon project</p>
-</footer>
-
-<script src="/assets/site.js"></script>
+<!--#include footer -->
 <script src="/assets/tutorial.js"></script>
 </body>
 </html>

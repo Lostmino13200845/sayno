@@ -8,7 +8,7 @@ GitHub Actions (every 3 hours + on every push)
   └─ tools/build_site.py --refresh  → downloads the public threat feeds, hashes them, builds the site
        └─ GitHub Pages: https://<user>.github.io/<repo>/
             ├─ /                    website            ├─ /v1/meta.json        version + size (tiny)
-            ├─ /app/                web scanner         ├─ /v1/prefixes.bin     4-byte hash prefixes (~2.4 MB)
+            ├─ /message-check/ …    the checks         ├─ /v1/prefixes.bin     4-byte hash prefixes (~2.4 MB)
             ├─ /tutorial/ /privacy/ …                   └─ /v1/shards/<xx>.json full hashes by first byte (256 files)
 Browser extension  ──downloads──▶  the files above, checks pages and text locally
 ```
@@ -22,7 +22,7 @@ Browser extension  ──downloads──▶  the files above, checks pages and t
 4. The same workflow re-runs every 3 hours to refresh the block lists. GitHub pauses scheduled workflows in a repo with no
    activity for 60 days: open the *Actions* tab and re-enable it if that ever happens.
 
-Check it: open the site, `…/app/` (paste a scam message), `…/v1/meta.json` (version and entry count) and `…/privacy/`.
+Check it: open the site, `…/message-check/` (paste a scam message), `…/v1/meta.json` (version and entry count) and `…/privacy/`.
 
 Bandwidth note: each device downloads the 2.4 MB list only when it changed (it checks the tiny `meta.json` first).
 GitHub Pages has a soft limit of 100 GB/month. If SAYNO grows past that, put the same `_site` folder on Cloudflare Pages
@@ -42,7 +42,7 @@ Developer mode → Load unpacked on `extension/`) and try it before uploading.
 1. Register at https://chrome.google.com/webstore/devconsole (one-time US$5 fee, 2-step verification required).
 2. *New item* → upload the zip.
 3. Fill the listing from `docs/STORE_LISTING.md` (description, single purpose, permission justifications, data-use answers).
-4. Privacy policy URL: `https://<user>.github.io/<repo>/privacy/` (the contact email in `static/site/privacy.html` is already filled in).
+4. Privacy policy URL: `https://<user>.github.io/<repo>/privacy/` (the contact email in `static/pages/privacy.html` is already filled in).
 5. Screenshots: `python tools/store_screenshots.py` (needs the local server running and Playwright) → `dist/screenshots/`.
 6. Submit for review (usually a few days). Broad "all websites" access gets a closer look, so the justifications matter.
 

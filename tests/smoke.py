@@ -65,7 +65,7 @@ def main():
             return 1
         check("server starts", True)
 
-        for path in ("/", "/app", "/design", "/demo/inbox.html", "/demo/fake-bank.html", "/demo/shop.html",
+        for path in ("/", "/message-check/", "/website-check/", "/card-guard/", "/privacy/", "/help/", "/app", "/design", "/demo/inbox.html", "/demo/fake-bank.html", "/demo/shop.html",
                      "/assets/site.css", "/assets/tokens.css"):
             code, _ = request(base, path)
             check(f"GET {path}", code == 200, f"-> {code}")

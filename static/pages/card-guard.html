@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--#include head title="Card Guard: SAYNO" description="See what Card Guard does when a risky website asks for your card details: it stops you before you type and explains why." -->
+</head>
+<body>
+<!--#include header -->
+
+<main id="main" class="section" data-guard>
+  <div class="container stack" style="--gap:2.25rem">
+    <div class="stack" style="--gap:1rem;max-width:46rem">
+      <p class="eyebrow">Card Guard</p>
+      <h1>See what Card Guard does.</h1>
+      <p class="lead">This is a safe demo of a fake bank page. Card Guard spots the card fields, stops you before you type, and tells you why. Try both choices.</p>
+    </div>
+
+    <div class="browser" aria-label="Demonstration of a fake bank page">
+      <div class="browser-bar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="url-box" id="demo-url">rbc-card-activation.help/secure</div>
+        <span class="icon-btn" style="width:36px;height:36px;border-radius:10px;color:var(--sy-brand)" aria-hidden="true">
+          <svg width="20" height="22" viewBox="0 0 32 36"><path d="M16 1.5 3 6.6v10.7c0 9.200 5.500 15.900 13 17.700 7.500-1.800 13-8.500 13-17.700V6.600L16 1.500z" fill="currentColor"/><path d="m10.400 17.600 4.100 4.100 7.300-8.400" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+
+      <div class="browser-body">
+        <!-- the risky page -->
+        <div class="fake-page stack" style="--gap:1rem" aria-hidden="true" id="fake-page">
+          <div class="card card--plain" style="font-weight:700;font-size:1.3rem">[ Fake bank logo ]</div>
+          <div class="callout" style="background:var(--sy-high-soft)"><span><b>Security alert:</b> your debit card has been suspended. Verify your card within 24 hours.</span></div>
+          <div><span class="label">Card number</span><input class="field" tabindex="-1" placeholder="1234 5678 9012 3456" disabled></div>
+          <div class="grid grid-2"><div><span class="label">Expiry date</span><input class="field" tabindex="-1" placeholder="MM/YY" disabled></div><div><span class="label">CVV</span><input class="field" tabindex="-1" placeholder="123" disabled></div></div>
+          <div class="btn btn-primary btn-block" aria-hidden="true">Verify my card</div>
+        </div>
+
+        <!-- warning -->
+        <div class="overlay" id="v-warning">
+          <section class="overlay-box stack" style="--gap:1rem" role="alertdialog" aria-labelledby="w-title" aria-describedby="w-desc">
+            <p class="eyebrow">SAYNO &middot; Card Guard</p>
+            <h2 id="w-title" tabindex="-1">STOP &mdash; BEFORE YOU CONTINUE</h2>
+            <p id="w-desc" style="font-size:1.2rem;font-weight:600">This page is asking for sensitive card information.</p>
+            <div>
+              <p class="small" style="font-weight:700;letter-spacing:.1em;text-transform:uppercase">Detected on this page</p>
+              <ul class="detected">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.200" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Card number</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.200" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>CVV</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.200" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Expiry</li>
+              </ul>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" type="button" id="leave">Leave this page</button>
+            <div style="text-align:center"><button class="linkish" type="button" id="continue">I'M SURE &mdash; CONTINUE</button></div>
+            <details class="faq" style="border-bottom:0">
+              <summary style="font-size:1.05rem;padding:14px 4px">Why am I seeing this?</summary>
+              <div class="answer" style="padding:0 4px 8px 52px;font-size:1rem">This page asks for your card number, security code and expiry date. It is not one of your banks or a known payment provider, and it uses bank-style pressure ("suspended", "within 24 hours"). Your bank will never ask for these on a page you reached from a message.</div>
+            </details>
+          </section>
+        </div>
+
+        <!-- blocked -->
+        <div class="overlay" id="v-blocked" hidden style="background:var(--sy-surface)">
+          <section class="stack" style="--gap:1.25rem;max-width:620px;text-align:center;align-items:center" aria-labelledby="b-title">
+            <span class="icon-tile" style="width:84px;height:84px;border-radius:50%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:42px;height:42px"><path d="M12 3 3 6.500v5c0 5 3.600 8.400 9 9.500 5.400-1.100 9-4.500 9-9.500v-5z"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span>
+            <p class="eyebrow">PAGE BLOCKED</p>
+            <h2 id="b-title" tabindex="-1">WE STOPPED THIS PAGE</h2>
+            <ul class="reasons" style="text-align:left;width:100%">
+              <li><span class="num">1</span>The website looks suspicious</li>
+              <li><span class="num">2</span>It asks for financial information</li>
+              <li><span class="num">3</span>Card number, CVV and expiry fields were detected</li>
+            </ul>
+            <div class="note-box" style="width:100%"><strong>YOUR INFORMATION WAS NOT SENT.</strong><p class="muted">You stopped before entering anything.</p></div>
+            <a class="btn btn-primary btn-lg btn-block" href="/">Go back to safety</a>
+            <a class="arrow-link" href="/help/">Why was this blocked? <span aria-hidden="true">&rarr;</span></a>
+          </section>
+        </div>
+
+        <!-- continued anyway -->
+        <div class="overlay" id="v-continued" hidden style="background:transparent;align-items:end;pointer-events:none">
+          <div class="note-box" style="max-width:640px;pointer-events:auto"><strong>You chose to continue.</strong><p class="muted">In the browser extension this is always your choice, but we recommend leaving. A bank never asks for your card details on a page you reached from a message.</p><p style="margin-top:12px"><button class="btn btn-primary" type="button" id="reset-1">Start over</button></p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card"><div class="step-n">1</div><h3>A risky page asks for your card</h3><p class="muted" style="margin-top:8px">Card Guard looks for card number, CVV and PIN fields on every page.</p></div>
+      <div class="card"><div class="step-n">2</div><h3>You are stopped first</h3><p class="muted" style="margin-top:8px">If the page is not your bank or a known payment provider, you see a clear warning before you type.</p></div>
+      <div class="card"><div class="step-n">3</div><h3>You stay in control</h3><p class="muted" style="margin-top:8px">The safest choice is the biggest button. Nothing you type is read or sent anywhere.</p></div>
+    </div>
+
+    <div class="callout">
+      <div class="stack" style="--gap:.4rem">
+        <b>Want to see it on a real page?</b>
+        <span>Install the extension, then open the <a href="/demo/fake-bank.html">fake bank demo page</a>. For comparison, a <a href="/demo/shop.html">normal shop checkout</a> is not blocked.</span>
+        <span><a class="arrow-link" href="/get-extension/">Get the extension <span aria-hidden="true">&rarr;</span></a></span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!--#include footer -->
+<script src="/assets/cardguard-demo.js"></script>
+</body>
+</html>

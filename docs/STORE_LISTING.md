@@ -38,7 +38,7 @@ Protect users from phishing and card-theft scams by rating web pages and blockin
 - **Remote code** – None. All code ships in the package.
 
 ## Data usage disclosures (Privacy tab)
-Answer the questionnaire like this (it matches `static/site/privacy.html`):
+Answer the questionnaire like this (it matches `static/pages/privacy.html`):
 - *Web history, website content, personally identifiable information, health, financial and payment information, authentication information, personal communications, location, user activity*: **Not collected.** Everything is processed on the device.
 Then certify the three statements: data is not sold to third parties, not used or transferred for purposes unrelated to the single purpose, and not used for creditworthiness or lending.
 Privacy policy URL: `https://<user>.github.io/<repo>/privacy/`

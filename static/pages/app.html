@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--#include head title="SAYNO" description="This page has moved to the SAYNO message check." -->
+<script>
+  // Old links like /app/#q=... (and /app/#guide, /app/#pw) go to the pages that replaced them.
+  (function () {
+    var base = location.pathname.replace(/\/app\/?(index\.html)?$/, "");
+    var h = location.hash, q = new URLSearchParams(h.slice(1)).get("q");
+    var to = h.indexOf("guide") === 1 || h.indexOf("pw") === 1 ? "/protect/" : "/message-check/";
+    location.replace(base + to + (q ? "#q=" + encodeURIComponent(q) : ""));
+  })();
+</script>
+</head>
+<body>
+<noscript><p style="font:18px system-ui;margin:3rem 1rem">This page has moved. <a href="/message-check/">Go to the message check</a>.</p></noscript>
+</body>
+</html>
