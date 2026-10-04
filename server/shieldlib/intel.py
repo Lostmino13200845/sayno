@@ -223,6 +223,13 @@ class ThreatIntel:
                        for n, d in self._data.items())
             return {"disposable": disp, "blocklisted": self._domain_hit(domain)}
 
+    def snapshot(self):
+        """(kind, category, parsed-data) for every threat feed. The sets are replaced, never mutated
+        in place, so they are safe to read after the lock is released. Used to build the hash index."""
+        with self._lock:
+            return [(_SOURCES[n][1], _SOURCES[n][2], d) for n, d in self._data.items()
+                    if _SOURCES[n][1] != "email_domains"]
+
     def stats(self):
         """Aggregate numbers only - no source list, no entries."""
         with self._lock:

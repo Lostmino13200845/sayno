@@ -33,6 +33,15 @@ jobs:
           sh -n start.sh
           test -x start.sh || (echo "start.sh is not executable" && exit 1)
 
+      - name: Extension heuristics data is generated from the server code
+        run: python tools/gen_heuristics.py --check
+
+      - name: On-device link rules match the Python engine (regenerates the vectors first)
+        run: |
+          python tools/gen_parity_vectors.py
+          node tests/parity.test.mjs
+        shell: bash
+
       - name: Extension JavaScript parses
         run: |
           node --version

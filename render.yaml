@@ -1,0 +1,11 @@
+# One-click deploy on Render (https://render.com): New > Blueprint > pick this repo.
+# Free instances sleep when idle; use a paid instance if the extension must always get an instant answer.
+services:
+  - type: web
+    name: sayno
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: SAYNO_PUBLIC
+        value: "1"

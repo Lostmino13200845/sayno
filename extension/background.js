@@ -1,10 +1,30 @@
-// SAYNO background worker: checks every site the user opens against the
-// SAYNO server (threat database + heuristics) and shows the verdict on the toolbar badge.
-// The server port comes from the popup's "Advanced" setting (default 8765, same as config.json).
-async function api(path) {
-  const { apiPort = 8765 } = await chrome.storage.local.get("apiPort");
-  return `http://127.0.0.1:${apiPort}${path}`;
+// SAYNO background worker. Every page the user opens is rated ON THE DEVICE: link heuristics (heuristics.js)
+// plus a hash-prefix check against the global block lists (lookup.js). Pages are never sent to a server; the
+// server is asked only when a 4-byte hash prefix matches locally, and for text the user explicitly checks
+// (right-click or the paste box).
+import { DEFAULT_API } from "./config.js";
+import { checkUrl as listCheck, syncPrefixes } from "./lookup.js";
+import { analyzeUrl, levelFor } from "./heuristics.js";
+
+async function apiBase() {
+  const { apiBase } = await chrome.storage.local.get("apiBase");
+  return (apiBase || DEFAULT_API).replace(/\/+$/, "");
 }
+async function api(path) { return (await apiBase()) + path; }
+
+// Keep the local block-list index fresh (an unchanged list costs one tiny 304 response).
+async function syncLists() {
+  try {
+    const r = await syncPrefixes(await apiBase());
+    if (r.updated) {  // a new list may cover pages that are already open: check them again
+      cache.clear();
+      for (const t of await chrome.tabs.query({})) if (t.url && /^https?:/.test(t.url)) assess(t.id, t.url);
+    }
+  } catch { /* offline: keep the old list */ }
+}
+chrome.alarms.create("sync-lists", { periodInMinutes: 30 });
+chrome.alarms.onAlarm.addListener(a => { if (a.name === "sync-lists") syncLists(); });
+syncLists();
 const cache = new Map();          // host+path -> {result, at}
 const TTL = 10 * 60 * 1000;
 const tabVerdicts = new Map();    // tabId -> result (also mirrored in chrome.storage.session)
@@ -44,10 +64,18 @@ async function checkUrl(url) {
   const key = u.host + u.pathname;
   const hit = cache.get(key);
   if (hit && Date.now() - hit.at < TTL) return hit.result;
-  // Privacy: send only scheme + host + path. Query strings and #fragments often hold tokens
-  // (password resets, sign-in codes), and browsing checks never go to third-party lookups.
-  const result = await scan(u.origin + u.pathname, false);
-  cache.set(key, { result, at: Date.now() });
+  const { ready, listed, unresolved } = await listCheck(url, await apiBase());  // hashes locally; server only on a prefix match
+  if (!ready) syncLists();                                          // first run / list not downloaded yet
+  const r = analyzeUrl(u.origin + u.pathname, listed);              // no query string or fragment: they can hold tokens
+  if (unresolved) {  // matches a block-list fingerprint but the server could not confirm: warn, do not guess "safe"
+    r.findings.push({ weight: 36, severity: "warn",
+      message: "Matches a block-list fingerprint, but SAYNO could not reach its server to confirm" });
+    r.score = Math.min(100, r.findings.reduce((n, f) => n + f.weight, 0));
+    r.level = levelFor(r.score);
+  }
+  const result = { score: r.score, level: r.level, text: { score: 0, findings: [] }, urls: [r], emails: [],
+                   advice: [], local: true, listsReady: ready, unresolved: !!unresolved, checkedAt: Date.now() };
+  if (!unresolved) cache.set(key, { result, at: Date.now() });      // an unconfirmed match is retried next time
   return result;
 }
 
@@ -198,9 +226,12 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
     notify(sender.tab.id, new URL(sender.tab.url).hostname, "field", "Don't type that here",
       `You're about to enter your ${msg.what} on a page that isn't secure (no https). It could be read by others on the network.`, true);
   } else if (msg.type === "cardGuard" && sender.tab) {
-    // The content script blocked a card form. Report the page URL (never the card data) so
-    // the back end logs it - and reports it if it scores high enough.
-    const pu = new URL(sender.tab.url);  // no query string / fragment: they can hold private tokens
-    scan(`${msg.reason}\n${pu.origin + pu.pathname}`, false).catch(() => {});
+    // The content script blocked a card form. Only if the user switched on "Help protect others" in the popup,
+    // report the page address (no query string or fragment, never card data) so it can be logged and reported.
+    chrome.storage.local.get({ shareReports: false }, ({ shareReports }) => {
+      if (!shareReports) return;
+      const pu = new URL(sender.tab.url);
+      scan(`${msg.reason}\n${pu.origin + pu.pathname}`, false).catch(() => {});
+    });
   }
 });

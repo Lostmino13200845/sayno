@@ -117,3 +117,9 @@ GitHub Actions (`.github/workflows/ci.yml`) runs both on Ubuntu, macOS and Windo
 
 ## Changing the server port
 Set `port` in `config.json`, then in the extension popup open **Advanced: SAYNO server port** and enter the same number.
+
+## Going public (everyone's browser, not just localhost)
+- The extension rates pages **on the device** (`extension/heuristics.js` + a downloaded hash-prefix list, `extension/lookup.js`). The server is asked only for a 4-byte hash fragment when a page matches the local list, and for text the user explicitly checks. Details: `static/site/privacy.html`.
+- Run the same server in **public mode** (`SAYNO_PUBLIC=1`): no scan logging, no auto-reporting, no admin page, per-client rate limits, binds `0.0.0.0:$PORT`. A `Dockerfile` and `render.yaml` are included.
+- Build the store package with `python tools/package_extension.py --api https://your-server` and follow `docs/PUBLISHING.md` (deploy, Chrome Web Store, Edge) and `docs/STORE_LISTING.md` (listing text, permission justifications).
+- After editing detection rules in `server/shieldlib/engine.py`, run `python tools/gen_heuristics.py` so the extension's on-device rules follow; CI checks they match.

@@ -30,11 +30,13 @@
     <label class="ss-toggle"><input type="checkbox" id="enabled"><span></span> Block fake pages that ask for my card</label>
     <label class="ss-toggle"><input type="checkbox" id="newcomerMode"><span></span> New-account mode (extra warnings)</label>
     <label class="ss-toggle"><input type="checkbox" id="notifyInsecure"><span></span> Notify me on screen when a page isn't secure</label>
+    <label class="ss-toggle"><input type="checkbox" id="shareReports"><span></span> Help protect others: report scam pages I'm blocked from (sends the page address only)</label>
     <div class="ss-muted" id="notifyHint" hidden></div>
   </div>
-  <details class="pp-banks"><summary>Advanced: SAYNO server port</summary>
-    <div class="pp-bank-list"><label for="apiPort">Port (default 8765, must match <code>port</code> in config.json)</label>
-    <input class="ss-input" id="apiPort" type="number" min="1" max="65535" inputmode="numeric"></div></details>
+  <details class="pp-banks"><summary>Advanced: SAYNO server address</summary>
+    <div class="pp-bank-list"><label for="apiBase">Server (leave as is unless you run your own)</label>
+    <input class="ss-input" id="apiBase" type="url" inputmode="url" spellcheck="false">
+    <p class="ss-muted" id="apiHint" hidden></p></div></details>
   <details class="pp-banks"><summary>My bank(s) — only these are trusted with my card</summary><div class="pp-bank-list" id="banks"></div></details>
 </section>
 

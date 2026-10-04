@@ -1,0 +1,589 @@
+[
+ {
+  "url": "https://github.com/torvalds/linux",
+  "score": 0,
+  "level": "safe",
+  "findings": []
+ },
+ {
+  "url": "https://docs.google.com/document/d/abc",
+  "score": 0,
+  "level": "safe",
+  "findings": []
+ },
+ {
+  "url": "https://www.rbcroyalbank.com/personal.html",
+  "score": 0,
+  "level": "safe",
+  "findings": []
+ },
+ {
+  "url": "https://www.amazon.ca/gp/css/order-history",
+  "score": 0,
+  "level": "safe",
+  "findings": []
+ },
+ {
+  "url": "https://www.paypal.com/signin",
+  "score": 0,
+  "level": "safe",
+  "findings": []
+ },
+ {
+  "url": "https://accounts.google.com/signin/v2/identifier",
+  "score": 0,
+  "level": "safe",
+  "findings": []
+ },
+ {
+  "url": "https://rbc-card-activation.help/secure",
+  "score": 38,
+  "level": "medium",
+  "findings": [
+   [
+    10,
+    "Top-level domain '.help' is heavily abused by scammers"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ],
+   [
+    24,
+    "Mentions 'rbc' but is not an official rbc domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://rbc-secure-verify.help/login",
+  "score": 42,
+  "level": "medium",
+  "findings": [
+   [
+    10,
+    "Top-level domain '.help' is heavily abused by scammers"
+   ],
+   [
+    8,
+    "Domain contains words like login / verify / secure / account"
+   ],
+   [
+    24,
+    "Mentions 'rbc' but is not an official rbc domain"
+   ]
+  ]
+ },
+ {
+  "url": "http://interac-deposit.top/claim",
+  "score": 40,
+  "level": "medium",
+  "findings": [
+   [
+    10,
+    "Top-level domain '.top' is heavily abused by scammers"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    24,
+    "Mentions 'interac' but is not an official interac domain"
+   ]
+  ]
+ },
+ {
+  "url": "http://cra-refund-canada.xyz",
+  "score": 40,
+  "level": "medium",
+  "findings": [
+   [
+    10,
+    "Top-level domain '.xyz' is heavily abused by scammers"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    24,
+    "Mentions 'cra' but is not an official cra domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://paypa1-secure.com/login",
+  "score": 44,
+  "level": "medium",
+  "findings": [
+   [
+    8,
+    "Domain contains words like login / verify / secure / account"
+   ],
+   [
+    36,
+    "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://paypaI.com/signin",
+  "score": 40,
+  "level": "medium",
+  "findings": [
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ],
+   [
+    36,
+    "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://amazon-login.s3.amazonaws.com/verify/account",
+  "score": 46,
+  "level": "medium",
+  "findings": [
+   [
+    8,
+    "Domain contains words like login / verify / secure / account"
+   ],
+   [
+    24,
+    "Mentions 'amazon' but is not an official amazon domain"
+   ],
+   [
+    14,
+    "Uses the name 'amazon' on a free / shared hosting domain, not the real company"
+   ]
+  ]
+ },
+ {
+  "url": "https://paypal-secure.googleusercontent.com/login",
+  "score": 46,
+  "level": "medium",
+  "findings": [
+   [
+    8,
+    "Domain contains words like login / verify / secure / account"
+   ],
+   [
+    24,
+    "Mentions 'paypal' but is not an official paypal domain"
+   ],
+   [
+    14,
+    "Uses the name 'paypal' on a free / shared hosting domain, not the real company"
+   ]
+  ]
+ },
+ {
+  "url": "https://раураl.com/login",
+  "score": 62,
+  "level": "high",
+  "findings": [
+   [
+    22,
+    "Punycode / internationalized domain (possible look-alike characters)"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ],
+   [
+    36,
+    "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+   ]
+  ]
+ },
+ {
+  "url": "http://3232235777/login",
+  "score": 40,
+  "level": "medium",
+  "findings": [
+   [
+    30,
+    "Disguised IP address (number or hex form) instead of a domain name"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ]
+  ]
+ },
+ {
+  "url": "http://0xC0A80101/bank",
+  "score": 36,
+  "level": "medium",
+  "findings": [
+   [
+    30,
+    "Disguised IP address (number or hex form) instead of a domain name"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "http://192.168.1.5/login",
+  "score": 32,
+  "level": "low",
+  "findings": [
+   [
+    22,
+    "Uses a raw IP address instead of a domain name"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ]
+  ]
+ },
+ {
+  "url": "http://1.2.3.4:8080/x",
+  "score": 36,
+  "level": "medium",
+  "findings": [
+   [
+    22,
+    "Uses a raw IP address instead of a domain name"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    8,
+    "Non-standard port 8080"
+   ]
+  ]
+ },
+ {
+  "url": "http://[::1]:8080/login",
+  "score": 40,
+  "level": "medium",
+  "findings": [
+   [
+    22,
+    "Uses a raw IP address instead of a domain name"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    8,
+    "Non-standard port 8080"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ]
+  ]
+ },
+ {
+  "url": "http://user@evil.example.com/",
+  "score": 28,
+  "level": "low",
+  "findings": [
+   [
+    22,
+    "Contains '@' before the host - the real destination is hidden"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "https://xn--80ak6aa92e.com/",
+  "score": 22,
+  "level": "low",
+  "findings": [
+   [
+    22,
+    "Punycode / internationalized domain (possible look-alike characters)"
+   ]
+  ]
+ },
+ {
+  "url": "bit.ly/3xYz",
+  "score": 16,
+  "level": "low",
+  "findings": [
+   [
+    10,
+    "Link shortener hides the real destination"
+   ],
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "https://tinyurl.com/abc",
+  "score": 10,
+  "level": "safe",
+  "findings": [
+   [
+    10,
+    "Link shortener hides the real destination"
+   ]
+  ]
+ },
+ {
+  "url": "https://a.b.c.d.e.example.com/",
+  "score": 8,
+  "level": "safe",
+  "findings": [
+   [
+    8,
+    "Unusually many sub-domains"
+   ]
+  ]
+ },
+ {
+  "url": "https://my-bank-secure-login-verify.example.com/",
+  "score": 14,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Many hyphens in the domain name"
+   ],
+   [
+    8,
+    "Domain contains words like login / verify / secure / account"
+   ]
+  ]
+ },
+ {
+  "url": "http://example.com:99999/x",
+  "score": 20,
+  "level": "low",
+  "findings": [
+   [
+    20,
+    "Malformed URL"
+   ]
+  ]
+ },
+ {
+  "url": "http://example.com:abc/x",
+  "score": 20,
+  "level": "low",
+  "findings": [
+   [
+    20,
+    "Malformed URL"
+   ]
+  ]
+ },
+ {
+  "url": "http://[bad/x",
+  "score": 20,
+  "level": "low",
+  "findings": [
+   [
+    20,
+    "Malformed URL"
+   ]
+  ]
+ },
+ {
+  "url": "https://example.com/files/setup.exe",
+  "score": 25,
+  "level": "low",
+  "findings": [
+   [
+    25,
+    "Link points directly to an executable / installer file"
+   ]
+  ]
+ },
+ {
+  "url": "https://rnicrosoft-support.com",
+  "score": 36,
+  "level": "medium",
+  "findings": [
+   [
+    36,
+    "Look-alike of 'microsoft' (character substitution) on a non-microsoft domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://microsoft-support.online/verify",
+  "score": 38,
+  "level": "medium",
+  "findings": [
+   [
+    10,
+    "Top-level domain '.online' is heavily abused by scammers"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ],
+   [
+    24,
+    "Mentions 'microsoft' but is not an official microsoft domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://applesauce-recipes.com/",
+  "score": 24,
+  "level": "low",
+  "findings": [
+   [
+    24,
+    "Mentions 'apple' but is not an official apple domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://www.visa-info.org/canada-travel",
+  "score": 24,
+  "level": "low",
+  "findings": [
+   [
+    24,
+    "Mentions 'visa' but is not an official visa domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://td-tutoring.ca/",
+  "score": 24,
+  "level": "low",
+  "findings": [
+   [
+    24,
+    "Mentions 'td' but is not an official td domain"
+   ]
+  ]
+ },
+ {
+  "url": "https://amazon-reviews-blog.com/best",
+  "score": 24,
+  "level": "low",
+  "findings": [
+   [
+    24,
+    "Mentions 'amazon' but is not an official amazon domain"
+   ]
+  ]
+ },
+ {
+  "url": "http://sub.domain.co.uk/login",
+  "score": 10,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ],
+   [
+    4,
+    "Path contains words like login / verify / account"
+   ]
+  ]
+ },
+ {
+  "url": "https://login.paypal.com.evil.top/x",
+  "score": 50,
+  "level": "medium",
+  "findings": [
+   [
+    10,
+    "Top-level domain '.top' is heavily abused by scammers"
+   ],
+   [
+    8,
+    "Unusually many sub-domains"
+   ],
+   [
+    8,
+    "Domain contains words like login / verify / secure / account"
+   ],
+   [
+    24,
+    "Mentions 'paypal' but is not an official paypal domain"
+   ]
+  ]
+ },
+ {
+  "url": "example.com",
+  "score": 6,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "www.example.org/path?x=1",
+  "score": 6,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "http://...",
+  "score": 6,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "http://.com",
+  "score": 6,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Not encrypted (http, not https)"
+   ]
+  ]
+ },
+ {
+  "url": "https://very-long-example-domain.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "score": 10,
+  "level": "safe",
+  "findings": [
+   [
+    6,
+    "Many hyphens in the domain name"
+   ],
+   [
+    4,
+    "Very long URL"
+   ]
+  ]
+ }
+]

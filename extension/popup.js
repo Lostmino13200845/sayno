@@ -32,13 +32,36 @@ chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
   });
 });
 
-// server port (the extension talks to http://127.0.0.1:<port>)
-chrome.storage.local.get({ apiPort: 8765 }, ({ apiPort }) => { $("#apiPort").value = apiPort; });
-$("#apiPort").addEventListener("change", e => {
-  const n = Math.round(Number(e.target.value));
-  if (!(n >= 1 && n <= 65535)) { e.target.value = 8765; return chrome.storage.local.set({ apiPort: 8765 }); }
-  chrome.storage.local.set({ apiPort: n }, () => location.reload());
-});
+// server address (default comes from config.js; a store build points it at the public SAYNO server)
+chrome.storage.local.get({ shareReports: false }, ({ shareReports }) => { $("#shareReports").checked = shareReports; });
+$("#shareReports").onchange = e => chrome.storage.local.set({ shareReports: e.target.checked });
+(async () => {
+  const { DEFAULT_API } = await import("./config.js");
+  // Community reporting only exists on a self-hosted server: the public server keeps no reports, so the switch is hidden there.
+  $("#shareReports").closest("label").hidden = new URL(DEFAULT_API).hostname !== "127.0.0.1";
+  const { apiBase } = await chrome.storage.local.get("apiBase");
+  $("#apiBase").value = apiBase || DEFAULT_API;
+  $("#apiBase").addEventListener("change", async e => {
+    const hint = $("#apiHint");
+    let u;
+    try { u = new URL(e.target.value.trim() || DEFAULT_API); } catch { u = null; }
+    const local = u && u.protocol === "http:" && ["127.0.0.1", "localhost"].includes(u.hostname);
+    if (!u || !(u.protocol === "https:" || local)) {
+      e.target.value = apiBase || DEFAULT_API;
+      hint.textContent = "Use an https:// address (or http://127.0.0.1:PORT for a server on this computer).";
+      hint.hidden = false;
+      return;
+    }
+    if (!(await chrome.permissions.request({ origins: [u.origin + "/*"] }))) {  // resolves at once if already granted
+      e.target.value = apiBase || DEFAULT_API;
+      hint.textContent = "Permission to contact that server was not granted.";
+      hint.hidden = false;
+      return;
+    }
+    await chrome.storage.local.set({ apiBase: u.origin === new URL(DEFAULT_API).origin ? "" : u.origin });
+    location.reload();
+  });
+})();
 
 // paste-to-scan
 let t = null;
@@ -63,7 +86,7 @@ chrome.storage.local.get(DEFAULTS, s => {
     enabled: $("#enabled").checked, newcomerMode: $("#newcomerMode").checked,
     myBanks: [...document.querySelectorAll("#banks input:checked")].map(i => i.value),
   });
-  document.querySelectorAll("input[type=checkbox]:not(#notifyInsecure)").forEach(i => i.onchange = save);
+  document.querySelectorAll("input[type=checkbox]:not(#notifyInsecure):not(#shareReports)").forEach(i => i.onchange = save);
 });
 
 // On-screen notifications: an optional permission, requested only when the user switches it on.
