@@ -267,7 +267,7 @@
   const only = /\/tutorial\/?$/.test(location.pathname);
   if (only) {
     document.body.classList.add("tut-only");
-    if (!document.querySelector("h1")) {  // the stand-alone tutorial hides the page hero: keep a heading for screen readers
+    if (![...document.querySelectorAll("h1")].some(h => h.offsetParent !== null)) {  // the stand-alone tutorial hides the page hero: keep a heading for screen readers
       const h = document.createElement("h1");
       h.className = "sr-only";
       h.textContent = "SAYNO practice tutorial";
