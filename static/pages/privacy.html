@@ -36,15 +36,8 @@
       <div class="stack" style="--gap:.6rem"><h3>What the extension does on your device</h3>
         <p class="muted">For every web page you open, the extension checks the address locally: it looks for warning signs in the link (look-alike names, disguised addresses, risky endings and similar) and compares a hash of the address with a list of known-bad fingerprints stored on your device. If the page asks for card details, the extension decides locally whether to block it. When you choose "Check this text with SAYNO" or paste something into the popup, the text is analysed by the same rules, on your device. Card numbers you type are never read out of the page.</p></div>
 
-      <div class="stack" style="--gap:.9rem"><h3>What your device downloads, and what the file host can see</h3>
-        <p class="muted">The block lists are static files on GitHub Pages. Your device downloads them; nothing is uploaded.</p>
-        <div class="card table-wrap" style="padding:8px"><table class="t">
-          <thead><tr><th>What</th><th>When</th><th>What the host can learn</th></tr></thead>
-          <tbody>
-            <tr><td><code>meta.json</code>, a few hundred bytes</td><td>About every 15 minutes, and at start-up</td><td>That your IP address asked for the file, and when. It reveals nothing about what you browse.</td></tr>
-            <tr><td><code>prefixes.bin</code>, about 2.4 MB</td><td>Only when the published list changed (a few times a day at most)</td><td>The same as above.</td></tr>
-            <tr><td>One small "shard" file, named by the first byte of a hash (256 possible files)</td><td>Rarely: only when a page matches the local list</td><td>That a shard such as <code>3f</code> was fetched. A hash byte cannot be turned back into a page address, and many thousands of different pages share each shard.</td></tr>
-          </tbody></table></div>
+      <div class="stack" style="--gap:.9rem"><h3>What your device downloads</h3>
+        <p class="muted">The block lists are public files on GitHub Pages. Your device downloads them in the background, about every 15 minutes, and nothing is uploaded. Only when a page matches the local list, it also fetches one small file named by a single hash byte, which does not reveal the page. The host can see that your device asked for these files, but nothing about the pages you visit or the messages you check.</p>
         <p class="muted">GitHub, which hosts the files, keeps standard web-server logs under its own privacy statement. SAYNO does not receive or keep them. This website uses fonts that are stored with the site, so your browser does not contact a font service either.</p></div>
 
       <div class="stack" style="--gap:.6rem"><h3>The web scanner on this website</h3>
