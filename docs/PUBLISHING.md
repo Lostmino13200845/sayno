@@ -4,7 +4,7 @@ SAYNO needs no server. Everything is checked on the user's device; the only thin
 (the website, the web scanner, and the block lists as hashed files). GitHub Pages hosts them for free.
 
 ```
-GitHub Actions (every 5 minutes + on every push)
+GitHub Actions (every 15 minutes + on every push)
   └─ tools/build_site.py --refresh  → downloads the public threat feeds, hashes them, builds the site
        └─ GitHub Pages: https://<user>.github.io/<repo>/
             ├─ /                    website            ├─ /v1/meta.json        version + size (tiny)
@@ -19,7 +19,7 @@ Browser extension  ──downloads──▶  the files above, checks pages and t
 2. Turn on Pages with the **GitHub Actions** source: *Settings → Pages → Source → GitHub Actions*
    (or `gh api -X POST repos/<user>/<repo>/pages -f build_type=workflow`).
 3. Push to `main`. `.github/workflows/pages.yml` builds and publishes. You get `https://<user>.github.io/<repo>/`.
-4. The same workflow re-runs every 5 minutes to refresh the block lists. GitHub pauses scheduled workflows in a repo with no
+4. The same workflow re-runs every 15 minutes to refresh the block lists. GitHub pauses scheduled workflows in a repo with no
    activity for 60 days: open the *Actions* tab and re-enable it if that ever happens.
 
 Check it: open the site, `…/message-check/` (paste a scam message), `…/v1/meta.json` (version and entry count) and `…/privacy/`.

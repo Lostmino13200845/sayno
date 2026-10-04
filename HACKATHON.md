@@ -23,7 +23,7 @@ Before you start: install the extension (download it from the website, unzip, `c
 4. **(1:10) The trap:** open the fake-bank demo page. **Card Guard blocks it:** "It asks for your PIN… bank-style pressure… not your bank's website." Pause here, this is the wow moment.
 5. **(1:50) No false alarm:** open the shop demo page, a normal checkout, and click the card field. No block, only a gentle reminder.
 6. **(2:10) The privacy proof:** open the browser's developer tools, Network tab, and reload. "Look: the only requests are downloads of the public block list. Nothing about what I checked or visited is sent." (Be accurate: you will see `meta.json`, `prefixes.bin`, and rarely one small shard file.)
-7. **(2:40) Close:** "600,000 known threats, refreshed every 5 minutes, free to host, and all of it checked on your device. Built for the people scammers target first."
+7. **(2:40) Close:** "600,000 known threats, refreshed every 15 minutes, free to host, and all of it checked on your device. Built for the people scammers target first."
 
 **Backup plan:** record this the night before. The block lists are cached on the device after the first download, so the demo still works if the Wi-Fi fails.
 
@@ -41,7 +41,7 @@ Before you start: install the extension (download it from the website, unzip, `c
 
 ## Honest limitations
 - Rules can miss cleverly worded scams. SAFE never means guaranteed.
-- Lists refresh every 5 minutes, so very new scam sites are caught by behaviour and look-alike rules, not by a list.
+- Lists refresh every 15 minutes, so very new scam sites are caught by behaviour and look-alike rules, not by a list.
 - Card Guard stops the page by covering it; it does not cancel a form that was already submitted.
 - The Chrome Web Store listing may still be in review. Until then the extension installs from a download.
 

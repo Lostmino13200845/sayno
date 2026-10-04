@@ -25,7 +25,7 @@ async function syncLists() {
 }
 // Changing the block-list source (popup, Advanced) downloads the new lists straight away.
 chrome.storage.onChanged.addListener((changes, area) => { if (area === "local" && changes.apiBase) syncLists(); });
-chrome.alarms.create("sync-lists", { periodInMinutes: 5 });
+chrome.alarms.create("sync-lists", { periodInMinutes: 15 });
 chrome.alarms.onAlarm.addListener(a => { if (a.name === "sync-lists") syncLists(); });
 syncLists();
 const cache = new Map();          // host+path -> {result, at}
