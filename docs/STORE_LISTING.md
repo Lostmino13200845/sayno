@@ -11,7 +11,7 @@ SAYNO protects new bank customers and anyone who gets "your card is locked" mess
 
 WHAT IT DOES
 • Card Guard: if a page asks for your card number, CVV or PIN and it is not your bank or a known payment provider, SAYNO stops you before you type, and tells you why in plain words.
-• Site check: every page is rated on the toolbar icon (safe, caution, danger) using warning signs in the link and a list of hundreds of thousands of known phishing and malware addresses that is refreshed every few hours.
+• Site check: every page is rated on the toolbar icon (safe, caution, danger) using warning signs in the link and a list of hundreds of thousands of known phishing and malware addresses refreshed every 15 minutes.
 • Message check: select any text or link, right-click, and choose "Check this text with SAYNO" to get a danger score and the reasons. Or paste it into the popup.
 • New-account mode: extra warnings for people who just opened a bank account, when scammers strike most ("activate your new card", "pending e-Transfer", "tax refund").
 
