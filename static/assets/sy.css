@@ -248,3 +248,47 @@ table.t th { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; 
 .status-line{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;font-weight:800;letter-spacing:.12em;color:var(--sy-safe)}
 .status-line i{width:9px;height:9px;border-radius:50%;background:currentColor}
 .section-lead{color:var(--sy-muted);font-size:1.1rem;max-width:42rem;text-wrap:pretty}
+
+/* SAYNO UI refinement — restrained, professional security product */
+:root {
+  --sy-bg: #f8fafc;
+  --sy-surface: #ffffff;
+  --sy-surface-2: #f1f4f8;
+  --sy-ink: #111827;
+  --sy-muted: #4b5563;
+  --sy-line: #d7dde6;
+  --sy-brand: #2457a6;
+  --sy-brand-strong: #1d4687;
+  --sy-brand-soft: #edf3fb;
+  --sy-r: 12px;
+  --sy-r-s: 8px;
+  --sy-shadow: 0 1px 2px rgba(17,24,39,.04);
+}
+h1 { font-size: clamp(2rem, 3vw + .4rem, 3.15rem); line-height: 1.08; }
+h2 { font-size: clamp(1.55rem, 1.5vw + .8rem, 2.15rem); line-height: 1.15; }
+h3 { font-size: 1.18rem; }
+.lead { font-size: 1.08rem; }
+.hdr-in { min-height: 68px; }
+.brand { font-size: 1.32rem; }
+.nav a { padding: 8px 11px; font-size: .95rem; }
+.icon-btn { width: 40px; height: 40px; border-radius: 9px; }
+.btn {
+  min-height: 40px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  border-width: 1px;
+  gap: 8px;
+  font-size: .92rem;
+  font-weight: 650;
+}
+.btn-lg {
+  min-height: 44px;
+  padding: 9px 17px;
+  font-size: .95rem;
+}
+.card, .panel, .hero-panel, .browser, .overlay-box {
+  box-shadow: var(--sy-shadow);
+}
+.card, .panel { border-width: 1px; }
+.section { padding-block: clamp(48px, 6vw, 80px); }
+.flow { gap: 10px; }
