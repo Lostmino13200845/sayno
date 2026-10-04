@@ -6,20 +6,20 @@
    ===================================================================== */
 :root {
   /* ---- brand ---- */
-  --ss-brand-50:  #eef3ff;
-  --ss-brand-100: #d9e4ff;
-  --ss-brand-500: #3a6cf0;
-  --ss-brand-600: #2457d6;   /* primary: buttons, links, shield icon */
-  --ss-brand-700: #1b44ad;
+  --ss-brand-50:  #e8eef3;
+  --ss-brand-100: #d4e0e8;
+  --ss-brand-500: #466f8e;
+  --ss-brand-600: #355d7a;   /* primary: buttons, links, shield icon */
+  --ss-brand-700: #294a63;
   --ss-on-brand:  #ffffff;
 
   /* ---- neutrals / surfaces ---- */
-  --ss-bg:         #f6f7f9;  /* page background */
+  --ss-bg:         #f5f7fa;  /* page background */
   --ss-surface:    #ffffff;  /* cards, popup */
-  --ss-surface-2:  #eef1f6;  /* chips, wells, input fill */
-  --ss-ink:        #16181d;  /* primary text */
-  --ss-ink-muted:  #5d6470;  /* secondary text */
-  --ss-line:       #e2e5ea;  /* borders, dividers */
+  --ss-surface-2:  #edf2f7;  /* chips, wells, input fill */
+  --ss-ink:        #182536;  /* primary text */
+  --ss-ink-muted:  #536273;  /* secondary text */
+  --ss-line:       #d6dee8;  /* borders, dividers */
 
   /* ---- risk scale (used by badge, chips, gauge, overlay) ---- */
   --ss-safe:      #15803d;  --ss-safe-soft:     #e3f5ea;
@@ -31,8 +31,8 @@
   --ss-offline:   #5f6672;  --ss-on-offline: #fff;
 
   /* ---- typography ---- */
-  --ss-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --ss-font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  --ss-font: Aptos, "Segoe UI", system-ui, -apple-system, sans-serif;
+  --ss-font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
   --ss-text-xs: 12px;
   --ss-text-s:  13px;
   --ss-text-m:  15px;
@@ -47,8 +47,8 @@
   /* ---- shape & space ---- */
   --ss-radius-s: 6px;
   --ss-radius-m: 10px;
-  --ss-radius-l: 14px;
-  --ss-radius-xl: 22px;
+  --ss-radius-l: 12px;
+  --ss-radius-xl: 18px;
   --ss-radius-pill: 999px;
   --ss-space-1: 4px;
   --ss-space-2: 8px;
@@ -60,10 +60,10 @@
   --ss-space-8: 72px;
 
   /* ---- elevation ---- */
-  --ss-shadow-1: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+  --ss-shadow-1: 0 1px 2px rgba(24, 37, 54, .05), 0 8px 24px rgba(24, 37, 54, .055);
   --ss-shadow-2: 0 6px 18px rgba(16, 24, 40, .12);
   --ss-shadow-3: 0 20px 60px rgba(16, 24, 40, .28);
-  --ss-focus-ring: 0 0 0 3px rgba(36, 87, 214, .35);
+  --ss-focus-ring: 0 0 0 3px rgba(53, 93, 122, .22);
 
   /* ---- motion ---- */
   --ss-ease: cubic-bezier(.2, .7, .2, 1);

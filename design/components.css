@@ -10,8 +10,8 @@
 /* ---- buttons ---- */
 .ss-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--ss-space-2);
-  font: var(--ss-weight-bold) var(--ss-text-m)/1 var(--ss-font);
-  padding: 11px 18px; border-radius: var(--ss-radius-m); border: 1px solid transparent;
+  font: 600 var(--ss-text-s)/1 var(--ss-font);
+  padding: 9px 14px; border-radius: 8px; border: 1px solid transparent;
   background: var(--ss-brand-600); color: var(--ss-on-brand); cursor: pointer; text-decoration: none;
   transition: background var(--ss-duration) var(--ss-ease), transform var(--ss-duration) var(--ss-ease);
 }
