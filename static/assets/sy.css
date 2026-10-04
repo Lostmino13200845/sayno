@@ -473,3 +473,9 @@ a:hover { text-decoration-thickness: 2px; }
 .cta-band h2, .cta-band p { color: #fff; }
 .btn-light { background: #fff; color: #1f4c93; border-color: #fff; }
 .btn-light:hover { background: #e9f1fd; color: #1f4c93; }
+
+/* "No account required": the one privacy promise shown in the safe green */
+.card--green { border: 3px solid var(--sy-safe); background: color-mix(in srgb, var(--sy-safe) 3%, var(--sy-surface)); }
+.card--green h2, .card--green h3 { color: var(--sy-safe); }
+.pv-card.card--green { border-top-width: 6px; }
+.icon-tile--green { background: var(--sy-safe); color: var(--sy-on-safe); }
