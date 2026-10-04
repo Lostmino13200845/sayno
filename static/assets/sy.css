@@ -22,7 +22,7 @@
   :root:not([data-theme="light"]) {
     --sy-bg: #0a1120; --sy-surface: #111b30; --sy-surface-2: #17233c;
     --sy-ink: #eaf0fb; --sy-muted: #aab7cd; --sy-line: #263454;
-    --sy-brand: #8fb0ff; --sy-brand-strong: #b4caff; --sy-on-brand: #0a1120; --sy-brand-soft: #16264d;
+    --sy-link: #8fb0ff; --sy-brand: #8fb0ff; --sy-brand-strong: #b4caff; --sy-on-brand: #0a1120; --sy-brand-soft: #16264d;
     --sy-high: #ff8f84; --sy-high-soft: #3a1a1a; --sy-on-high: #1d0705;
     --sy-caution: #f5b556; --sy-caution-soft: #34270d;
     --sy-safe: #62d6a0; --sy-safe-soft: #0f2d22;
@@ -261,12 +261,17 @@ table.t th { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; 
    Buttons: header 36, standard 44, the one main call to action per screen 52. Pairs in a row share a size.
    ========================================================================== */
 :root {
-  --sy-bg: #f8fafc; --sy-surface: #ffffff; --sy-surface-2: #f1f4f8;
-  --sy-ink: #111827; --sy-muted: #4b5563; --sy-line: #d7dde6;
-  --sy-brand: #2457a6; --sy-brand-strong: #1d4687; --sy-brand-soft: #edf3fb;
+  /* Palette: deep navy for trust, cool near-white surfaces, navy-tinted greys.
+     Red, amber and green are reserved for risk results, so they always mean something. */
+  --sy-bg: #f6f8fb; --sy-surface: #ffffff; --sy-surface-2: #edf1f7;
+  --sy-ink: #0a1f3d; --sy-muted: #4a5b73; --sy-line: #d3dbe8;
+  --sy-brand: #0f2f63; --sy-brand-strong: #0a2247; --sy-brand-soft: #e6ecf6; --sy-on-brand: #ffffff;
+  --sy-link: #1b4f9c;
   --sy-r: 12px; --sy-r-s: 8px;
-  --sy-shadow: 0 1px 2px rgba(17, 24, 39, .04);
+  --sy-shadow: 0 1px 2px rgba(10, 31, 61, .05);
 }
+a { color: var(--sy-link); }
+a:hover { color: var(--sy-brand-strong); }
 body { font: 400 1.0625rem/1.6 var(--sy-body); font-feature-settings: "kern", "liga"; }
 h1, h2, h3 { font-family: var(--sy-display); text-wrap: balance; }
 h1 { font-size: clamp(2rem, 1.25rem + 2.6vw, 3rem); line-height: 1.12; font-weight: 600; letter-spacing: -.022em; }
