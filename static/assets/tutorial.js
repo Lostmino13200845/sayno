@@ -221,7 +221,10 @@
       $("#tText").insertAdjacentHTML("beforeend", "<span class='do done'>✓ Nice! Press <b>Next</b> to continue.</span>");
       renderStepList();
     } else if (!s.done) doneSet.add(cur);
-    $("#tNext").disabled = !complete;
+    // Next is always available so anyone can skip ahead; it just looks like the main action once the step is done.
+    // "Do it for me" stays next to it, so both choices are open at the same time.
+    $("#tNext").disabled = false;
+    $("#tNext").classList.toggle("ss-btn--ghost", !complete);
     placeHotspot();
     setTimeout(placeHotspot, 260);  // again after popup / panel animations settle
   }
