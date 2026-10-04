@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
+  "minimum_chrome_version": "120",
   "name": "SAYNO – Card Guard",
   "short_name": "SAYNO",
   "version": "1.1.0",
-  "description": "Protects new bank customers from phishing: checks every site against 700k+ known threats and blocks fake pages that ask for your card details.",
+  "description": "Blocks fake bank pages before you type your card and checks suspicious messages. Everything is checked on your device.",
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",
