@@ -14,7 +14,7 @@ const ok = (name, fn) => { fn(); n++; console.log("PASS", name); };
 ok("website report goes to the team and the anti-phishing organisations", () => {
   const r = build({ type: "website", fields: { url: "https://rbc-card-activation.help/secure", who: "RBC", via: "Text message" }, asked: ["Card number, expiry or CVV"] });
   assert.equal(r.ok, true);
-  assert.deepEqual(r.to, ["sayoshield@gmail.com", "reportphishing@apwg.org"]);
+  assert.deepEqual(Array.from(r.to), ["sayoshield@gmail.com", "reportphishing@apwg.org"]);
   assert.match(r.subject, /^\[SAYNO report\] Scam website or link: rbc-card-activation\.help$/);
   assert.match(r.body, /Link: https:\/\/rbc-card-activation\.help\/secure/);
   assert.match(r.body, /Pretending to be: RBC/);
@@ -26,13 +26,13 @@ ok("website report goes to the team and the anti-phishing organisations", () => 
 ok("phone call without a link stays with the team", () => {
   const r = build({ type: "call", fields: { sender: "+1 555 0100", who: "Canada Revenue Agency (CRA)" }, asked: ["Pay a fine or tax debt"] });
   assert.equal(r.ok, true);
-  assert.deepEqual(r.to, ["sayoshield@gmail.com"]);
+  assert.deepEqual(Array.from(r.to), ["sayoshield@gmail.com"]);
 });
 
 ok("scam email goes out even without a link", () => {
   const r = build({ type: "email", fields: { sender: "billing@bad.example", message: "Pay now" }, asked: [] });
   assert.equal(r.ok, true);
-  assert.deepEqual(r.to, ["sayoshield@gmail.com", "reportphishing@apwg.org"]);
+  assert.deepEqual(Array.from(r.to), ["sayoshield@gmail.com", "reportphishing@apwg.org"]);
 });
 
 ok("rejects unknown types, bad links, bad addresses and missing blanks", () => {
