@@ -21,18 +21,23 @@ from shieldlib.hashindex import HashIndex
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # project root (server/ is one level down)
 CONFIG_PATH = os.path.join(BASE_DIR, "config.json")
+EXAMPLE_PATH = os.path.join(BASE_DIR, "config.example.json")
 if not os.path.exists(CONFIG_PATH):
-    shutil.copy(os.path.join(BASE_DIR, "config.example.json"), CONFIG_PATH)
+    try:
+        shutil.copy(EXAMPLE_PATH, CONFIG_PATH)
+    except OSError:  # read-only install (some hosts): run on the defaults instead of refusing to start
+        CONFIG_PATH = EXAMPLE_PATH
 with open(CONFIG_PATH, encoding="utf-8") as f:
     CFG = json.load(f)
 if not CFG.get("admin_token"):  # generated once, protects the back-office pages
     CFG["admin_token"] = secrets.token_urlsafe(24)
-    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
-        json.dump(CFG, f, indent=2)
     try:
-        os.chmod(CONFIG_PATH, 0o600)  # holds the admin token: owner-only on macOS/Linux
+        if CONFIG_PATH != EXAMPLE_PATH:  # never write a secret into the shipped example file
+            with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+                json.dump(CFG, f, indent=2)
+            os.chmod(CONFIG_PATH, 0o600)  # holds the admin token: owner-only on macOS/Linux
     except OSError:
-        pass
+        pass  # the token then lives only for this run
 
 INTEL = ThreatIntel(interval_sec=int(CFG.get("update_interval_sec", 300)))
 INDEX = HashIndex()  # hash-prefix index of the block lists, for private on-device lookups

@@ -3,6 +3,7 @@ FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1 SAYNO_PUBLIC=1 PORT=8765
 RUN useradd --create-home --uid 10001 sayno
 WORKDIR /app
+RUN chown sayno:sayno /app
 COPY --chown=sayno:sayno server ./server
 COPY --chown=sayno:sayno static ./static
 COPY --chown=sayno:sayno config.example.json ./config.example.json
