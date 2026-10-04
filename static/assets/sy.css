@@ -292,3 +292,5 @@ h3 { font-size: 1.18rem; }
 .card, .panel { border-width: 1px; }
 .section { padding-block: clamp(48px, 6vw, 80px); }
 .flow { gap: 10px; }
+
+.btn[aria-disabled="true"]{background:var(--sy-surface-2);color:var(--sy-muted);border-color:var(--sy-line);cursor:default;pointer-events:none}

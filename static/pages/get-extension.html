@@ -11,14 +11,16 @@
     <div class="container stack" style="--gap:1.25rem;max-width:56rem">
       <p class="eyebrow">Get the extension</p>
       <h1>Add SAYNO to your browser.</h1>
-      <p class="lead">The extension adds Card Guard and a safety rating for every page you open. It works in Chrome and Edge and takes about a minute. The Chrome Web Store version is coming soon; until then you can install it yourself in four steps.</p>
-      <div class="flow"><a class="btn btn-primary btn-lg" href="/download/sayno-extension.zip" download>Download the extension (zip)</a></div>
+      <p class="lead">The extension adds Card Guard and a safety rating for every page you open. Install it from the Chrome Web Store in one click. It works in Chrome and Edge.</p>
+      <div class="flow"><a class="btn btn-primary btn-lg" id="store-cta" href="#" aria-describedby="store-status">Add to Chrome</a></div>
+      <p class="small" id="store-status" role="status"></p>
     </div>
   </section>
 
-  <section class="section section--tint">
+  <section class="section section--tint" data-manual>
     <div class="container stack" style="--gap:2rem">
-      <h2>Install it yourself</h2>
+      <h2>Install it yourself (while the store listing is under review)</h2>
+      <p><a class="btn btn-secondary" href="/download/sayno-extension.zip" download>Download the extension (zip)</a></p>
       <ol class="steps">
         <li><div class="step-n">1</div><h3>Unzip it</h3><p class="muted">Right-click the downloaded file and choose <b>Extract all</b> (on a Mac, double-click it). Keep the folder somewhere permanent.</p></li>
         <li><div class="step-n">2</div><h3>Open the extensions page</h3><p class="muted">Go to <code>chrome://extensions</code> (or <code>edge://extensions</code>) and turn on <b>Developer mode</b>.</p></li>
@@ -39,5 +41,6 @@
 </main>
 
 <!--#include footer -->
+<script type="module" src="/assets/get-extension.js"></script>
 </body>
 </html>
