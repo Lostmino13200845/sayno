@@ -41,7 +41,7 @@
         <div class="card table-wrap" style="padding:8px"><table class="t">
           <thead><tr><th>What</th><th>When</th><th>What the host can learn</th></tr></thead>
           <tbody>
-            <tr><td><code>meta.json</code>, a few hundred bytes</td><td>About every 15 minutes, and at start-up</td><td>That your IP address asked for the file, and when. It reveals nothing about what you browse.</td></tr>
+            <tr><td><code>meta.json</code>, a few hundred bytes</td><td>About every 5 minutes, and at start-up</td><td>That your IP address asked for the file, and when. It reveals nothing about what you browse.</td></tr>
             <tr><td><code>prefixes.bin</code>, about 2.4 MB</td><td>Only when the published list changed (a few times a day at most)</td><td>The same as above.</td></tr>
             <tr><td>One small "shard" file, named by the first byte of a hash (256 possible files)</td><td>Rarely: only when a page matches the local list</td><td>That a shard such as <code>3f</code> was fetched. A hash byte cannot be turned back into a page address, and many thousands of different pages share each shard.</td></tr>
           </tbody></table></div>

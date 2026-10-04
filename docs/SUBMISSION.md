@@ -40,7 +40,7 @@ Everything is checked on the device. The pages you visit, the text you check and
 
 ### How we built it
 - **Detection engine:** a rule-based scorer (14 scam-language rule groups, 53 brand names and aliases, including the major Canadian banks, 34 risky endings, link forensics for look-alike letters, disguised IP addresses and free-hosting fakes). It is written once in Python and again in JavaScript for the device, and 68 test cases check that both give identical answers on every build.
-- **Block lists:** 600,000+ entries from 7 public feeds (URLhaus, ThreatFox, OpenPhish, Phishing Army, CERT Polska, Phishing.Database and a disposable-email list). A GitHub Actions workflow refreshes them every 15 minutes, hashes them and publishes 256 small files plus a 2.4 MB prefix list on GitHub Pages. The extension never sends a page to a server: it hashes on the device (the same idea as Google Safe Browsing).
+- **Block lists:** 600,000+ entries from 7 public feeds (URLhaus, ThreatFox, OpenPhish, Phishing Army, CERT Polska, Phishing.Database and a disposable-email list). A GitHub Actions workflow refreshes them every 5 minutes, hashes them and publishes 256 small files plus a 2.4 MB prefix list on GitHub Pages. The extension never sends a page to a server: it hashes on the device (the same idea as Google Safe Browsing).
 - **Extension:** Manifest V3, plain JavaScript, no dependencies.
 - **Website:** static HTML, CSS and JavaScript (also on GitHub Pages) with a practice tutorial and the web scanner. A Python standard-library server is included for local use.
 - **Quality:** 27 automated tests, a smoke test of the real server, and continuous checks on Ubuntu, macOS and Windows. An accessibility scan (axe, WCAG AA) reports zero violations on every page, in light and dark mode.
@@ -78,7 +78,7 @@ JavaScript, Python, HTML, CSS, Chrome Extension Manifest V3, GitHub Actions, Git
 
 ## Honest limitations (say them before a judge does)
 - Rules can miss cleverly worded scams, and a brand-new site that asks for nothing sensitive may pass. SAFE is never a guarantee.
-- The block lists refresh every 15 minutes, so a site that went live minutes ago is judged by its look and behaviour, not by a list.
+- The block lists refresh every 5 minutes, so a site that went live minutes ago is judged by its look and behaviour, not by a list.
 - Card Guard blocks a page that asks for card details by covering it and moving focus; it does not cancel a form that was already submitted.
 - The Chrome Web Store version is [pending review / live]. Until then the extension installs from a download.
 
