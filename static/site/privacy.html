@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SAYNO privacy policy</title>
-<meta name="description" content="What the SAYNO browser extension and server do with your data. Short version: pages you visit stay on your device.">
+<meta name="description" content="What the SAYNO browser extension and website do with your data. Short version: everything is checked on your device.">
 <link rel="icon" href="/assets/shield-48.png">
 <link rel="stylesheet" href="/assets/tokens.css">
 <link rel="stylesheet" href="/assets/components.css">
@@ -28,52 +28,55 @@
 
 <main class="policy">
   <h1>Privacy policy</h1>
-  <p class="muted">Applies to the SAYNO browser extension and the SAYNO server it talks to. Last updated 4 October 2026.</p>
+  <p class="muted">Applies to the SAYNO browser extension and the SAYNO website (including the web scanner). Last updated 4 October 2026.</p>
 
   <h2>The short version</h2>
   <ul>
-    <li><b>The pages you visit stay on your device.</b> The extension rates each page itself. It does not send your browsing history, page contents or card numbers to us.</li>
-    <li>The server hears from the extension in three cases, listed below. In each, it receives the least it needs.</li>
+    <li><b>Everything is checked on your device.</b> The pages you visit, the text you select or paste, and the card numbers you type are never sent to SAYNO or to anyone else.</li>
+    <li>SAYNO has no server that receives your data and no accounts. It publishes plain files (the block lists) that your device downloads.</li>
     <li>We do not sell data, show ads or build profiles.</li>
   </ul>
 
   <h2>What the extension does on your device</h2>
-  <p>For every web page you open, the extension checks the address locally: it looks for warning signs in the link (look-alike names, disguised addresses, risky endings and similar) and compares a hash of the address with a list of known-bad fingerprints stored on your device. If the page asks for card details, the extension decides locally whether to block it. Card numbers you type are never read out of the page and never leave your device.</p>
+  <p>For every web page you open, the extension checks the address locally: it looks for warning signs in the link (look-alike names, disguised addresses, risky endings and similar) and compares a hash of the address with a list of known-bad fingerprints stored on your device. If the page asks for card details, the extension decides locally whether to block it. When you choose "Check this text with SAYNO" or paste something into the popup, the text is analysed by the same rules, on your device. Card numbers you type are never read out of the page.</p>
 
-  <h2>When the extension contacts the SAYNO server</h2>
+  <h2>What your device downloads, and what the file host can see</h2>
+  <p>The block lists are static files on GitHub Pages. Your device downloads them; nothing is uploaded.</p>
   <div class="scroll"><table>
-    <tr><th>When</th><th>What is sent</th><th>What we do with it</th></tr>
-    <tr><td>Every 30 minutes, and at start-up</td><td>A request for the current list of known-bad fingerprints (about 2 MB, only if it changed). It contains nothing about you or your browsing.</td><td>Nothing is recorded by SAYNO. Like any web server, our hosting provider sees your IP address and the time of the request.</td></tr>
-    <tr><td>Rarely: when a page's fingerprint matches the local list</td><td>A 4-byte fragment of the page's hash. It is not the page address and cannot be turned back into it.</td><td>We answer with the matching full fingerprints. Your device does the final comparison. The fragment is not stored.</td></tr>
-    <tr><td>Only when you ask: right-click &rarr; "Check this text with SAYNO", or the paste box in the popup</td><td>The text or link you chose to check.</td><td>It is analysed and the result returned. On the public server it is not stored and not reported to anyone.</td></tr>
+    <tr><th>What</th><th>When</th><th>What the host can learn</th></tr>
+    <tr><td><code>meta.json</code>, a few hundred bytes</td><td>About every 30 minutes, and at start-up</td><td>That your IP address asked for the file, and when. It reveals nothing about what you browse.</td></tr>
+    <tr><td><code>prefixes.bin</code>, about 2.4 MB</td><td>Only when the published list changed (a few times a day at most)</td><td>The same as above.</td></tr>
+    <tr><td>One small "shard" file, named by the first byte of a hash (256 possible files)</td><td>Rarely: only when a page matches the local list</td><td>That a shard such as <code>3f</code> was fetched. A hash byte cannot be turned back into a page address, and many thousands of different pages share each shard.</td></tr>
   </table></div>
+  <p>GitHub, which hosts the files, keeps standard web-server logs under its own privacy statement. SAYNO does not receive or keep them.</p>
+
+  <h2>The web scanner on this website</h2>
+  <p>The scanner at <b>/app</b> and the practice tutorial run entirely in your browser tab. What you paste is not uploaded. The one exception is the password check: your browser hashes the password itself and sends only the first 5 characters of the hash to Have I Been Pwned (<code>api.pwnedpasswords.com</code>), which answers with all hashes sharing that start; your browser does the final comparison. The password never leaves your device.</p>
 
   <h2>What is stored on your device</h2>
-  <p>Your settings (for example your chosen bank), the block-list fingerprints, and the rating of each open tab for the current browser session. You can remove all of it by uninstalling the extension.</p>
+  <p>Your settings (for example your chosen bank), the block-list fingerprints, and the rating of each open tab for the current browser session. The website remembers your checklist ticks in your browser. You can remove all of it by uninstalling the extension or clearing site data.</p>
 
   <h2>What we do not collect</h2>
   <ul>
     <li>Browsing history, or a list of the sites you visit.</li>
-    <li>Page contents, form entries, passwords or card numbers.</li>
+    <li>Page contents, text you check, form entries, passwords or card numbers.</li>
     <li>Your name, email address or any account (there are no accounts).</li>
   </ul>
 
   <h2>Where the block lists come from</h2>
-  <p>Public threat feeds: URLhaus and ThreatFox (abuse.ch), OpenPhish, Phishing Army, CERT Polska and the Phishing.Database project. The server refreshes them every few minutes.</p>
+  <p>Public threat feeds: URLhaus and ThreatFox (abuse.ch), OpenPhish, Phishing Army, CERT Polska, the Phishing.Database project and a list of disposable email providers. They are fetched and republished as hashes every few hours by an automated GitHub workflow.</p>
 
   <h2>Permissions the extension asks for, and why</h2>
   <div class="scroll"><table>
     <tr><th>Permission</th><th>Why</th></tr>
     <tr><td>Access to all websites</td><td>To see whether a page is asking for card details and block it, and to rate the page address. Pages are processed on your device.</td></tr>
+    <tr><td>Access to the SAYNO block-list host</td><td>To download the block-list files described above.</td></tr>
     <tr><td>Tabs</td><td>To show each tab's rating on the toolbar icon.</td></tr>
     <tr><td>Storage</td><td>To remember your settings and keep the block-list fingerprints.</td></tr>
-    <tr><td>Alarms</td><td>To refresh the block-list fingerprints every 30 minutes.</td></tr>
+    <tr><td>Alarms</td><td>To check for a new block list every 30 minutes.</td></tr>
     <tr><td>Context menus</td><td>For the right-click "Check this text / link with SAYNO" items.</td></tr>
     <tr><td>Notifications (optional, off until you allow it)</td><td>To warn you about unencrypted pages.</td></tr>
   </table></div>
-
-  <h2>Security</h2>
-  <p>All traffic to the SAYNO server uses HTTPS. The public server keeps no scan history and has no administrator page. Requests are rate-limited to protect it from abuse.</p>
 
   <h2>Children</h2>
   <p>SAYNO does not knowingly collect personal information from anyone, including children.</p>

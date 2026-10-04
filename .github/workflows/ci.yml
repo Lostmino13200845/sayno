@@ -36,7 +36,10 @@ jobs:
       - name: Extension heuristics data is generated from the server code
         run: python tools/gen_heuristics.py --check
 
-      - name: On-device link rules match the Python engine (regenerates the vectors first)
+      - name: Website copies of the engine are in sync with the extension
+        run: python tools/sync_engine.py --check
+
+      - name: On-device link and message rules match the Python engine (regenerates the vectors first)
         run: |
           python tools/gen_parity_vectors.py
           node tests/parity.test.mjs

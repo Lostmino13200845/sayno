@@ -118,8 +118,10 @@ GitHub Actions (`.github/workflows/ci.yml`) runs both on Ubuntu, macOS and Windo
 ## Changing the server port
 Set `port` in `config.json`, then in the extension popup open **Advanced: SAYNO server port** and enter the same number.
 
-## Going public (everyone's browser, not just localhost)
-- The extension rates pages **on the device** (`extension/heuristics.js` + a downloaded hash-prefix list, `extension/lookup.js`). The server is asked only for a 4-byte hash fragment when a page matches the local list, and for text the user explicitly checks. Details: `static/site/privacy.html`.
-- Run the same server in **public mode** (`SAYNO_PUBLIC=1`): no scan logging, no auto-reporting, no admin page, per-client rate limits, binds `0.0.0.0:$PORT`. A `Dockerfile` and `render.yaml` are included.
-- Build the store package with `python tools/package_extension.py --api https://your-server` and follow `docs/PUBLISHING.md` (deploy, Chrome Web Store, Edge) and `docs/STORE_LISTING.md` (listing text, permission justifications).
-- After editing detection rules in `server/shieldlib/engine.py`, run `python tools/gen_heuristics.py` so the extension's on-device rules follow; CI checks they match.
+## Going public (everyone's browser, no server needed)
+SAYNO is published as **static files on GitHub Pages**, rebuilt every 3 hours by `.github/workflows/pages.yml`:
+the website, the web scanner (`/app/`), the practice tutorial, the privacy policy, and the block lists as hashed files (`/v1/`).
+- The extension and the web scanner check **everything on the device** (`extension/heuristics.js`, `extension/engine.js`, `extension/lookup.js`; the website uses identical copies in `static/assets/`). Pages you visit and text you check are never uploaded; only public block-list files are downloaded. See `static/site/privacy.html`.
+- Build the store package: `python tools/package_extension.py --api https://<user>.github.io/<repo>`, then follow `docs/PUBLISHING.md` and `docs/STORE_LISTING.md`.
+- Keep the on-device rules and the Python rules identical: after editing `server/shieldlib/engine.py` run `python tools/gen_heuristics.py`, `python tools/gen_parity_vectors.py` and `python tools/sync_engine.py`. CI fails if they drift.
+- `server/app.py` remains for local development and self-hosting (it serves the same files, plus an optional admin back office). A `Dockerfile` and `render.yaml` are included for hosting it publicly.

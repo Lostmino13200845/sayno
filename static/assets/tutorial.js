@@ -1,6 +1,8 @@
 // SAYNO website: live threat count + the interactive tutorial ("practice browser").
 // Every step: instructions on the left, a pulsing ring on the thing to click on the right.
 (() => {
+  // "" on a server, "/sayno" on GitHub Pages: the folder that holds assets/, v1/ and the pages.
+  const BASE = new URL("..", document.currentScript.src).pathname.replace(/\/$/, "");
   const $ = s => document.querySelector(s);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -9,7 +11,7 @@
 
   // Offline fallbacks (same shape as /api/scan) so the tutorial also works as a static page.
   const CANNED = {
-    [RBC_TEXT]: { score: 72, level: "high", reported: 0,
+    [RBC_TEXT]: { score: 92, level: "critical", reported: 0,
       text: { findings: [
         { weight: 12, severity: "warn", message: "Creates urgency / time pressure" },
         { weight: 12, severity: "warn", message: "Threatens account closure, arrest or legal action" },
@@ -27,17 +29,15 @@
   const SAFE = { score: 0, level: "safe", text: { findings: [] }, urls: [], emails: [], advice: [], reported: 0 };
 
   async function scan(text) {
-    try {
-      const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, online: false, log: false }) });  // log:false = practice, never stored/reported
-      if (!r.ok) throw 0;
-      return await r.json();
+    try {  // the real scoring rules, run right here in the page (no network, nothing stored or reported)
+      const { analyzeText } = await import(BASE + "/assets/engine.js");
+      return await analyzeText(text);
     } catch { return CANNED[text] || SAFE; }
   }
 
   // ---- live threat count
-  fetch("/api/status").then(r => r.json()).then(s => {
-    const n = s.protection?.threats;
+  fetch(BASE + "/v1/meta.json").then(r => r.json()).then(s => {
+    const n = s.entries;
     if (n) { $("#statThreats") && ($("#statThreats").textContent = n.toLocaleString()); $("#pStatus").textContent = `🟢 ${n.toLocaleString()} threats`; }
   }).catch(() => { $("#pStatus").textContent = "🟢 700k+ threats"; });
 
@@ -264,7 +264,7 @@
   // Deep link: /#tutorial-5 opens step 5 (handy when presenting).
   const deep = location.hash.match(/^#tutorial-(\d+)$/);
   // /tutorial = the tutorial on its own (full-screen for presenting or embedding)
-  const only = location.pathname === "/tutorial";
+  const only = /\/tutorial\/?$/.test(location.pathname);
   if (only) document.body.classList.add("tut-only");
   draw();
   if (deep) {

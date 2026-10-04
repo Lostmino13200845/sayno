@@ -71,15 +71,15 @@ def main():
             check(f"GET {path}", code == 200, f"-> {code}")
         with open(os.path.join(work, "config.json"), encoding="utf-8") as f:
             token = json.load(f)["admin_token"]
-        code, blob = request(base, "/api/v1/prefixes")
         # A cold server has no block lists yet and answers 503 ("still loading") instead of an empty all-clear list.
+        code, blob = request(base, "/v1/prefixes.bin")
         check("prefix list endpoint: 4-byte records, or 503 while the lists load",
               (code == 200 and len(blob) % 4 == 0) or code == 503, str(code))
-        check("hash lookup validates its input", request(base, "/api/v1/hashes", {"prefixes": ["zz"]})[0] == 400
-              and request(base, "/api/v1/hashes", {"prefixes": []})[0] == 400
-              and request(base, "/api/v1/hashes", {"prefixes": ["00000000"] * 51})[0] == 400)
-        code, body = request(base, "/api/v1/hashes", {"prefixes": ["00000000"]})
-        check("hash lookup answers with matches only", code == 200 and "matches" in json.loads(body))
+        code, body = request(base, "/v1/shards/00.json")
+        check("shard endpoint answers JSON, or 503 while loading", (code == 200 and "h" in json.loads(body)) or code == 503, str(code))
+        check("bad shard name refused", request(base, "/v1/shards/zz.json")[0] == 404)
+        code, body = request(base, "/v1/meta.json")
+        check("meta endpoint answers, or 503 while loading", (code == 200 and "entries" in json.loads(body)) or code == 503, str(code))
         check("admin page is only a login box (no data)", request(base, "/admin")[0] == 200
               and b"Admin token" in request(base, "/admin")[1])
         check("admin API refused without token", request(base, "/api/admin/items")[0] == 404)

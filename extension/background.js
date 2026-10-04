@@ -1,16 +1,17 @@
-// SAYNO background worker. Every page the user opens is rated ON THE DEVICE: link heuristics (heuristics.js)
-// plus a hash-prefix check against the global block lists (lookup.js). Pages are never sent to a server; the
-// server is asked only when a 4-byte hash prefix matches locally, and for text the user explicitly checks
-// (right-click or the paste box).
+// SAYNO background worker. Everything is rated ON THE DEVICE: pages with link heuristics (heuristics.js), text
+// the user checks with the message rules (engine.js), both together with a hash-prefix check against the
+// global block lists (lookup.js). Nothing the user browses or selects is ever sent anywhere. The only network
+// traffic is downloading the block-list files, and a small shard file when a 4-byte prefix matches locally.
 import { DEFAULT_API } from "./config.js";
-import { checkUrl as listCheck, syncPrefixes } from "./lookup.js";
+import { checkUrl as listCheck, checkEmailDomain, fetchMeta, syncPrefixes } from "./lookup.js";
 import { analyzeUrl, levelFor } from "./heuristics.js";
+import { analyzeText } from "./engine.js";
 
+// Where the block-list files come from (config.js default; changeable under "Advanced" in the popup).
 async function apiBase() {
   const { apiBase } = await chrome.storage.local.get("apiBase");
   return (apiBase || DEFAULT_API).replace(/\/+$/, "");
 }
-async function api(path) { return (await apiBase()) + path; }
 
 // Keep the local block-list index fresh (an unchanged list costs one tiny 304 response).
 async function syncLists() {
@@ -22,6 +23,8 @@ async function syncLists() {
     }
   } catch { /* offline: keep the old list */ }
 }
+// Changing the block-list source (popup, Advanced) downloads the new lists straight away.
+chrome.storage.onChanged.addListener((changes, area) => { if (area === "local" && changes.apiBase) syncLists(); });
 chrome.alarms.create("sync-lists", { periodInMinutes: 30 });
 chrome.alarms.onAlarm.addListener(a => { if (a.name === "sync-lists") syncLists(); });
 syncLists();
@@ -44,19 +47,14 @@ const BADGE = {
   high: ["!!", "#d9541e"], critical: ["✖", "#c11b2e"], offline: ["off", "#777"],
 };
 
-async function scan(text, online = true) {
-  const r = await fetch(await api("/api/scan"), {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, online }),
+// Check a text, link or e-mail address the user chose to check. Done locally, so it also works offline;
+// block-list lookups are used when the lists are downloaded, and quietly skipped when they are not.
+async function scan(text) {
+  const base = await apiBase();
+  return analyzeText(text, {
+    listUrl: async u => (await listCheck(u, base)).listed,
+    listEmailDomain: async d => { const r = await checkEmailDomain(d, base); return { disposable: r.disposable, listed: r.listed }; },
   });
-  if (!r.ok) throw new Error("HTTP " + r.status);
-  return r.json();
-}
-
-// A refused connection surfaces as "Failed to fetch": say what it means and what to do about it.
-function friendlyError(e) {
-  return e instanceof TypeError ? "SAYNO server is not running. Start it (start.bat on Windows, ./start.sh on Mac/Linux), then try again."
-    : "SAYNO server problem (" + e.message + "). Try again.";
 }
 
 async function checkUrl(url) {
@@ -64,12 +62,12 @@ async function checkUrl(url) {
   const key = u.host + u.pathname;
   const hit = cache.get(key);
   if (hit && Date.now() - hit.at < TTL) return hit.result;
-  const { ready, listed, unresolved } = await listCheck(url, await apiBase());  // hashes locally; server only on a prefix match
+  const { ready, listed, unresolved } = await listCheck(url, await apiBase());  // hashes locally; a shard is fetched only on a prefix match
   if (!ready) syncLists();                                          // first run / list not downloaded yet
   const r = analyzeUrl(u.origin + u.pathname, listed);              // no query string or fragment: they can hold tokens
   if (unresolved) {  // matches a block-list fingerprint but the server could not confirm: warn, do not guess "safe"
     r.findings.push({ weight: 36, severity: "warn",
-      message: "Matches a block-list fingerprint, but SAYNO could not reach its server to confirm" });
+      message: "Matches a block-list fingerprint, but SAYNO could not download the details to confirm" });
     r.score = Math.min(100, r.findings.reduce((n, f) => n + f.weight, 0));
     r.level = levelFor(r.score);
   }
@@ -83,7 +81,7 @@ function setBadge(tabId, level, score) {
   const [text, color] = BADGE[level] || BADGE.safe;
   chrome.action.setBadgeText({ tabId, text });
   chrome.action.setBadgeBackgroundColor({ tabId, color });
-  chrome.action.setTitle({ tabId, title: level === "offline" ? "SAYNO: server offline"
+  chrome.action.setTitle({ tabId, title: level === "offline" ? "SAYNO: could not check this page"
     : `SAYNO: ${level} (${score}/100)` });
 }
 
@@ -176,6 +174,14 @@ attachNotificationListeners();
 // Check on page load AND on in-page navigation (single-page apps change the URL without a reload).
 const lastAssessed = new Map();   // tabId -> "url@time", so one navigation is not checked twice
 chrome.tabs.onUpdated.addListener((tabId, info, tab) => {
+  if (info.status === "complete" && tab.url && /^https?:/.test(tab.url)) {
+    // Browsers reset a tab's badge when a navigation commits. A local check can finish before that, so put the
+    // rating back once the page has loaded (only if it is the rating for this very page).
+    loadVerdict(tabId).then(v => {
+      const u = new URL(tab.url);
+      if (v && v.urls?.[0]?.url === u.origin + u.pathname) setBadge(tabId, v.level, v.score);
+    });
+  }
   if (!tab.url || !(info.status === "loading" || info.url)) return;
   const prev = lastAssessed.get(tabId);
   if (prev && prev.url === tab.url && Date.now() - prev.at < 3000) return;
@@ -195,8 +201,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   try {
     const result = await scan(text);
     chrome.tabs.sendMessage(tab.id, { type: "scanResult", result, text });
-  } catch {
-    chrome.tabs.sendMessage(tab.id, { type: "scanResult", error: "SAYNO server is not running. Start it (start.bat on Windows, ./start.sh on Mac/Linux), then try again." });
+  } catch (e) {
+    chrome.tabs.sendMessage(tab.id, { type: "scanResult", error: "SAYNO could not check that text (" + (e && e.message || e) + ")." });
   }
 });
 
@@ -206,10 +212,15 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
     loadVerdict(msg.tabId ?? sender.tab?.id).then(reply);
     return true;
   } else if (msg.type === "scan") {
-    scan(msg.text).then(r => reply({ result: r }), e => reply({ error: friendlyError(e) }));
+    scan(msg.text).then(r => reply({ result: r }), e => reply({ error: "SAYNO could not check that (" + (e && e.message || e) + ")." }));
     return true;
   } else if (msg.type === "status") {
-    api("/api/status").then(u => fetch(u)).then(r => r.json()).then(reply, () => reply(null));
+    // Block-list size and health. Offline: the numbers saved last time, flagged as stale.
+    apiBase().then(fetchMeta).then(async m => {
+      if (m) { chrome.storage.local.set({ lastMeta: m }); return reply({ ...m, online: true }); }
+      const { lastMeta } = await chrome.storage.local.get("lastMeta");
+      reply(lastMeta ? { ...lastMeta, online: false } : null);
+    });
     return true;
   } else if (msg.type === "testNotification") {
     chrome.permissions.contains({ permissions: ["notifications"] }).then(ok => {
@@ -225,13 +236,5 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
   } else if (msg.type === "insecureField" && sender.tab) {
     notify(sender.tab.id, new URL(sender.tab.url).hostname, "field", "Don't type that here",
       `You're about to enter your ${msg.what} on a page that isn't secure (no https). It could be read by others on the network.`, true);
-  } else if (msg.type === "cardGuard" && sender.tab) {
-    // The content script blocked a card form. Only if the user switched on "Help protect others" in the popup,
-    // report the page address (no query string or fragment, never card data) so it can be logged and reported.
-    chrome.storage.local.get({ shareReports: false }, ({ shareReports }) => {
-      if (!shareReports) return;
-      const pu = new URL(sender.tab.url);
-      scan(`${msg.reason}\n${pu.origin + pu.pathname}`, false).catch(() => {});
-    });
   }
 });

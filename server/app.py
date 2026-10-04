@@ -81,7 +81,7 @@ class RateLimiter:
 
 
 LIMITER = RateLimiter()
-LIMITS = {"scan": 30, "hashes": 120, "prefixes": 12, "pwned": 20, "status": 120}  # requests per minute per client
+LIMITS = {"scan": 30, "hashes": 120, "prefixes": 60, "pwned": 20, "status": 120}  # requests per minute per client
 REPORT_NOW = threading.Event()  # wakes the back-end reporter right after a suspicious scan
 
 
@@ -154,8 +154,8 @@ class Handler(BaseHTTPRequestHandler):
         u = urlsplit(self.path)
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
         pages = {"/": "site/index.html", "/index.html": "site/index.html",
-                 "/app": "index.html", "/design": "site/design.html",
-                 "/tutorial": "site/index.html"}
+                 "/app": "index.html", "/app/": "index.html", "/design": "site/design.html", "/design/": "site/design.html",
+                 "/tutorial": "site/index.html", "/tutorial/": "site/index.html"}
         if u.path in pages:
             with open(os.path.join(STATIC, pages[u.path]), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
@@ -171,22 +171,28 @@ class Handler(BaseHTTPRequestHandler):
             if self._limited("status"):
                 return
             return self._send(200, {"protection": INTEL.stats(), "index": {"version": INDEX.version, "entries": INDEX.count}})
-        if u.path == "/api/v1/prefixes":  # 4-byte hash prefixes of every known-bad entry (see shieldlib/hashindex.py)
+        # Block-list files, laid out exactly like the static copy published on GitHub Pages (see shieldlib/hashindex.py).
+        if u.path in ("/v1/prefixes.bin", "/v1/meta.json") or re.fullmatch(r"/v1/shards/[0-9a-f]{2}\.json", u.path):
             if self._limited("prefixes"):
                 return
-            version, blob = INDEX.prefix_list()
             if not INDEX.count:  # still loading the feeds after a cold start: never hand out an empty list as "all clear"
                 return self._send(503, {"error": "Block lists are still loading, try again shortly."}, extra={"Retry-After": "30"})
+            version, blob = INDEX.prefix_list()
+            if u.path == "/v1/meta.json":
+                return self._send(200, INDEX.meta(INTEL), "application/json", {"Access-Control-Allow-Origin": "*"})
+            etag = {"ETag": f'"{version}"', "Access-Control-Allow-Origin": "*"}
             if self.headers.get("If-None-Match") == f'"{version}"':
-                return self._send(304, b"", "application/octet-stream", {"ETag": f'"{version}"'})
-            return self._send(200, blob, "application/octet-stream", {"ETag": f'"{version}"', "X-Index-Version": version})
+                return self._send(304, b"", "application/octet-stream", etag)
+            if u.path == "/v1/prefixes.bin":
+                return self._send(200, blob, "application/octet-stream", etag)
+            return self._send(200, INDEX.shard_json(int(u.path[11:13], 16)), "application/json", etag)
         m = re.fullmatch(r"/demo/([a-z0-9-]+\.html)", u.path)
         if m and os.path.exists(os.path.join(STATIC, "demo", m.group(1))):
             with open(os.path.join(STATIC, "demo", m.group(1)), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
 
         # ---- back office (admin token required; unknown paths look like 404s)
-        if u.path in ("/privacy", "/privacy.html"):
+        if u.path in ("/privacy", "/privacy/", "/privacy.html"):
             with open(os.path.join(STATIC, "site", "privacy.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
         if not ADMIN_ENABLED and u.path.startswith(("/admin", "/api/admin/")):
@@ -232,15 +238,6 @@ class Handler(BaseHTTPRequestHandler):
                 if result["level"] in ("medium", "high", "critical"):
                     result["manual"] = manual_links([u["url"] for u in result["urls"]])
                 return self._send(200, result)
-            if self.path == "/api/v1/hashes":  # full hashes behind prefixes the device matched locally
-                if self._limited("hashes"):
-                    return
-                raw = body.get("prefixes")
-                if (not isinstance(raw, list) or not raw or len(raw) > 50
-                        or not all(isinstance(p, str) and re.fullmatch(r"[0-9a-f]{8}", p) for p in raw)):
-                    return self._send(400, {"error": "prefixes must be 1-50 strings of 8 hex characters"})
-                matches = INDEX.lookup([bytes.fromhex(p) for p in raw])
-                return self._send(200, {"version": INDEX.version, "matches": [{"h": h, "c": c} for h, c in matches]})
             if self.path == "/api/pwned-range":
                 if self._limited("pwned"):
                     return

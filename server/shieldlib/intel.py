@@ -227,8 +227,7 @@ class ThreatIntel:
         """(kind, category, parsed-data) for every threat feed. The sets are replaced, never mutated
         in place, so they are safe to read after the lock is released. Used to build the hash index."""
         with self._lock:
-            return [(_SOURCES[n][1], _SOURCES[n][2], d) for n, d in self._data.items()
-                    if _SOURCES[n][1] != "email_domains"]
+            return [(_SOURCES[n][1], _SOURCES[n][2], d) for n, d in self._data.items()]
 
     def stats(self):
         """Aggregate numbers only - no source list, no entries."""

@@ -1,6 +1,7 @@
 // Website navigation: the search icon opens a box that checks a link or message
 // in the web scanner (/app). The text is passed in the #hash, so it never reaches server logs.
 (() => {
+  const BASE = new URL("..", document.currentScript.src).pathname.replace(/\/$/, "");  // "" on a server, "/sayno" on Pages
   const btn = document.getElementById("searchBtn");
   const panel = document.getElementById("searchPanel");
   const input = document.getElementById("searchInput");
@@ -16,6 +17,6 @@
   panel.addEventListener("submit", e => {
     e.preventDefault();
     const q = input.value.trim();
-    if (q) location.href = "/app#q=" + encodeURIComponent(q);
+    if (q) location.href = BASE + "/app/#q=" + encodeURIComponent(q);
   });
 })();

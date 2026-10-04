@@ -3,8 +3,8 @@
     python tools/package_extension.py --api https://your-sayno-server.example
 
 What it does to a copy of extension/ (the source folder is never modified):
-  * writes the public server address into config.js (users can still change it under "Advanced")
-  * limits the always-on server permission to that one address; any other address is asked for when needed
+  * writes the address of the published block-list files into config.js (users can change it under "Advanced")
+  * limits the always-on network permission to that one host; any other address is asked for when needed
   * leaves out development-only files and checks that every file the manifest points to is in the zip
 Output: dist/sayno-extension-<version>.zip  (forward-slash paths, ready to upload)
 """
@@ -41,9 +41,10 @@ def main():
     args = ap.parse_args()
 
     u = urlsplit(args.api)
-    if u.scheme != "https" or not u.hostname or u.path.strip("/") or u.query:
-        sys.exit("--api must be a plain https origin such as https://sayno.example (no path)")
+    if u.scheme != "https" or not u.hostname or u.query or u.fragment:
+        sys.exit("--api must be an https address such as https://you.github.io/sayno (no query or #fragment)")
     origin = f"https://{u.netloc}"
+    base = origin + u.path.rstrip("/")  # the folder that holds v1/ (GitHub Pages serves a project under /<name>)
 
     work = tempfile.mkdtemp(prefix="sayno-pack-")
     try:
@@ -52,7 +53,7 @@ def main():
 
         with open(os.path.join(build, "config.js"), "w", encoding="utf-8", newline="\n") as f:
             f.write("// Written by tools/package_extension.py for the store build.\n"
-                    f'export const DEFAULT_API = "{origin}";\n')
+                    f'export const DEFAULT_API = "{base}";\n')
 
         mpath = os.path.join(build, "manifest.json")
         with open(mpath, encoding="utf-8") as f:
@@ -76,7 +77,7 @@ def main():
                     z.write(full, os.path.relpath(full, build).replace(os.sep, "/"))
         size = os.path.getsize(out)
         print(f"built {os.path.relpath(out, ROOT)}  ({size / 1024:.0f} KB)")
-        print(f"  version {m['version']}, server {origin}")
+        print(f"  version {m['version']}, block lists from {base}")
         print(f"  host permissions: {m['host_permissions']}   optional: {m['optional_host_permissions']}")
         print("Next: upload this zip in the Chrome Web Store developer dashboard (see docs/PUBLISHING.md).")
     finally:

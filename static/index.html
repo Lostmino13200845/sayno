@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SAYNO</title>
+<link rel="icon" href="/assets/shield-48.png">
 <style>
 :root{
   --bg:#f6f7f9;--card:#fff;--ink:#16181d;--muted:#5d6470;--line:#e2e5ea;--accent:#2457d6;
@@ -78,7 +79,6 @@ td,th{text-align:left;padding:6px 8px;border-top:1px solid var(--line)}
     <div class="row">
       <button class="btn" id="scanBtn">Scan</button>
       <button class="btn ghost" id="clearBtn">Clear</button>
-      <label class="muted"><input type="checkbox" id="online" checked> Use online reputation APIs (if configured)</label>
     </div>
   </div>
 
@@ -95,9 +95,9 @@ td,th{text-align:left;padding:6px 8px;border-top:1px solid var(--line)}
     <div class="card" id="emailCard"><h2>E-mail addresses</h2><div id="emails"></div></div>
 
     <div class="card" id="reportCard" hidden>
-      <h2>🚩 Reported automatically</h2>
+      <h2>🚩 Report it</h2>
       <p id="reportMsg"></p>
-      <details><summary class="muted">Report it to the authorities too</summary><ul id="manualLinks"></ul></details>
+      <ul id="manualLinks"></ul>
     </div>
   </div>
 </section>
@@ -146,11 +146,38 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const LVLCOLOR = {safe:'--safe',low:'--low',medium:'--medium',high:'--high',critical:'--critical'};
 let last = null;
 
-async function api(path, body){
-  const r = await fetch(path, body === undefined ? {} : {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
-  const j = await r.json();
-  if (!r.ok) throw new Error(j.error || r.status);
-  return j;
+// Everything runs in this browser tab: the message rules (engine.js) and the block-list lookups (lookup.js).
+// What you paste is never sent anywhere. BASE is "" on a server and "/sayno" on GitHub Pages: it comes from the icon link.
+const BASE = new URL(document.querySelector('link[rel=icon]').href).pathname.replace(/\/assets\/.*$/, '');
+const DATA = location.origin + BASE;
+let engine = null;
+async function loadEngine(){
+  engine ||= Promise.all([import(BASE + '/assets/engine.js'), import(BASE + '/assets/lookup.js')]);
+  const [e, l] = await engine;
+  return {analyzeText: e.analyzeText, ...l};
+}
+async function scanLocal(text){
+  const L = await loadEngine();
+  try { await L.syncPrefixes(DATA); } catch {}   // block lists (2.4 MB the first time, then cached); the scan still works without
+  return L.analyzeText(text, {
+    listUrl: async u => (await L.checkUrl(u, DATA)).listed,
+    listEmailDomain: async d => { const r = await L.checkEmailDomain(d, DATA); return {disposable: r.disposable, listed: r.listed}; },
+  });
+}
+// Places to report a scam yourself (nothing is reported for you).
+function manualLinks(urls){
+  const first = urls.length ? '?url=' + encodeURIComponent(urls[0].url) : '';
+  return [
+    {name: 'Google Safe Browsing - report phishing page', url: 'https://safebrowsing.google.com/safebrowsing/report_phish/' + first},
+    {name: 'Microsoft - report unsafe site', url: 'https://www.microsoft.com/en-us/wdsi/support/report-unsafe-site'},
+    {name: 'PhishTank (free account)', url: 'https://phishtank.org/add_web_phish.php'},
+    {name: 'APWG - forward phishing e-mails to reportphishing@apwg.org', url: 'https://apwg.org/reportphishing/'},
+    {name: 'Canada - Canadian Anti-Fraud Centre', url: 'https://antifraudcentre-centreantifraude.ca/report-signalez-eng.htm'},
+    {name: 'USA - FTC fraud report', url: 'https://reportfraud.ftc.gov/'},
+    {name: 'USA - FBI IC3 (if you lost money)', url: 'https://www.ic3.gov/'},
+    {name: 'UK - forward e-mails to report@phishing.gov.uk, texts to 7726', url: 'https://www.ncsc.gov.uk/collection/phishing-scams'},
+    {name: 'EU / other - find your national CERT', url: 'https://www.first.org/members/teams/'},
+  ];
 }
 
 // ---------- tabs
@@ -172,7 +199,7 @@ $('#scanBtn').onclick = async () => {
   if (!text) return;
   $('#scanBtn').disabled = true; $('#scanBtn').textContent = 'Scanning…';
   try {
-    const r = last = await api('/api/scan', {text, online: $('#online').checked});
+    const r = last = await scanLocal(text);
     $('#result').hidden = false;
     const col = getComputedStyle(document.documentElement).getPropertyValue(LVLCOLOR[r.level]);
     $('#gauge').style.background = `conic-gradient(${col} ${r.score*3.6}deg, var(--chip) 0)`;
@@ -185,11 +212,10 @@ $('#scanBtn').onclick = async () => {
     $('#urls').innerHTML = r.urls.map(u => item(u.url, u)).join('');
     $('#emailCard').hidden = !r.emails.length;
     $('#emails').innerHTML = r.emails.map(e => item(e.email, e)).join('');
-    $('#reportCard').hidden = !r.manual;
-    $('#reportMsg').innerHTML = r.reported
-      ? `<b>${r.reported} dangerous link(s)</b> from this message are being reported to the global anti-phishing network so they can be blocked and taken down. Nothing else to do.`
-      : 'This message was recorded as suspicious to help protect other users.';
-    $('#manualLinks').innerHTML = (r.manual || []).map(m => `<li><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.name)}</a></li>`).join('');
+    const risky = ['medium','high','critical'].includes(r.level);
+    $('#reportCard').hidden = !risky;
+    $('#reportMsg').innerHTML = 'SAYNO did not send this message anywhere. If it is a scam, you can report it yourself so it gets blocked for everyone:';
+    $('#manualLinks').innerHTML = risky ? manualLinks(r.urls).map(m => `<li><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.name)}</a></li>`).join('') : '';
     $('#result').scrollIntoView({behavior:'smooth'});
   } catch (e) { $('#summary').textContent = 'Scan failed: ' + e.message; $('#result').hidden = false; }
   $('#scanBtn').disabled = false; $('#scanBtn').textContent = 'Scan';
@@ -204,7 +230,9 @@ $('#pwBtn').onclick = async () => {
   const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(pw));
   const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
   try {
-    const {range} = await api('/api/pwned-range', {prefix: hex.slice(0,5)});
+    const res = await fetch('https://api.pwnedpasswords.com/range/' + hex.slice(0,5), {headers: {'Add-Padding': 'true'}});
+    if (!res.ok) throw new Error('lookup service answered ' + res.status);
+    const range = await res.text();
     const line = range.split('\n').find(l => l.startsWith(hex.slice(5)));
     const n = line ? parseInt(line.split(':')[1]) : 0;
     $('#pwOut').innerHTML = n
@@ -219,12 +247,12 @@ const ago = t => { if (!t) return 'never'; const s = Math.round(Date.now()/1000 
   return s < 60 ? 'just now' : s < 3600 ? `${Math.round(s/60)} min ago` : `${Math.round(s/3600)} h ago`; };
 async function loadStatus(){
   try {
-    const s = await api('/api/status'), p = s.protection;
-    const live = p.last_check && (Date.now()/1000 - p.last_check) < p.interval_sec * 3;
-    $('#protStatus').innerHTML = !p.threats
-      ? '⏳ Downloading the global threat database (first start, ~1 min)…'
-      : `${live ? '🟢' : '🟠'} Protected · <b>${p.threats.toLocaleString()}</b> known threats · checked ${ago(p.last_check)} · auto-updates every ${Math.round(p.interval_sec/60)} min`;
-  } catch { $('#protStatus').textContent = '🔴 SAYNO server is not running'; }
+    const res = await fetch(DATA + '/v1/meta.json', {cache: 'no-cache'});
+    if (!res.ok) throw new Error(res.status);
+    const m = await res.json();
+    const when = m.generatedAt ? ago(Date.parse(m.generatedAt) / 1000) : 'recently';
+    $('#protStatus').innerHTML = `🟢 Protected · <b>${m.entries.toLocaleString()}</b> known threats · lists updated ${when} · your messages never leave this page`;
+  } catch { $('#protStatus').textContent = '🟠 Block lists unavailable right now. Message checks still work.'; }
 }
 setInterval(loadStatus, 30000);
 
@@ -298,7 +326,7 @@ loadStatus().catch(() => {});
 (function fromHash() {
   const h = location.hash.slice(1);
   const q = new URLSearchParams(h).get('q');
-  if (q) { $('#input').value = q; $('#scanBtn').click(); history.replaceState(null, '', '/app'); return; }
+  if (q) { $('#input').value = q; $('#scanBtn').click(); history.replaceState(null, '', location.pathname); return; }
   const tab = document.querySelector(`nav button[data-tab="${h}"]`);
   if (tab) tab.click();
 })();

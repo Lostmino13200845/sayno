@@ -1,0 +1,49 @@
+name: Publish website and block lists
+
+# Builds the whole public site (website, scanner, tutorial, privacy policy) plus fresh block-list files from the
+# public threat feeds, and publishes it on GitHub Pages. No server involved: the extension and the web scanner
+# read these static files and check everything on the visitor's own device.
+#   one-time setup:  repo Settings -> Pages -> Source: "GitHub Actions"   (or: gh api -X POST repos/OWNER/REPO/pages -f build_type=workflow)
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 */3 * * *"   # block lists refreshed every 3 hours
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build site and fresh block lists
+        run: python tools/build_site.py --out _site --base "/${{ github.event.repository.name }}" --refresh
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

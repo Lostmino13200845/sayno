@@ -14,9 +14,10 @@ function render(r) {
     ${r.reported ? `<div class="pp-reported">🚩 ${r.reported} dangerous link(s) reported automatically.</div>` : ""}`;
 }
 
-// server status
+// block-list status
 chrome.runtime.sendMessage({ type: "status" }, s => {
-  $("#srv").textContent = s ? `🟢 ${s.protection.threats.toLocaleString()} threats` : "🔴 server offline";
+  $("#srv").textContent = !s ? "⚪ lists not downloaded yet"
+    : s.online ? `🟢 ${s.entries.toLocaleString()} known threats` : `🟡 offline · using saved lists (${s.entries.toLocaleString()})`;
 });
 
 // current site verdict
@@ -28,17 +29,13 @@ function renderSite(v) {
 chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
   chrome.runtime.sendMessage({ type: "getVerdict", tabId: tab.id }, v => {
     $("#site").innerHTML = v ? `<div class="pp-host">${esc(new URL(tab.url).host)}</div>${renderSite(v)}`
-      : /^https?:/.test(tab.url || "") ? '<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or the SAYNO server is offline.</span>' : "Not a web page.";
+      : /^https?:/.test(tab.url || "") ? '<span class="ss-level">not rated</span> <span class="ss-muted">Local page, or still starting up.</span>' : "Not a web page.";
   });
 });
 
-// server address (default comes from config.js; a store build points it at the public SAYNO server)
-chrome.storage.local.get({ shareReports: false }, ({ shareReports }) => { $("#shareReports").checked = shareReports; });
-$("#shareReports").onchange = e => chrome.storage.local.set({ shareReports: e.target.checked });
+// where the block-list files come from (default in config.js; the store build points at the public copy)
 (async () => {
   const { DEFAULT_API } = await import("./config.js");
-  // Community reporting only exists on a self-hosted server: the public server keeps no reports, so the switch is hidden there.
-  $("#shareReports").closest("label").hidden = new URL(DEFAULT_API).hostname !== "127.0.0.1";
   const { apiBase } = await chrome.storage.local.get("apiBase");
   $("#apiBase").value = apiBase || DEFAULT_API;
   $("#apiBase").addEventListener("change", async e => {
@@ -48,17 +45,18 @@ $("#shareReports").onchange = e => chrome.storage.local.set({ shareReports: e.ta
     const local = u && u.protocol === "http:" && ["127.0.0.1", "localhost"].includes(u.hostname);
     if (!u || !(u.protocol === "https:" || local)) {
       e.target.value = apiBase || DEFAULT_API;
-      hint.textContent = "Use an https:// address (or http://127.0.0.1:PORT for a server on this computer).";
+      hint.textContent = "Use an https:// address (or http://127.0.0.1:PORT for a SAYNO server on this computer).";
       hint.hidden = false;
       return;
     }
     if (!(await chrome.permissions.request({ origins: [u.origin + "/*"] }))) {  // resolves at once if already granted
       e.target.value = apiBase || DEFAULT_API;
-      hint.textContent = "Permission to contact that server was not granted.";
+      hint.textContent = "Permission to contact that address was not granted.";
       hint.hidden = false;
       return;
     }
-    await chrome.storage.local.set({ apiBase: u.origin === new URL(DEFAULT_API).origin ? "" : u.origin });
+    const chosen = (u.origin + u.pathname).replace(/\/+$/, "");  // keep the folder: GitHub Pages serves under /<project>
+    await chrome.storage.local.set({ apiBase: chosen === DEFAULT_API.replace(/\/+$/, "") ? "" : chosen });
     location.reload();
   });
 })();
@@ -70,7 +68,7 @@ async function scanNow() {
   if (!text) return ($("#out").innerHTML = "");
   $("#out").innerHTML = '<p class="ss-muted">Checking…</p>';
   chrome.runtime.sendMessage({ type: "scan", text }, res => {
-    $("#out").innerHTML = res?.result ? render(res.result) : `<p>${esc(res?.error || "Server offline")}</p>`;
+    $("#out").innerHTML = res?.result ? render(res.result) : `<p>${esc(res?.error || "SAYNO could not check that.")}</p>`;
   });
 }
 $("#txt").addEventListener("paste", () => setTimeout(scanNow, 30));
@@ -86,7 +84,7 @@ chrome.storage.local.get(DEFAULTS, s => {
     enabled: $("#enabled").checked, newcomerMode: $("#newcomerMode").checked,
     myBanks: [...document.querySelectorAll("#banks input:checked")].map(i => i.value),
   });
-  document.querySelectorAll("input[type=checkbox]:not(#notifyInsecure):not(#shareReports)").forEach(i => i.onchange = save);
+  document.querySelectorAll("input[type=checkbox]:not(#notifyInsecure)").forEach(i => i.onchange = save);
 });
 
 // On-screen notifications: an optional permission, requested only when the user switches it on.

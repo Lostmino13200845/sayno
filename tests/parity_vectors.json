@@ -1,589 +1,1433 @@
-[
- {
-  "url": "https://github.com/torvalds/linux",
-  "score": 0,
-  "level": "safe",
-  "findings": []
- },
- {
-  "url": "https://docs.google.com/document/d/abc",
-  "score": 0,
-  "level": "safe",
-  "findings": []
- },
- {
-  "url": "https://www.rbcroyalbank.com/personal.html",
-  "score": 0,
-  "level": "safe",
-  "findings": []
- },
- {
-  "url": "https://www.amazon.ca/gp/css/order-history",
-  "score": 0,
-  "level": "safe",
-  "findings": []
- },
- {
-  "url": "https://www.paypal.com/signin",
-  "score": 0,
-  "level": "safe",
-  "findings": []
- },
- {
-  "url": "https://accounts.google.com/signin/v2/identifier",
-  "score": 0,
-  "level": "safe",
-  "findings": []
- },
- {
-  "url": "https://rbc-card-activation.help/secure",
-  "score": 38,
-  "level": "medium",
-  "findings": [
-   [
-    10,
-    "Top-level domain '.help' is heavily abused by scammers"
+{
+ "urls": [
+  {
+   "url": "https://github.com/torvalds/linux",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://docs.google.com/document/d/abc",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://www.rbcroyalbank.com/personal.html",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://www.amazon.ca/gp/css/order-history",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://www.paypal.com/signin",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://accounts.google.com/signin/v2/identifier",
+   "score": 0,
+   "level": "safe",
+   "findings": []
+  },
+  {
+   "url": "https://rbc-card-activation.help/secure",
+   "score": 38,
+   "level": "medium",
+   "findings": [
+    [
+     10,
+     "Top-level domain '.help' is heavily abused by scammers"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ],
+    [
+     24,
+     "Mentions 'rbc' but is not an official rbc domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://rbc-secure-verify.help/login",
+   "score": 42,
+   "level": "medium",
+   "findings": [
+    [
+     10,
+     "Top-level domain '.help' is heavily abused by scammers"
+    ],
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     24,
+     "Mentions 'rbc' but is not an official rbc domain"
+    ]
+   ]
+  },
+  {
+   "url": "http://interac-deposit.top/claim",
+   "score": 40,
+   "level": "medium",
+   "findings": [
+    [
+     10,
+     "Top-level domain '.top' is heavily abused by scammers"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     24,
+     "Mentions 'interac' but is not an official interac domain"
+    ]
+   ]
+  },
+  {
+   "url": "http://cra-refund-canada.xyz",
+   "score": 40,
+   "level": "medium",
+   "findings": [
+    [
+     10,
+     "Top-level domain '.xyz' is heavily abused by scammers"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     24,
+     "Mentions 'cra' but is not an official cra domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://paypa1-secure.com/login",
+   "score": 44,
+   "level": "medium",
+   "findings": [
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     36,
+     "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://paypaI.com/signin",
+   "score": 40,
+   "level": "medium",
+   "findings": [
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ],
+    [
+     36,
+     "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://amazon-login.s3.amazonaws.com/verify/account",
+   "score": 46,
+   "level": "medium",
+   "findings": [
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     24,
+     "Mentions 'amazon' but is not an official amazon domain"
+    ],
+    [
+     14,
+     "Uses the name 'amazon' on a free / shared hosting domain, not the real company"
+    ]
+   ]
+  },
+  {
+   "url": "https://paypal-secure.googleusercontent.com/login",
+   "score": 46,
+   "level": "medium",
+   "findings": [
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     24,
+     "Mentions 'paypal' but is not an official paypal domain"
+    ],
+    [
+     14,
+     "Uses the name 'paypal' on a free / shared hosting domain, not the real company"
+    ]
+   ]
+  },
+  {
+   "url": "https://раураl.com/login",
+   "score": 62,
+   "level": "high",
+   "findings": [
+    [
+     22,
+     "Punycode / internationalized domain (possible look-alike characters)"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ],
+    [
+     36,
+     "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+    ]
+   ]
+  },
+  {
+   "url": "http://3232235777/login",
+   "score": 40,
+   "level": "medium",
+   "findings": [
+    [
+     30,
+     "Disguised IP address (number or hex form) instead of a domain name"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ]
+   ]
+  },
+  {
+   "url": "http://0xC0A80101/bank",
+   "score": 36,
+   "level": "medium",
+   "findings": [
+    [
+     30,
+     "Disguised IP address (number or hex form) instead of a domain name"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "http://192.168.1.5/login",
+   "score": 32,
+   "level": "low",
+   "findings": [
+    [
+     22,
+     "Uses a raw IP address instead of a domain name"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ]
+   ]
+  },
+  {
+   "url": "http://1.2.3.4:8080/x",
+   "score": 36,
+   "level": "medium",
+   "findings": [
+    [
+     22,
+     "Uses a raw IP address instead of a domain name"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     8,
+     "Non-standard port 8080"
+    ]
+   ]
+  },
+  {
+   "url": "http://[::1]:8080/login",
+   "score": 40,
+   "level": "medium",
+   "findings": [
+    [
+     22,
+     "Uses a raw IP address instead of a domain name"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     8,
+     "Non-standard port 8080"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ]
+   ]
+  },
+  {
+   "url": "http://user@evil.example.com/",
+   "score": 28,
+   "level": "low",
+   "findings": [
+    [
+     22,
+     "Contains '@' before the host - the real destination is hidden"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "https://xn--80ak6aa92e.com/",
+   "score": 22,
+   "level": "low",
+   "findings": [
+    [
+     22,
+     "Punycode / internationalized domain (possible look-alike characters)"
+    ]
+   ]
+  },
+  {
+   "url": "bit.ly/3xYz",
+   "score": 16,
+   "level": "low",
+   "findings": [
+    [
+     10,
+     "Link shortener hides the real destination"
+    ],
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "https://tinyurl.com/abc",
+   "score": 10,
+   "level": "safe",
+   "findings": [
+    [
+     10,
+     "Link shortener hides the real destination"
+    ]
+   ]
+  },
+  {
+   "url": "https://a.b.c.d.e.example.com/",
+   "score": 8,
+   "level": "safe",
+   "findings": [
+    [
+     8,
+     "Unusually many sub-domains"
+    ]
+   ]
+  },
+  {
+   "url": "https://my-bank-secure-login-verify.example.com/",
+   "score": 14,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Many hyphens in the domain name"
+    ],
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ]
+   ]
+  },
+  {
+   "url": "http://example.com:99999/x",
+   "score": 20,
+   "level": "low",
+   "findings": [
+    [
+     20,
+     "Malformed URL"
+    ]
+   ]
+  },
+  {
+   "url": "http://example.com:abc/x",
+   "score": 20,
+   "level": "low",
+   "findings": [
+    [
+     20,
+     "Malformed URL"
+    ]
+   ]
+  },
+  {
+   "url": "http://[bad/x",
+   "score": 20,
+   "level": "low",
+   "findings": [
+    [
+     20,
+     "Malformed URL"
+    ]
+   ]
+  },
+  {
+   "url": "https://example.com/files/setup.exe",
+   "score": 25,
+   "level": "low",
+   "findings": [
+    [
+     25,
+     "Link points directly to an executable / installer file"
+    ]
+   ]
+  },
+  {
+   "url": "https://rnicrosoft-support.com",
+   "score": 36,
+   "level": "medium",
+   "findings": [
+    [
+     36,
+     "Look-alike of 'microsoft' (character substitution) on a non-microsoft domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://microsoft-support.online/verify",
+   "score": 38,
+   "level": "medium",
+   "findings": [
+    [
+     10,
+     "Top-level domain '.online' is heavily abused by scammers"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ],
+    [
+     24,
+     "Mentions 'microsoft' but is not an official microsoft domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://applesauce-recipes.com/",
+   "score": 24,
+   "level": "low",
+   "findings": [
+    [
+     24,
+     "Mentions 'apple' but is not an official apple domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://www.visa-info.org/canada-travel",
+   "score": 24,
+   "level": "low",
+   "findings": [
+    [
+     24,
+     "Mentions 'visa' but is not an official visa domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://td-tutoring.ca/",
+   "score": 24,
+   "level": "low",
+   "findings": [
+    [
+     24,
+     "Mentions 'td' but is not an official td domain"
+    ]
+   ]
+  },
+  {
+   "url": "https://amazon-reviews-blog.com/best",
+   "score": 24,
+   "level": "low",
+   "findings": [
+    [
+     24,
+     "Mentions 'amazon' but is not an official amazon domain"
+    ]
+   ]
+  },
+  {
+   "url": "http://sub.domain.co.uk/login",
+   "score": 10,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ],
+    [
+     4,
+     "Path contains words like login / verify / account"
+    ]
+   ]
+  },
+  {
+   "url": "https://login.paypal.com.evil.top/x",
+   "score": 50,
+   "level": "medium",
+   "findings": [
+    [
+     10,
+     "Top-level domain '.top' is heavily abused by scammers"
+    ],
+    [
+     8,
+     "Unusually many sub-domains"
+    ],
+    [
+     8,
+     "Domain contains words like login / verify / secure / account"
+    ],
+    [
+     24,
+     "Mentions 'paypal' but is not an official paypal domain"
+    ]
+   ]
+  },
+  {
+   "url": "example.com",
+   "score": 6,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "www.example.org/path?x=1",
+   "score": 6,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "http://...",
+   "score": 6,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "http://.com",
+   "score": 6,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Not encrypted (http, not https)"
+    ]
+   ]
+  },
+  {
+   "url": "https://very-long-example-domain.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "score": 10,
+   "level": "safe",
+   "findings": [
+    [
+     6,
+     "Many hyphens in the domain name"
+    ],
+    [
+     4,
+     "Very long URL"
+    ]
+   ]
+  }
+ ],
+ "texts": [
+  {
+   "text": "RBC: Your new debit card is not yet activated and has been temporarily locked. Activate your card within 24 hours at https://rbc-card-activation.help/secure to avoid suspension.",
+   "score": 92,
+   "level": "critical",
+   "textScore": 79,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     12,
+     "Threatens account closure, arrest or legal action"
+    ],
+    [
+     12,
+     "Targets new accounts ('welcome', 'activate your new account/card')"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ],
+    [
+     20,
+     "A link or sender imitates 'rbc' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "urls": [
+    {
+     "score": 38,
+     "level": "medium",
+     "findings": [
+      [
+       10,
+       "Top-level domain '.help' is heavily abused by scammers"
+      ],
+      [
+       4,
+       "Path contains words like login / verify / account"
+      ],
+      [
+       24,
+       "Mentions 'rbc' but is not an official rbc domain"
+      ]
+     ],
+     "url": "https://rbc-card-activation.help/secure"
+    }
    ],
-   [
-    24,
-    "Mentions 'rbc' but is not an official rbc domain"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide."
    ]
-  ]
- },
- {
-  "url": "https://rbc-secure-verify.help/login",
-  "score": 42,
-  "level": "medium",
-  "findings": [
-   [
-    10,
-    "Top-level domain '.help' is heavily abused by scammers"
+  },
+  {
+   "text": "RBC: Your debit card has been temporarily locked. Verify your card within 24 hours at https://rbc-secure-verify.help/login",
+   "score": 70,
+   "level": "high",
+   "textScore": 52,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     12,
+     "Threatens account closure, arrest or legal action"
+    ],
+    [
+     20,
+     "A link or sender imitates 'rbc' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    8,
-    "Domain contains words like login / verify / secure / account"
+   "urls": [
+    {
+     "score": 42,
+     "level": "medium",
+     "findings": [
+      [
+       10,
+       "Top-level domain '.help' is heavily abused by scammers"
+      ],
+      [
+       8,
+       "Domain contains words like login / verify / secure / account"
+      ],
+      [
+       24,
+       "Mentions 'rbc' but is not an official rbc domain"
+      ]
+     ],
+     "url": "https://rbc-secure-verify.help/login"
+    }
    ],
-   [
-    24,
-    "Mentions 'rbc' but is not an official rbc domain"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide."
    ]
-  ]
- },
- {
-  "url": "http://interac-deposit.top/claim",
-  "score": 40,
-  "level": "medium",
-  "findings": [
-   [
-    10,
-    "Top-level domain '.top' is heavily abused by scammers"
+  },
+  {
+   "text": "INTERAC e-Transfer: You have received $1,250.00 CAD. Your e-transfer is pending - deposit your funds here: http://interac-deposit.top/claim?id=88213. Enter your card number and PIN to accept the payment.",
+   "score": 100,
+   "level": "critical",
+   "textScore": 90,
+   "textFindings": [
+    [
+     22,
+     "Asks for passwords, codes or identity data"
+    ],
+    [
+     24,
+     "Asks for full card details (number, CVV, expiry or PIN)"
+    ],
+    [
+     16,
+     "Fake Interac e-Transfer / bank deposit notice"
+    ],
+    [
+     20,
+     "A link or sender imitates 'interac' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "urls": [
+    {
+     "score": 40,
+     "level": "medium",
+     "findings": [
+      [
+       10,
+       "Top-level domain '.top' is heavily abused by scammers"
+      ],
+      [
+       6,
+       "Not encrypted (http, not https)"
+      ],
+      [
+       24,
+       "Mentions 'interac' but is not an official interac domain"
+      ]
+     ],
+     "url": "http://interac-deposit.top/claim?id=88213"
+    }
    ],
-   [
-    24,
-    "Mentions 'interac' but is not an official interac domain"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide.",
+    "Legitimate companies never ask for passwords, PINs or one-time codes by message."
    ]
-  ]
- },
- {
-  "url": "http://cra-refund-canada.xyz",
-  "score": 40,
-  "level": "medium",
-  "findings": [
-   [
-    10,
-    "Top-level domain '.xyz' is heavily abused by scammers"
+  },
+  {
+   "text": "Canada Revenue Agency: you are eligible for a tax refund of $468.20. Confirm your SIN and banking details at http://cra-refund-canada.xyz within 48 hours.",
+   "score": 100,
+   "level": "critical",
+   "textScore": 91,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     22,
+     "Asks for passwords, codes or identity data"
+    ],
+    [
+     14,
+     "Government / tax-agency impersonation (CRA, IRS, Service Canada)"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ],
+    [
+     20,
+     "A link or sender imitates 'cra' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "urls": [
+    {
+     "score": 40,
+     "level": "medium",
+     "findings": [
+      [
+       10,
+       "Top-level domain '.xyz' is heavily abused by scammers"
+      ],
+      [
+       6,
+       "Not encrypted (http, not https)"
+      ],
+      [
+       24,
+       "Mentions 'cra' but is not an official cra domain"
+      ]
+     ],
+     "url": "http://cra-refund-canada.xyz"
+    }
    ],
-   [
-    24,
-    "Mentions 'cra' but is not an official cra domain"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide.",
+    "Legitimate companies never ask for passwords, PINs or one-time codes by message."
    ]
-  ]
- },
- {
-  "url": "https://paypa1-secure.com/login",
-  "score": 44,
-  "level": "medium",
-  "findings": [
-   [
-    8,
-    "Domain contains words like login / verify / secure / account"
+  },
+  {
+   "text": "URGENT: your PayPal account is suspended. Verify now https://paypa1-secure.com/login",
+   "score": 70,
+   "level": "high",
+   "textScore": 52,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     12,
+     "Threatens account closure, arrest or legal action"
+    ],
+    [
+     20,
+     "A link or sender imitates 'paypal' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    36,
-    "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
-   ]
-  ]
- },
- {
-  "url": "https://paypaI.com/signin",
-  "score": 40,
-  "level": "medium",
-  "findings": [
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "urls": [
+    {
+     "score": 44,
+     "level": "medium",
+     "findings": [
+      [
+       8,
+       "Domain contains words like login / verify / secure / account"
+      ],
+      [
+       36,
+       "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+      ]
+     ],
+     "url": "https://paypa1-secure.com/login"
+    }
    ],
-   [
-    36,
-    "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide."
    ]
-  ]
- },
- {
-  "url": "https://amazon-login.s3.amazonaws.com/verify/account",
-  "score": 46,
-  "level": "medium",
-  "findings": [
-   [
-    8,
-    "Domain contains words like login / verify / secure / account"
+  },
+  {
+   "text": "From notify@interac-etransfer.online: your e-transfer is pending, act within 24 hours",
+   "score": 80,
+   "level": "high",
+   "textScore": 63,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     16,
+     "Fake Interac e-Transfer / bank deposit notice"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ],
+    [
+     20,
+     "A link or sender imitates 'interac' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    24,
-    "Mentions 'amazon' but is not an official amazon domain"
+   "urls": [],
+   "emails": [
+    {
+     "score": 48,
+     "level": "medium",
+     "findings": [
+      [
+       20,
+       "Mentions 'interac' but domain is not official"
+      ],
+      [
+       20,
+       "Mentions 'etransfer' but domain is not official"
+      ],
+      [
+       8,
+       "Top-level domain '.online' is heavily abused"
+      ]
+     ],
+     "email": "notify@interac-etransfer.online"
+    }
    ],
-   [
-    14,
-    "Uses the name 'amazon' on a free / shared hosting domain, not the real company"
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide."
    ]
-  ]
- },
- {
-  "url": "https://paypal-secure.googleusercontent.com/login",
-  "score": 46,
-  "level": "medium",
-  "findings": [
-   [
-    8,
-    "Domain contains words like login / verify / secure / account"
+  },
+  {
+   "text": "Hi sweetie, dinner on Sunday at 6? Dad is making lasagna",
+   "score": 0,
+   "level": "safe",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "Your Microsoft order has shipped. View at https://account.microsoft.com/orders",
+   "score": 0,
+   "level": "safe",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [
+    {
+     "score": 0,
+     "level": "safe",
+     "findings": [],
+     "url": "https://account.microsoft.com/orders"
+    }
    ],
-   [
-    24,
-    "Mentions 'paypal' but is not an official paypal domain"
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "Urgent: please review the doc before 5pm https://applesauce-recipes.com/",
+   "score": 31,
+   "level": "low",
+   "textScore": 20,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ]
    ],
-   [
-    14,
-    "Uses the name 'paypal' on a free / shared hosting domain, not the real company"
-   ]
-  ]
- },
- {
-  "url": "https://раураl.com/login",
-  "score": 62,
-  "level": "high",
-  "findings": [
-   [
-    22,
-    "Punycode / internationalized domain (possible look-alike characters)"
+   "urls": [
+    {
+     "score": 24,
+     "level": "low",
+     "findings": [
+      [
+       24,
+       "Mentions 'apple' but is not an official apple domain"
+      ]
+     ],
+     "url": "https://applesauce-recipes.com/"
+    }
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "RBC: your statement is ready, please review within 3 days at https://www.rbcroyalbank.com/statements",
+   "score": 20,
+   "level": "low",
+   "textScore": 20,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ]
    ],
-   [
-    36,
-    "Look-alike of 'paypal' (character substitution) on a non-paypal domain"
-   ]
-  ]
- },
- {
-  "url": "http://3232235777/login",
-  "score": 40,
-  "level": "medium",
-  "findings": [
-   [
-    30,
-    "Disguised IP address (number or hex form) instead of a domain name"
+   "urls": [
+    {
+     "score": 0,
+     "level": "safe",
+     "findings": [],
+     "url": "https://www.rbcroyalbank.com/statements"
+    }
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "Hi mum, this is my new number, I lost my phone. Please send $500 by e-transfer, don't tell dad",
+   "score": 16,
+   "level": "low",
+   "textScore": 16,
+   "textFindings": [
+    [
+     16,
+     "'Hi mum/dad, new number' family-emergency scam pattern"
+    ]
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert.",
+    "Call your family member on their OLD, known number before sending anything."
    ]
-  ]
- },
- {
-  "url": "http://0xC0A80101/bank",
-  "score": 36,
-  "level": "medium",
-  "findings": [
-   [
-    30,
-    "Disguised IP address (number or hex form) instead of a domain name"
+  },
+  {
+   "text": "Congratulations! You have won the lottery jackpot. Claim your prize now: bit.ly/3xYz",
+   "score": 22,
+   "level": "low",
+   "textScore": 16,
+   "textFindings": [
+    [
+     16,
+     "Promises prizes, winnings or free money"
+    ]
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
-   ]
-  ]
- },
- {
-  "url": "http://192.168.1.5/login",
-  "score": 32,
-  "level": "low",
-  "findings": [
-   [
-    22,
-    "Uses a raw IP address instead of a domain name"
+   "urls": [
+    {
+     "score": 16,
+     "level": "low",
+     "findings": [
+      [
+       10,
+       "Link shortener hides the real destination"
+      ],
+      [
+       6,
+       "Not encrypted (http, not https)"
+      ]
+     ],
+     "url": "bit.ly/3xYz"
+    }
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert.",
+    "Expand short links with a preview service (e.g. unshorten.it) before trusting them."
+   ]
+  },
+  {
+   "text": "Your parcel is on hold. Pay the customs fee at https://dhl-delivery-track.xyz/pay",
+   "score": 70,
+   "level": "high",
+   "textScore": 54,
+   "textFindings": [
+    [
+     18,
+     "Requests unusual payment (gift cards, crypto, wire)"
+    ],
+    [
+     8,
+     "Fake delivery / parcel notification pattern"
+    ],
+    [
+     20,
+     "A link or sender imitates 'dhl' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
-   ]
-  ]
- },
- {
-  "url": "http://1.2.3.4:8080/x",
-  "score": 36,
-  "level": "medium",
-  "findings": [
-   [
-    22,
-    "Uses a raw IP address instead of a domain name"
+   "urls": [
+    {
+     "score": 34,
+     "level": "low",
+     "findings": [
+      [
+       10,
+       "Top-level domain '.xyz' is heavily abused by scammers"
+      ],
+      [
+       24,
+       "Mentions 'dhl' but is not an official dhl domain"
+      ]
+     ],
+     "url": "https://dhl-delivery-track.xyz/pay"
+    }
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide.",
+    "Gift cards, crypto and wire transfers are the scammer's favourite - they can't be reversed."
+   ]
+  },
+  {
+   "text": "Please install AnyDesk so our support agent can fix your account. Keep this confidential.",
+   "score": 32,
+   "level": "low",
+   "textScore": 32,
+   "textFindings": [
+    [
+     12,
+     "Asks you to keep it secret"
+    ],
+    [
+     20,
+     "Asks you to install remote-access software"
+    ]
    ],
-   [
-    8,
-    "Non-standard port 8080"
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert.",
+    "Never install AnyDesk / TeamViewer for someone who contacted you first."
    ]
-  ]
- },
- {
-  "url": "http://[::1]:8080/login",
-  "score": 40,
-  "level": "medium",
-  "findings": [
-   [
-    22,
-    "Uses a raw IP address instead of a domain name"
+  },
+  {
+   "text": "Dear customer, unauthorized login detected. Sign in at https://micros0ft-account.com/login to confirm your password.",
+   "score": 97,
+   "level": "critical",
+   "textScore": 82,
+   "textFindings": [
+    [
+     22,
+     "Asks for passwords, codes or identity data"
+    ],
+    [
+     12,
+     "Threatens account closure, arrest or legal action"
+    ],
+    [
+     5,
+     "Generic greeting (not addressed to you by name)"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ],
+    [
+     20,
+     "A link or sender imitates 'microsoft' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "urls": [
+    {
+     "score": 44,
+     "level": "medium",
+     "findings": [
+      [
+       8,
+       "Domain contains words like login / verify / secure / account"
+      ],
+      [
+       36,
+       "Look-alike of 'microsoft' (character substitution) on a non-microsoft domain"
+      ]
+     ],
+     "url": "https://micros0ft-account.com/login"
+    }
    ],
-   [
-    8,
-    "Non-standard port 8080"
+   "emails": [],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide.",
+    "Legitimate companies never ask for passwords, PINs or one-time codes by message."
+   ]
+  },
+  {
+   "text": "Verify your account at rbc-secure[.]com/login now, urgent",
+   "score": 49,
+   "level": "medium",
+   "textScore": 49,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     22,
+     "Asks for passwords, codes or identity data"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ]
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "Treat with caution: contact the organization through its official app or website you type yourself.",
+    "Legitimate companies never ask for passwords, PINs or one-time codes by message."
    ]
-  ]
- },
- {
-  "url": "http://user@evil.example.com/",
-  "score": 28,
-  "level": "low",
-  "findings": [
-   [
-    22,
-    "Contains '@' before the host - the real destination is hidden"
+  },
+  {
+   "text": "hxxps://paypal-help.top/login and also contact support@paypal-help.top",
+   "score": 38,
+   "level": "medium",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [
+    {
+     "score": 38,
+     "level": "medium",
+     "findings": [
+      [
+       10,
+       "Top-level domain '.top' is heavily abused by scammers"
+      ],
+      [
+       4,
+       "Path contains words like login / verify / account"
+      ],
+      [
+       24,
+       "Mentions 'paypal' but is not an official paypal domain"
+      ]
+     ],
+     "url": "https://paypal-help.top/login"
+    }
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
-   ]
-  ]
- },
- {
-  "url": "https://xn--80ak6aa92e.com/",
-  "score": 22,
-  "level": "low",
-  "findings": [
-   [
-    22,
-    "Punycode / internationalized domain (possible look-alike characters)"
-   ]
-  ]
- },
- {
-  "url": "bit.ly/3xYz",
-  "score": 16,
-  "level": "low",
-  "findings": [
-   [
-    10,
-    "Link shortener hides the real destination"
+   "emails": [
+    {
+     "score": 28,
+     "level": "low",
+     "findings": [
+      [
+       20,
+       "Mentions 'paypal' but domain is not official"
+      ],
+      [
+       8,
+       "Top-level domain '.top' is heavily abused"
+      ]
+     ],
+     "email": "support@paypal-help.top"
+    }
    ],
-   [
-    6,
-    "Not encrypted (http, not https)"
+   "advice": [
+    "Treat with caution: contact the organization through its official app or website you type yourself."
    ]
-  ]
- },
- {
-  "url": "https://tinyurl.com/abc",
-  "score": 10,
-  "level": "safe",
-  "findings": [
-   [
-    10,
-    "Link shortener hides the real destination"
-   ]
-  ]
- },
- {
-  "url": "https://a.b.c.d.e.example.com/",
-  "score": 8,
-  "level": "safe",
-  "findings": [
-   [
-    8,
-    "Unusually many sub-domains"
-   ]
-  ]
- },
- {
-  "url": "https://my-bank-secure-login-verify.example.com/",
-  "score": 14,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Many hyphens in the domain name"
+  },
+  {
+   "text": "Lunch at noon? My email is sara@outlook.com and the menu is at https://www.amazon.com/dp/B08N5WRWNW",
+   "score": 0,
+   "level": "safe",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [
+    {
+     "score": 0,
+     "level": "safe",
+     "findings": [],
+     "url": "https://www.amazon.com/dp/B08N5WRWNW"
+    }
    ],
-   [
-    8,
-    "Domain contains words like login / verify / secure / account"
-   ]
-  ]
- },
- {
-  "url": "http://example.com:99999/x",
-  "score": 20,
-  "level": "low",
-  "findings": [
-   [
-    20,
-    "Malformed URL"
-   ]
-  ]
- },
- {
-  "url": "http://example.com:abc/x",
-  "score": 20,
-  "level": "low",
-  "findings": [
-   [
-    20,
-    "Malformed URL"
-   ]
-  ]
- },
- {
-  "url": "http://[bad/x",
-  "score": 20,
-  "level": "low",
-  "findings": [
-   [
-    20,
-    "Malformed URL"
-   ]
-  ]
- },
- {
-  "url": "https://example.com/files/setup.exe",
-  "score": 25,
-  "level": "low",
-  "findings": [
-   [
-    25,
-    "Link points directly to an executable / installer file"
-   ]
-  ]
- },
- {
-  "url": "https://rnicrosoft-support.com",
-  "score": 36,
-  "level": "medium",
-  "findings": [
-   [
-    36,
-    "Look-alike of 'microsoft' (character substitution) on a non-microsoft domain"
-   ]
-  ]
- },
- {
-  "url": "https://microsoft-support.online/verify",
-  "score": 38,
-  "level": "medium",
-  "findings": [
-   [
-    10,
-    "Top-level domain '.online' is heavily abused by scammers"
+   "emails": [
+    {
+     "score": 0,
+     "level": "safe",
+     "findings": [],
+     "email": "sara@outlook.com"
+    }
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "Reminder: your password policy changes next week.",
+   "score": 22,
+   "level": "low",
+   "textScore": 22,
+   "textFindings": [
+    [
+     22,
+     "Asks for passwords, codes or identity data"
+    ]
    ],
-   [
-    24,
-    "Mentions 'microsoft' but is not an official microsoft domain"
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert.",
+    "Legitimate companies never ask for passwords, PINs or one-time codes by message."
    ]
-  ]
- },
- {
-  "url": "https://applesauce-recipes.com/",
-  "score": 24,
-  "level": "low",
-  "findings": [
-   [
-    24,
-    "Mentions 'apple' but is not an official apple domain"
-   ]
-  ]
- },
- {
-  "url": "https://www.visa-info.org/canada-travel",
-  "score": 24,
-  "level": "low",
-  "findings": [
-   [
-    24,
-    "Mentions 'visa' but is not an official visa domain"
-   ]
-  ]
- },
- {
-  "url": "https://td-tutoring.ca/",
-  "score": 24,
-  "level": "low",
-  "findings": [
-   [
-    24,
-    "Mentions 'td' but is not an official td domain"
-   ]
-  ]
- },
- {
-  "url": "https://amazon-reviews-blog.com/best",
-  "score": 24,
-  "level": "low",
-  "findings": [
-   [
-    24,
-    "Mentions 'amazon' but is not an official amazon domain"
-   ]
-  ]
- },
- {
-  "url": "http://sub.domain.co.uk/login",
-  "score": 10,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Not encrypted (http, not https)"
+  },
+  {
+   "text": "Gift cards or bitcoin only. Wire transfer via Western Union. Processing fee required immediately.",
+   "score": 45,
+   "level": "medium",
+   "textScore": 45,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     18,
+     "Requests unusual payment (gift cards, crypto, wire)"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ]
    ],
-   [
-    4,
-    "Path contains words like login / verify / account"
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "Treat with caution: contact the organization through its official app or website you type yourself.",
+    "Gift cards, crypto and wire transfers are the scammer's favourite - they can't be reversed."
    ]
-  ]
- },
- {
-  "url": "https://login.paypal.com.evil.top/x",
-  "score": 50,
-  "level": "medium",
-  "findings": [
-   [
-    10,
-    "Top-level domain '.top' is heavily abused by scammers"
+  },
+  {
+   "text": "John from payroll@amaz0n-hr.club needs your SSN and card number within 24 hours or the account will be closed",
+   "score": 100,
+   "level": "critical",
+   "textScore": 100,
+   "textFindings": [
+    [
+     12,
+     "Creates urgency / time pressure"
+    ],
+    [
+     22,
+     "Asks for passwords, codes or identity data"
+    ],
+    [
+     12,
+     "Threatens account closure, arrest or legal action"
+    ],
+    [
+     24,
+     "Asks for full card details (number, CVV, expiry or PIN)"
+    ],
+    [
+     15,
+     "Pressure combined with a request for data or money (classic scam pattern)"
+    ],
+    [
+     20,
+     "A link or sender imitates 'amazon' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    8,
-    "Unusually many sub-domains"
+   "urls": [],
+   "emails": [
+    {
+     "score": 30,
+     "level": "low",
+     "findings": [
+      [
+       30,
+       "Look-alike of 'amazon' in the address"
+      ]
+     ],
+     "email": "payroll@amaz0n-hr.club"
+    }
    ],
-   [
-    8,
-    "Domain contains words like login / verify / secure / account"
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide.",
+    "Legitimate companies never ask for passwords, PINs or one-time codes by message."
+   ]
+  },
+  {
+   "text": "",
+   "score": 0,
+   "level": "safe",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.",
+   "score": 0,
+   "level": "safe",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [],
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
+   ]
+  },
+  {
+   "text": "Check https://github.com/torvalds/linux and docs.google.com/document/d/abc",
+   "score": 6,
+   "level": "safe",
+   "textScore": 0,
+   "textFindings": [],
+   "urls": [
+    {
+     "score": 0,
+     "level": "safe",
+     "findings": [],
+     "url": "https://github.com/torvalds/linux"
+    },
+    {
+     "score": 6,
+     "level": "safe",
+     "findings": [
+      [
+       6,
+       "Not encrypted (http, not https)"
+      ]
+     ],
+     "url": "docs.google.com/document/d/abc"
+    }
    ],
-   [
-    24,
-    "Mentions 'paypal' but is not an official paypal domain"
+   "emails": [],
+   "advice": [
+    "No strong scam signals found - but a clean result is not a guarantee. Stay alert."
    ]
-  ]
- },
- {
-  "url": "example.com",
-  "score": 6,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Not encrypted (http, not https)"
-   ]
-  ]
- },
- {
-  "url": "www.example.org/path?x=1",
-  "score": 6,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Not encrypted (http, not https)"
-   ]
-  ]
- },
- {
-  "url": "http://...",
-  "score": 6,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Not encrypted (http, not https)"
-   ]
-  ]
- },
- {
-  "url": "http://.com",
-  "score": 6,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Not encrypted (http, not https)"
-   ]
-  ]
- },
- {
-  "url": "https://very-long-example-domain.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  "score": 10,
-  "level": "safe",
-  "findings": [
-   [
-    6,
-    "Many hyphens in the domain name"
+  },
+  {
+   "text": "Your Interac e-Transfer is awaiting deposit at https://interac.ca/etransfer and from interac@mail.example.com",
+   "score": 70,
+   "level": "high",
+   "textScore": 36,
+   "textFindings": [
+    [
+     16,
+     "Fake Interac e-Transfer / bank deposit notice"
+    ],
+    [
+     20,
+     "A link or sender imitates 'interac' while the message pushes you to act (typical bank-phishing pattern)"
+    ]
    ],
-   [
-    4,
-    "Very long URL"
+   "urls": [
+    {
+     "score": 0,
+     "level": "safe",
+     "findings": [],
+     "url": "https://interac.ca/etransfer"
+    }
+   ],
+   "emails": [
+    {
+     "score": 20,
+     "level": "low",
+     "findings": [
+      [
+       20,
+       "Mentions 'interac' but domain is not official"
+      ]
+     ],
+     "email": "interac@mail.example.com"
+    }
+   ],
+   "advice": [
+    "Do NOT click any link, open attachments, reply, or call numbers in this message.",
+    "Delete it after reporting. If you already clicked or entered data, see 'If you were hit' in the guide."
    ]
-  ]
- }
-]
+  }
+ ]
+}
